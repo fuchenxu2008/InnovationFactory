@@ -1,0 +1,25 @@
+{
+  "name": "innovation-factory-server",
+  "version": "0.0.1",
+  "description": "Server for online reservation WeChat App for XJTLU International Innovation Harbour.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "Chenxu Fu",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "chalk": "^2.4.2",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.4",
+    "morgan": "^1.9.1",
+    "socket.io": "^2.2.0"
+  }
+}
