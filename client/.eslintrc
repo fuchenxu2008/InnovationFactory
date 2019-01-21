@@ -1,6 +1,7 @@
 {
   "extends": ["taro"],
   "rules": {
+    "taro/this-props-function": 0,
     "no-unused-vars": ["error", { "varsIgnorePattern": "Taro" }],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }]
   },

@@ -2,7 +2,7 @@
   "miniprogramRoot": "./dist",
   "projectname": "innovationFactory",
   "description": "Online reservation WeChat App for XJTLU International Innovation Harbour.",
-  "appid": "touristappid",
+  "appid": "wxdb862090658cbe67",
   "setting": {
     "urlCheck": true,
     "es6": false,

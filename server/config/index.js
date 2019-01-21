@@ -1,3 +1,12 @@
+const {
+  username,
+  password,
+  host,
+  port,
+  database,
+} = require('./db');
+
 module.exports = {
-    port: 4896,
-}
+  port: process.env.PORT || 4896,
+  mongoURL: `mongodb://${username}:${password}@${host}:${port}/${database}`,
+};

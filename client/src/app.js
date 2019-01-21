@@ -20,17 +20,38 @@ class App extends Component {
 
   config = {
     pages: [
-      'pages/index/index'
+      'pages/index/index',
+      'pages/EventManagePage/index',
+      'pages/AddEventPage/index',
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
+      navigationBarTextStyle: 'black',
+      pageOrientation: "auto"
     }
   }
 
-  componentDidMount () {}
+  componentDidMount () {
+    Taro.checkSession()
+      .then(() => console.log('yes'))
+      .catch(() => {
+        Taro.login()
+          .then(res => res.code)
+          .then(code => {
+            Taro.request({
+              url: 'http://localhost:4896/api/wxlogin',
+              data: {
+                code,
+              },
+              method: 'POST',
+            }).then(res => {
+              console.log(res);
+            })
+          })
+      })
+  }
 
   componentDidShow () {}
 
