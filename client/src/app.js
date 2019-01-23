@@ -16,9 +16,9 @@ class App extends Component {
 
   config = {
     pages: [
-      'pages/AddEventPage/index',
       'pages/index/index',
       'pages/EventManagePage/index',
+      'pages/AddEventPage/index',
     ],
     window: {
       backgroundTextStyle: 'light',

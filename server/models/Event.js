@@ -1,21 +1,20 @@
 const mongoose = require('mongoose');
 
 const EventSchema = mongoose.Schema({
+  albumPicPath: String,
   title: String,
   desc: String,
   startTime: String,
   endTime: String,
-  address: {
-    text: String,
-    coordinate: String,
-  },
+  address: String,
   signupFrom: String,
   signupTo: String,
   cancellable: Boolean,
   tickets: [{
-    type: String,
-    fee: String,
+    ticketType: String,
+    fee: Number,
     quota: Number,
+    _id: false,
   }], // More types of tickets
   linkToArticle: String,
 });

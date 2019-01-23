@@ -17,10 +17,13 @@ mongoose.connect(mongoURL, {
   console.log(chalk.blue(`[√] 🗄  Database is connected at ${mongoURL}`));
 });
 
+global.__root = __dirname;
+
 app.use(morgan('dev'));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 setRouter(app);
 
 server.listen(port, () => {

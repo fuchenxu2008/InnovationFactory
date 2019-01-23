@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text, Form, Input, Picker, Map } from '@tarojs/components'
+import { View, Text, Picker, Image } from '@tarojs/components'
 import { AtInput, AtForm, AtButton, AtSwitch, AtTextarea } from 'taro-ui'
 import moment from 'moment';
 import { connect } from '@tarojs/redux'
@@ -20,6 +20,7 @@ class AddEventPage extends Component {
   }
 
   state = {
+    albumPicPath: '',
     title: '',
     desc: '',
     // Start date and time
@@ -35,23 +36,21 @@ class AddEventPage extends Component {
     signupToTime: '00:00',
     // Address text and coordinate
     addressText: '',
-    addressCoordinate: [0, 0],
     cancellable: true,
     tickets: [],
   }
 
   _handleFormSubmit = () => {
-    const { title, desc, startDate, startTime, endDate, endTime, signupFromDate, signupFromTime, signupToDate, signupToTime, addressText, cancellable, tickets } = this.state;
+    const { albumPicPath, title, desc, startDate, startTime, endDate, endTime, signupFromDate, signupFromTime, signupToDate, signupToTime, addressText, cancellable, tickets } = this.state;
     const event = {
+      albumPicPath,
       title,
       desc,
       startTime: `${startDate} ${startTime}`,
       endTime: `${endDate} ${endTime}`,
       signupFrom: `${signupFromDate} ${signupFromTime}`,
       signupTo: `${signupToDate} ${signupToTime}`,
-      address: {
-        text: addressText,
-      },
+      address: addressText,
       cancellable,
       tickets,
     }
@@ -59,12 +58,19 @@ class AddEventPage extends Component {
     Taro.navigateBack();
   }
 
+  _handleUploadImage = () => {
+    Taro.chooseImage()
+      .then(res => {
+        console.log(res);
+        this.setState({ albumPicPath: res.tempFilePaths[0] })
+      })
+  }
   _handleInputChange = (field, val) => this.setState({ [field]: val })
   _handleTextareaChange = (field, e) => this.setState({ [field]: e.target.value })
   _handlePickerChange = (field, e) => this.setState({ [field]: e.detail.value })
   _handleAddTicket = () => this.setState((prevState) => ({
     tickets: prevState.tickets.concat({
-      type: '',
+      ticketType: '',
       fee: '',
       quota: '',
     })
@@ -87,11 +93,15 @@ class AddEventPage extends Component {
   }
 
   render () {
-    const { title, desc, startDate, startTime, endDate, endTime, signupFromDate, signupFromTime, signupToDate, signupToTime, addressText, cancellable, tickets } = this.state;
-    console.log(tickets);
+    const { albumPicPath, title, desc, startDate, startTime, endDate, endTime, signupFromDate, signupFromTime, signupToDate, signupToTime, addressText, cancellable, tickets } = this.state;
+
     return (
       <View className='addEventPage'>
         <AtForm onSubmit={this._handleFormSubmit} reportSubmit customStyle={{ padding: '0 40rpx' }}>
+          <View className='albumSection'>
+            <Image src={albumPicPath} className='albumPic' mode='scaleToFill' />
+            <View onClick={this._handleUploadImage} className='albumPicBtn'>Upload Image</View>
+          </View>
           <View>
             <AtInput
               name='title'
@@ -197,8 +207,8 @@ class AddEventPage extends Component {
                   name={`ticket-${i}-type`}
                   type='text'
                   placeholder='Type'
-                  onChange={this._handleTicketChange.bind(this, i, 'type')}
-                  value={ticket.type}
+                  onChange={this._handleTicketChange.bind(this, i, 'ticketType')}
+                  value={ticket.ticketType}
                 />
                 <AtInput
                   name={`ticket-${i}-fee`}

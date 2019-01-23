@@ -1,11 +1,17 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
+import { View, Button, Text, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
+import { getAllEvents } from "../../actions/event";
+import { ROOT_URL } from '../../config'
 
 import './index.scss'
 
 @connect(({ event }) => ({
   allEvents: event.allEvents,
+}), (dispatch) => ({
+  getAllEvents() {
+    dispatch(getAllEvents())
+  }
 }))
 class ManageEventPage extends Component {
 
@@ -15,6 +21,10 @@ class ManageEventPage extends Component {
 
   state = {
     editing: false,
+  }
+
+  componentDidMount() {
+    this.props.getAllEvents();
   }
 
   componentWillUnmount () { }
@@ -51,8 +61,9 @@ class ManageEventPage extends Component {
           {
             this.props.allEvents.map((event, i) => (
               <View key={i}>
-                <Text>Title: {event.title}</Text>{'\n'}
-                <Text>Description: {event.description}</Text>
+                <Image src={`${ROOT_URL}${event.albumPicPath}`} />
+                <View>Title: {event.title}</View>
+                <View>Description: {event.desc}</View>
               </View>
             ))
           }
