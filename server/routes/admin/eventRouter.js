@@ -1,10 +1,8 @@
 const express = require('express');
+const { addEvent } = require('../../controllers/admin/eventController');
 
 const eventRouter = express.Router();
 
-eventRouter.post('/', (req, res) => {
-  console.log(req.body);
-  res.send(req.body.event);
-});
+eventRouter.post('/', addEvent);
 
 module.exports = eventRouter;

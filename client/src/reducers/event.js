@@ -11,11 +11,6 @@ export default function event (state = INITIAL_STATE, action) {
         ...state,
         allEvents: state.allEvents.concat(action.payload)
       }
-    //  case MINUS:
-    //    return {
-    //      ...state,
-    //      num: state.num - 1
-    //    }
      default:
        return state
   }

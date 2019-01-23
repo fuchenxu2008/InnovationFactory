@@ -1,0 +1,38 @@
+$picker-font-size: 32rpx;
+
+.input-title {
+    padding: 24rpx 0;
+    font-size: $picker-font-size;
+}
+
+.picker-section {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(237, 243, 248);
+    padding:24rpx 0;
+}
+
+.time-picker-group {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 0.2;
+}
+
+.picker-title {
+    font-size: $picker-font-size;
+}
+
+.picker-value {
+    font-size: $picker-font-size;
+}
+
+.more-icon {
+    font-size: 50rpx;
+    align-self: center;
+}
+
+.delete-icon {
+    font-size: 50rpx;
+    align-self: center;
+    color: red;
+}

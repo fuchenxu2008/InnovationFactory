@@ -4,7 +4,7 @@ const PrinterSchema = mongoose.Schema({
   type: String, // FDM, DSP, DLP
   consumables: String, // 树脂
   class: String, // 工业级
-  availabilty: Boolean, // Current status
+  availabilty: Boolean, // Current status (under repair)
   availablePeriod: [{
     from: String,
     to: String,
