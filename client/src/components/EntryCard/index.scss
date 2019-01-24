@@ -1,0 +1,38 @@
+.entrycard {
+    display: flex;
+    position: relative;
+    border-radius: 5px;
+    // height: 400px;
+    overflow: hidden;
+    margin-bottom: 35rpx;
+    box-shadow: 3px 7px 20px rgba(43, 33, 69, 0.781);
+    border: 1px solid rgb(43, 33, 69);
+}
+
+.entrycard-img {
+    width: 100%;
+}
+
+.entrycard-brand {
+    position: absolute;
+    top: 8%;
+    left: 5%;
+    font-size: 0.5rem;
+    font-weight: bold;
+    color: rgb(253, 196, 102);
+}
+
+.entrycard-title {
+    position: absolute;
+    color: white;
+    left: 5%;
+    align-self: center;
+    .entrycard-titleZH {
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+    .entrycard-titleEN {
+        font-size: 0.8rem;
+    }
+}
+

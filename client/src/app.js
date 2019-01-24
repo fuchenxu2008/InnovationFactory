@@ -26,6 +26,25 @@ class App extends Component {
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black',
       pageOrientation: "auto"
+    },
+    tabBar: {
+      list: [{
+          pagePath: "pages/index/index",
+          // text: "Home",
+          iconPath: "assets/icons/home.png",
+          selectedIconPath: "assets/icons/home_selected.png"
+        },
+        {
+          "pagePath": "pages/EventManagePage/index",
+          // "text": "Admin",
+          iconPath: "assets/icons/user.png",
+          selectedIconPath: "assets/icons/user_selected.png"
+        }
+      ],
+      borderStyle: 'white',
+      // color: 'black',
+      // selectedColor: 'blue',
+      // backgroundColor: 'grey',
     }
   }
 
