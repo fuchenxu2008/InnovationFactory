@@ -5,9 +5,9 @@ import './index.scss';
 
 class EntryCard extends Component {
     render() {
-        const { img, titleZH, titleEN } = this.props;
+        const { img, titleZH, titleEN, onClick } = this.props;
         return (
-            <View className='entrycard'>
+            <View className='entrycard' onClick={onClick}>
                 <Image src={img} className='entrycard-img' mode='widthFix' />
                 <View className='entrycard-brand'>INNOVATION FACTORY</View>
                 <View className='entrycard-title'>

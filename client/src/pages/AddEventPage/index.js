@@ -97,7 +97,7 @@ class AddEventPage extends Component {
 
     return (
       <View className='addEventPage'>
-        <AtForm onSubmit={this._handleFormSubmit} reportSubmit customStyle={{ padding: '0 40rpx' }}>
+        <AtForm onSubmit={this._handleFormSubmit} reportSubmit customStyle={{ padding: '0 40px' }}>
           <View className='albumSection'>
             <Image src={albumPicPath} className='albumPic' mode='scaleToFill' />
             <View onClick={this._handleUploadImage} className='albumPicBtn'>Upload Image</View>

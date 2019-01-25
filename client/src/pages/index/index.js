@@ -11,8 +11,13 @@ class Index extends Component {
     navigationBarTitleText: '创新工场'
   }
 
-  render () {
+  _handleEnterPage = (page) => {
+    Taro.navigateTo({
+      url: `/pages/${page}/index`
+    })
+  }
 
+  render () {
     return (
       <View className='index'>
         <SearchBar fixed />
@@ -21,16 +26,19 @@ class Index extends Component {
             img={require('../../assets/images/最新活动.png')}
             titleZH='最新活动'
             titleEN='The latest events'
+            onClick={this._handleEnterPage.bind(this, 'LatestEventPage')}
           />
           <EntryCard
             img={require('../../assets/images/课程报名.png')}
             titleZH='课程报名'
             titleEN='Apply for workshops'
+            onClick={this._handleEnterPage.bind(this, 'LatestEventPage')}
           />
           <EntryCard
             img={require('../../assets/images/仪器预约.png')}
             titleZH='仪器预约'
             titleEN='Printer reservation'
+            onClick={this._handleEnterPage.bind(this, 'LatestEventPage')}
           />
         </View>
       </View>

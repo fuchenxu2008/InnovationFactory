@@ -1,4 +1,4 @@
-$picker-font-size: 32rpx;
+$picker-font-size: 32px;
 
 .albumSection {
     display: flex;
@@ -16,7 +16,7 @@ $picker-font-size: 32rpx;
 }
 
 .input-title {
-    padding: 24rpx 0;
+    padding: 24px 0;
     font-size: $picker-font-size;
 }
 
@@ -24,7 +24,7 @@ $picker-font-size: 32rpx;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid rgb(237, 243, 248);
-    padding:24rpx 0;
+    padding:24px 0;
 }
 
 .time-picker-group {
@@ -42,12 +42,12 @@ $picker-font-size: 32rpx;
 }
 
 .more-icon {
-    font-size: 50rpx;
+    font-size: 50px;
     align-self: center;
 }
 
 .delete-icon {
-    font-size: 50rpx;
+    font-size: 50px;
     align-self: center;
     color: red;
 }
