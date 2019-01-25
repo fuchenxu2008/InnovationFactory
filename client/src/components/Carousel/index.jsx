@@ -7,7 +7,7 @@ class Carousel extends Component {
   render() {
     // const { img, titleZH, titleEN, onClick } = this.props;
     return (
-      <View className='carousel' style={{ transform: 'translateY(160rpx)' }}>
+      <View className='carousel'>
         <Swiper
           className='carousel-swiper'
           indicatorColor='white'
@@ -21,12 +21,12 @@ class Carousel extends Component {
               <Image src='../../assets/images/仪器预约.png' mode='widthFix' />
             </View>
           </SwiperItem>
-          <SwiperItem>
+          <SwiperItem className='carousel-swiperitem'>
             <View className='demo-text'>
               <Image src='../../assets/images/仪器预约.png' mode='widthFix' />
             </View>
           </SwiperItem>
-          <SwiperItem>
+          <SwiperItem className='carousel-swiperitem'>
             <View className='demo-text'>
               <Image src='../../assets/images/仪器预约.png' mode='widthFix' />
             </View>

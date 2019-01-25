@@ -1,8 +1,8 @@
 .carousel {
-    border-radius: 15px;
     box-shadow: 3px 7px 20px rgba(41, 41, 41, 0.781);
+    border-radius: 15px;
     overflow: hidden;
-
+    transform:translateY(0); // To display border-radius properly under shadow
 }
 
 .carousel-swiper {
@@ -10,9 +10,9 @@
 }
 
 // .carousel-swiperitem {
-// //   overflow: hidden;
+
 // }
 
 // .demo-text {
-//     // overflow: hidden;
+
 // }

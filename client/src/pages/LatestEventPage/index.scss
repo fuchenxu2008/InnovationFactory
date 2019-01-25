@@ -1,17 +1,39 @@
-.latestEventPage-gradientheader {
+.latestEventPage-header {
+    height: 500px;
     position: relative;
+}
+
+.latestEventPage-gradientheader {
     background-image: linear-gradient(120deg, rgb(100, 56, 138) 30%, rgb(53, 48, 122) 100%);
-    height: 350px;
+    height: 300px;
     padding: 0 8%;
 }
 
 .page-title {
     position: absolute;
-    top: 10%;
+    top: 35px;
     left: 0;
     right: 0;
     text-align: center;
     color: white;
     font-weight: bold;
-    z-index: 1;
+    font-family: 'DIN';
+    font-size: 0.95rem;
+    // z-index: 1;
+}
+
+.latestEventPage-eventlist {
+    padding: 5% 5%;
+    white-space: nowrap;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    view {
+        margin-right: 18px;
+    }
+}
+
+.latestEventPage-eventlist-title {
+    text-align: center;
+    margin-top: 10%;
 }
