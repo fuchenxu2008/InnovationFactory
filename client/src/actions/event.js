@@ -3,6 +3,8 @@ import {
   DELETE_EVENT,
   // EDIT_EVENT,
   GET_ALL_EVENTS,
+  GET_CACHED_EVENT,
+  GET_EVENT,
 } from '../constants/event';
 
 import * as api from '../API/event'
@@ -12,16 +14,46 @@ export const getAllEvents = () => (dispatch) => {
     .then(res => res.data)
     .then(data => {
       console.log(data);
-      if (data) {
+      if (data.events) {
         dispatch({
           type: GET_ALL_EVENTS,
-          payload: data,
+          payload: data.events,
         })
       }
     })
     .catch(err => console.log(err))
   // throw error if occured
 }
+
+export const getEvent = (eventid) => (dispatch, getState) => {
+  // Get local state cache
+  // If has the event, read from cache else fetch from server
+  const { allEvents } = getState().event;
+  const cachedEvent = allEvents.filter(event => event._id === eventid)[0]
+  if (cachedEvent) {
+    dispatch({
+      type: GET_CACHED_EVENT,
+      payload: cachedEvent
+    })
+  } else {
+    api.getEvent(eventid)
+      .then(res => res.data)
+      .then(data => {
+        console.log(data);
+        if (data.event) {
+          dispatch({
+            type: GET_EVENT,
+            payload: data.event,
+          })
+        }
+      })
+  }
+}
+
+/**
+ * 
+ * Admin actions
+ */
 
 export const addEvent = (event) => (dispatch) => {
   // begin loading

@@ -18,6 +18,7 @@ class App extends Component {
     pages: [
       'pages/index/index',
       'pages/LatestEventPage/index',
+      'pages/EventDetailPage/index',
       'pages/EventManagePage/index',
       'pages/AddEventPage/index',
     ],

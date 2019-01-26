@@ -8,6 +8,13 @@ export const getAllEvents = async() => {
   })
 }
 
+export const getEvent = async(eventid) => {
+  return await Taro.request({
+    url: `${ROOT_URL}/api/event/${eventid}`,
+    method: 'GET',
+  })
+}
+
 export const addEvent = async(event) => {
     return await Taro.uploadFile({
       url: `${ROOT_URL}/api/admin/event`,

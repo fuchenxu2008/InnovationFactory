@@ -1,47 +1,37 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text, Image, ScrollView } from '@tarojs/components'
+import { View, Button, Text, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import Carousel from '../../components/Carousel'
-import EventCard from '../../components/EventCard'
-import { getAllEvents } from "../../actions/event";
+import { getEvent } from '../../actions/event'
 
 import './index.scss'
 
 @connect(({ event }) => ({
-  allEvents: event.allEvents,
+  currentEvent: event.currentEvent
 }), (dispatch) => ({
-  getAllEvents() {
-    dispatch(getAllEvents())
+  getEvent(eventid) {
+    dispatch(getEvent(eventid))
   }
 }))
-class LatestEventPage extends Component {
+class EventDetailPage extends Component {
   config = {
-    navigationBarTitleText: '最新活动',
-    navigationBarTextStyle: 'white',
-    navigationBarBackgroundColor: '#64388A'
+    navigationBarTitleText: '活动',
   }
 
   componentDidMount() {
-    this.props.getAllEvents()
+    const { id } = this.$router.params;
+    this.props.getEvent(id);
   }
 
   render () {
+    const { title } = this.props.currentEvent;
     return (
-      <View className='latestEventPage'>
-        <View className='latestEventPage-header'>
-          <View className='latestEventPage-gradientheader'>
-            <View className='page-title'>The latest events 最新活动</View>
-            <View style={{ transform: 'translateY(110rpx)' }}>
-              <Carousel />
-            </View>
-          </View>       
-        </View>
-        <View>
-         
-        </View>
+      <View className='eventDetailPage'>
+        <View>{title}</View>
+        <View></View>
+        <View></View>
       </View>
     )
   }
 }
 
-export default LatestEventPage
+export default EventDetailPage
