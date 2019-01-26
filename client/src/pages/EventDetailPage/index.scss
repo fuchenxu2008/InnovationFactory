@@ -1,0 +1,63 @@
+.eventDetailPage {
+    padding: 0 8%;
+}
+
+.eventDetailPage-detailcard {
+    display: flex;
+    flex-direction: column;
+    transform: translateY(130rpx);
+    min-height: 500px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 3px 7px 30px rgba(43, 33, 69, 0.507);
+}
+
+.eventDetailPage-detailcard-img {
+    width: 100%;
+}
+
+.eventDetailPage-detailcard-content {
+    padding: 6% 8%;
+    .eventDetailPage-detailcard-title {
+        display: flex;
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+    }
+    .eventDetailPage-detailcard-timeplace {
+        color: rgb(178, 183, 198);
+        font-size: 0.6rem;
+        margin-bottom: 20px;
+    }
+    .eventDetailPage-detailcard-desc {
+        color: rgb(127, 128, 131);
+        font-size: 0.7rem;
+    }
+}
+
+.gradient-stick {
+    width: 10px;
+    background-image: linear-gradient(to bottom, rgb(254, 213, 83) 30%, rgb(252, 78, 159) 100%);
+    margin-right: 15px;
+}
+
+.eventDetailPage-detailcard-btnGroup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8% 3% 3% 3%;
+    .at-icon {
+        font-size: 1.6rem;
+    }
+    .signup-btn {
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height: 130px;
+        width: 130px;
+        border-radius: 50%;
+        box-shadow: 3px 7px 30px rgba(43, 33, 69, 0.507);
+        font-weight: bold;
+        color: rgb(71, 71, 71);
+    }
+}

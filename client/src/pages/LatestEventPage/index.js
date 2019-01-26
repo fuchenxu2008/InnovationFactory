@@ -3,7 +3,7 @@ import { View, Button, Text, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import Carousel from '../../components/Carousel'
 import EventCard from '../../components/EventCard'
-import BookmarkIcon from '../../components/BookmarkIcon'
+import GradientHeader from '../../components/GradientHeader'
 import { getAllEvents } from "../../actions/event";
 
 import './index.scss'
@@ -27,16 +27,9 @@ class LatestEventPage extends Component {
   render () {
     return (
       <View className='latestEventPage'>
-        <View className='latestEventPage-header'>
-          <View className='latestEventPage-gradientheader'>
-            <View className='latestEventPage-bookmarkicon'>
-              <BookmarkIcon />
-            </View>
-            <View className='page-title'>The latest events</View>
-            <View style={{ transform: 'translateY(110rpx)' }}>
-              <Carousel />
-            </View>
-          </View>       
+        <GradientHeader pageTitle='The latest events' />
+        <View className='latestEventPage-carousel'>
+          <Carousel />
         </View>
         <View>
           <View className='latestEventPage-eventlist-heading'>

@@ -16,8 +16,8 @@ class App extends Component {
 
   config = {
     pages: [
-      'pages/index/index',
       'pages/LatestEventPage/index',
+      'pages/index/index',
       'pages/EventDetailPage/index',
       'pages/EventManagePage/index',
       'pages/AddEventPage/index',

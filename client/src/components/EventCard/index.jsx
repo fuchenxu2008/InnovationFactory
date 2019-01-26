@@ -22,7 +22,7 @@ class EventCard extends Component {
           <View className='eventcard-content'>
             <View className='eventcard-titleEN'>{title}</View>
             {
-              <View className='eventcard-titleZH'>{desc}</View>
+              // <View className='eventcard-titleZH'>{desc}</View>
             }
             <View className='eventcard-time'>{startTime}</View>
           </View>
