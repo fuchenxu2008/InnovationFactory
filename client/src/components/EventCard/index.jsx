@@ -1,21 +1,24 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Image, Text } from '@tarojs/components';
-
+import { ROOT_URL } from '../../config/index';
 import './index.scss';
 
 class EventCard extends Component {
     render() {
+      const { albumPicPath, title, desc, startTime } = this.props.event;
       return (
         <View className='eventcard'>
           <Image
-            src='https://www.mensjournal.com/wp-content/uploads/mf/low_body_fat_muscular_muscle_abs_chest_main.jpg?w=1200&h=675&crop=1'
+            src={`${ROOT_URL}${albumPicPath}`}
             className='eventcard-img'
             mode='aspectFill'
           />
           <View className='eventcard-content'>
-            <View className='eventcard-titleEN'>Explore Innovation@IIH</View>
-            <View className='eventcard-titleZH'>IIH 创新探索 - 迅达Shindler</View>
-            <View className='eventcard-time'>12-16</View>
+            <View className='eventcard-titleEN'>{title}</View>
+            {
+              <View className='eventcard-titleZH'>{desc}</View>
+            }
+            <View className='eventcard-time'>{startTime}</View>
           </View>
           <View className='eventcard-btn-group'>
           
@@ -23,6 +26,15 @@ class EventCard extends Component {
         </View>
       )
     }
+}
+
+EventCard.defaultProps = {
+  event: {
+    albumPicPath: '',
+    title: 'Explore Innovation@IIH',
+    desc: 'IIH 创新探索 - 迅达Shindler',
+    startTime: '12-16',
+  },
 }
 
 export default EventCard;

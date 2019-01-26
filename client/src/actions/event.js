@@ -42,17 +42,17 @@ export const addEvent = (event) => (dispatch) => {
   // throw error if occured
 }
 
-export const deleteEvent = () => {
-  return {
-    type: DELETE_EVENT
-  }
+export const deleteEvent = (eventid) => (dispatch) => {
+  api.deleteEvent(eventid)
+    .then(res => res.data)
+    .then(data => {
+      console.log(data);
+      if (data.event) {
+        dispatch({
+          type: DELETE_EVENT,
+          payload: data.event,
+        })
+      }
+    })
+    .catch(err => console.log(err))
 }
-
-// // 异步的action
-// export function asyncAdd () {
-//   return dispatch => {
-//     setTimeout(() => {
-//       dispatch(add())
-//     }, 2000)
-//   }
-// }

@@ -19,4 +19,9 @@ export const addEvent = async(event) => {
     });
 }
 
-export const a = 1;
+export const deleteEvent = async(eventid) => {
+  return await Taro.request({
+    url: `${ROOT_URL}/api/admin/event/${eventid}`,
+    method: 'DELETE',
+  })
+}

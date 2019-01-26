@@ -18,17 +18,17 @@ class Carousel extends Component {
         >
           <SwiperItem className='carousel-swiperitem'>
             <View className='demo-text'>
-              <Image src='../../assets/images/仪器预约.png' mode='widthFix' />
+              <Image src='../../assets/images/仪器预约.png' mode='widthFix' className='carousel-swiperitem-img' />
             </View>
           </SwiperItem>
           <SwiperItem className='carousel-swiperitem'>
             <View className='demo-text'>
-              <Image src='../../assets/images/仪器预约.png' mode='widthFix' />
+              <Image src='../../assets/images/仪器预约.png' mode='widthFix' className='carousel-swiperitem-img' />
             </View>
           </SwiperItem>
           <SwiperItem className='carousel-swiperitem'>
             <View className='demo-text'>
-              <Image src='../../assets/images/仪器预约.png' mode='widthFix' />
+              <Image src='../../assets/images/仪器预约.png' mode='widthFix' className='carousel-swiperitem-img' />
             </View>
           </SwiperItem>
         </Swiper>

@@ -1,7 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Button, Text, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { getAllEvents } from "../../actions/event";
+import EventCard from '../../components/EventCard'
+import { getAllEvents, deleteEvent } from "../../actions/event";
 import { ROOT_URL } from '../../config'
 
 import './index.scss'
@@ -11,6 +12,9 @@ import './index.scss'
 }), (dispatch) => ({
   getAllEvents() {
     dispatch(getAllEvents())
+  },
+  deleteEvent(eventid) {
+    dispatch(deleteEvent(eventid))
   }
 }))
 class ManageEventPage extends Component {
@@ -43,6 +47,10 @@ class ManageEventPage extends Component {
     })
   }
 
+  _deleteEvent = (eventid) => {
+    this.props.deleteEvent(eventid);
+  }
+
   render () {
     const { editing } = this.state;
 
@@ -57,13 +65,20 @@ class ManageEventPage extends Component {
           </View>
         }
         <Text>All Events</Text>
-        <View>
+        <View className='admin-eventlist'>
           {
-            this.props.allEvents.map((event, i) => (
-              <View key={i}>
-                <Image src={`${ROOT_URL}${event.albumPicPath}`} />
-                <View>Title: {event.title}</View>
-                <View>Description: {event.desc}</View>
+            this.props.allEvents.map(event => (
+              <View key={event._id} className='admin-event'>
+                <View className='admin-event-card'>
+                  <EventCard event={event} />
+                </View>
+                {
+                  editing &&
+                  <View
+                    className='at-icon at-icon-subtract-circle delete-icon'
+                    onClick={this._deleteEvent.bind(this, event._id)}
+                  />
+                }
               </View>
             ))
           }

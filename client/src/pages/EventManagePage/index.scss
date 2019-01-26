@@ -1,0 +1,19 @@
+.admin-eventlist {
+  padding: 3% 5%;
+}
+
+.admin-event {
+  display: flex;
+  margin-bottom: 5%;
+}
+
+.admin-event-card {
+  flex: 1;
+}
+
+.delete-icon {
+  font-size: 50px;
+  align-self: center;
+  color: red;
+  margin-left: 7%;
+}

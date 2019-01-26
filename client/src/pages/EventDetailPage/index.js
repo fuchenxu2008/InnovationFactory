@@ -37,20 +37,7 @@ class LatestEventPage extends Component {
           </View>       
         </View>
         <View>
-          <View className='latestEventPage-eventlist-heading'>
-            <View className='latestEventPage-eventlist-title'>活动列表</View>
-          </View>
-          <ScrollView scrollX scrollWithAnimation>
-            <View className='latestEventPage-eventlist'>
-              {
-                this.props.allEvents.map(event => (
-                  <View key={event._id} className='latestEventPage-eventlistitem'>
-                    <EventCard event={event} />
-                  </View>
-                ))
-              }
-            </View>
-          </ScrollView>
+         
         </View>
       </View>
     )
