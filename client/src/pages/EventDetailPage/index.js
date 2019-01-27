@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text, Image } from '@tarojs/components'
-import GradientHeader from '../../components/GradientHeader'
+import { View, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
+import GradientHeader from '../../components/GradientHeader'
 import { getEvent } from '../../actions/event'
 import { ROOT_URL } from '../../config'
 
@@ -24,6 +24,13 @@ class EventDetailPage extends Component {
     this.props.getEvent(id);
   }
 
+  _handleEnterSignUp = () => {
+    const { id } = this.$router.params;
+    Taro.navigateTo({
+      url: `/pages/SignUpPage/index?type=event&id=${id}`
+    })
+  }
+
   render () {
     const { title, albumPicPath, desc, startTime, endTime, address } = this.props.currentEvent;
     return (
@@ -43,7 +50,7 @@ class EventDetailPage extends Component {
             <View className='eventDetailPage-detailcard-desc'>{desc}</View>
             <View className='eventDetailPage-detailcard-btnGroup'>
               <View className='at-icon at-icon-link' />
-              <View className='signup-btn'>报名</View>
+              <View className='signup-btn' onClick={this._handleEnterSignUp}>报名</View>
               <View className='at-icon at-icon-share'></View>
             </View>
           </View>

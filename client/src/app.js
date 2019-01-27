@@ -16,9 +16,11 @@ class App extends Component {
 
   config = {
     pages: [
-      'pages/LatestEventPage/index',
       'pages/index/index',
+      'pages/LatestEventPage/index',
       'pages/EventDetailPage/index',
+      'pages/SignUpPage/index',
+      // Admin pages
       'pages/EventManagePage/index',
       'pages/AddEventPage/index',
     ],
@@ -44,9 +46,6 @@ class App extends Component {
         }
       ],
       borderStyle: 'white',
-      // color: 'black',
-      // selectedColor: 'blue',
-      // backgroundColor: 'grey',
     }
   }
 

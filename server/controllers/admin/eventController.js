@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const Event = require('../../models/Event');
 
 const addEvent = (req, res) => {
@@ -24,7 +26,13 @@ const deleteEvent = (req, res) => {
   Event.findByIdAndDelete(req.params.eventid, (err, doc) => {
     if (err) return res.status(400).json({ message: 'Error while deleting event.', err });
     if (!doc) return res.status(404).json({ message: 'Could not find event with specified _id' });
-    return res.json({ message: 'Successfully deleted event!', event: doc });
+    res.json({ message: 'Successfully deleted event!', event: doc });
+    // Remove picture attached to the event
+    const pathArr = doc.albumPicPath.split('/');
+    const picFile = pathArr[pathArr.length - 1];
+    return fs.unlink(path.join(global.__root, `storage/${picFile}`), (error) => {
+      if (error) console.log('Error while deleting file:', error);
+    });
   });
 };
 

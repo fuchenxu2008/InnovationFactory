@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Image, Text } from '@tarojs/components';
+import { View, Image } from '@tarojs/components';
 import { ROOT_URL } from '../../config/index';
 import './index.scss';
 
@@ -11,7 +11,7 @@ class EventCard extends Component {
     }
 
     render() {
-      const { _id, albumPicPath, title, desc, startTime } = this.props.event;
+      const { _id, albumPicPath, title, startTime } = this.props.event;
       return (
         <View className='eventcard' onClick={this._goToEventDetailPage.bind(this, _id)}>
           <Image

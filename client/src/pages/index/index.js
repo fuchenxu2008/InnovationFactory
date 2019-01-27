@@ -1,14 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text, Image } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import EntryCard from '../../components/EntryCard';
 import SearchBar from '../../components/SearchBar';
 
 import './index.scss'
 
 class Index extends Component {
-
   config = {
-    navigationBarTitleText: '创新工场'
+    navigationBarTitleText: '创新工场',
   }
 
   _handleEnterPage = (page) => {
