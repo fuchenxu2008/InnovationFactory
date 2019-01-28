@@ -1,7 +1,6 @@
 import '@tarojs/async-await'
 import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
-import 'taro-ui/dist/style/index.scss'
 import { login } from './actions/global'
 
 import Index from './pages/index'
@@ -13,7 +12,6 @@ import configStore from './store'
 const store = configStore()
 
 class App extends Component {
-
   config = {
     pages: [
       'pages/index/index',
@@ -22,7 +20,7 @@ class App extends Component {
       'pages/SignUpPage/index',
       // Admin pages
       'pages/EventManagePage/index',
-      'pages/AddEventPage/index',
+      'pages/CreateUpdateEventPage/index',
     ],
     window: {
       backgroundTextStyle: 'light',

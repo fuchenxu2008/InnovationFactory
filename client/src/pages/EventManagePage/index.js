@@ -1,9 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text, Image } from '@tarojs/components'
+import { View, Button, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import EventCard from '../../components/EventCard'
 import { getAllEvents, deleteEvent } from "../../actions/event";
-import { ROOT_URL } from '../../config'
 
 import './index.scss'
 
@@ -18,7 +17,6 @@ import './index.scss'
   }
 }))
 class ManageEventPage extends Component {
-
   config = {
     navigationBarTitleText: 'Admin Event'
   }
@@ -43,7 +41,7 @@ class ManageEventPage extends Component {
 
   _goAddEventPage = () => {
     Taro.navigateTo({
-      url: '/pages/AddEventPage/index'
+      url: '/pages/CreateUpdateEventPage/index'
     })
   }
 

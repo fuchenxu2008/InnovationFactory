@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Image, Text } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import { AtSearchBar } from 'taro-ui';
 
 import './index.scss';

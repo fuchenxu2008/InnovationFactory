@@ -1,0 +1,143 @@
+$picker-font-size: 32px;
+
+.album-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(199, 199, 199);
+}
+
+.albumPic {
+  flex: 1;
+}
+
+.albumPicBtn {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.404);
+  color: white;
+  border-radius: 40px;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+}
+
+.form-body {
+  padding: 3% 4% 10% 4%;
+}
+
+.form-body-section {
+  margin-bottom: 7%;
+  padding: 0 3%;
+}
+
+.form-body-section-heading {
+  // font-size: 1.2rem;
+  font-weight: bold;
+  font-family: 'DIN';
+  border-left: 7px solid skyblue;
+  padding-left: 20px;
+  margin: 2% 0;
+}
+
+.input-title {
+  padding: 24px 0;
+  font-size: $picker-font-size;
+}
+
+.picker-section {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(237, 243, 248);
+  padding: 24px 0;
+}
+
+.time-picker-group {
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 0.2;
+}
+
+.picker-title {
+  font-size: $picker-font-size;
+}
+
+.picker-value {
+  font-size: $picker-font-size;
+}
+
+.switch-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgb(237, 243, 248);
+}
+
+.ticket, .formfield {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ticket-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.ticket-section, .formfield-section {
+  border-bottom: 1px solid rgb(237, 243, 248);
+  // padding-bottom: 24px;
+}
+
+.formfield-item {
+  display: flex;
+  align-items: center;
+  // border: 1px solid rgb(17, 17, 17);
+  border-radius: 15px;
+  margin: 20px 0;
+  overflow: hidden;
+  padding: 10px 25px;
+  box-shadow: 3px 7px 25px rgba(146, 146, 146, 0.589);
+}
+
+.formfield-item-input {
+  display: flex;
+  flex-direction: column;
+  flex: 6;
+}
+
+.delete-formfield {
+  flex:1;
+  justify-content:flex-end;
+  display:flex;
+}
+
+.preset-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.preset-item {
+  font-size: 0.9rem;
+  border-radius: 40px;
+  border: 1px solid rgb(198, 211, 221);
+  padding: 10px 30px;
+  margin: 5px;
+  color: rgb(71, 71, 71);
+}
+
+.preset-item-selected {
+  color: white;
+  background-color: grey;
+  border: 1px solid grey;
+}
+
+.customize-btn {
+  color: white;
+  background-color: rgb(18, 41, 58);
+  border: 1px solid rgb(18, 41, 58);
+  text {
+    margin-left: 5px;
+  }
+}

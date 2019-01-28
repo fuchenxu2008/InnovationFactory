@@ -11,14 +11,23 @@ class EventCard extends Component {
     }
 
     render() {
+      if (!this.props.event) return null;
       const { _id, albumPicPath, title, startTime } = this.props.event;
       return (
-        <View className='eventcard' onClick={this._goToEventDetailPage.bind(this, _id)}>
-          <Image
-            src={`${ROOT_URL}${albumPicPath}`}
-            className='eventcard-img'
-            mode='aspectFill'
-          />
+        <View
+          className='eventcard'
+          onClick={
+            this._goToEventDetailPage.bind(this, _id)
+          }
+        >
+          {
+            albumPicPath &&
+            <Image
+              src={`${ROOT_URL}${albumPicPath}`}
+              className='eventcard-img'
+              mode='aspectFill'
+            />
+          }
           <View className='eventcard-content'>
             <View className='eventcard-titleEN'>{title}</View>
             {
@@ -34,8 +43,8 @@ class EventCard extends Component {
     }
 }
 
-EventCard.defaultProps = {
-  event: {},
-}
+// EventCard.defaultProps = {
+//   event: {},
+// }
 
 export default EventCard;
