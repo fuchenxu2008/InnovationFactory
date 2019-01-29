@@ -50,20 +50,21 @@ class AdminEventForm extends Component {
       signupFrom,
       signupTo,
     } = event;
+
     this.setState((prevState) => ({
       ...prevState,
       ...event,
       // To loadable image
       albumPicPath: `${ROOT_URL}${albumPicPath}`,
       // Split time to picker components
-      startDate: dayjs(startTime).format('YYYY-MM-DD'),
-      startTime: dayjs(startTime).format('hh:mm'),
-      endDate: dayjs(endTime).format('YYYY-MM-DD'),
-      endTime: dayjs(endTime).format('hh:mm'),
-      signupFromDate: dayjs(signupFrom).format('YYYY-MM-DD'),
-      signupFromTime: dayjs(signupFrom).format('hh:mm'),
-      signupToDate: dayjs(signupTo).format('YYYY-MM-DD'),
-      signupToTime: dayjs(signupTo).format('hh:mm'),
+      startDate: startTime.split(' ')[0],
+      startTime: startTime.split(' ')[1],
+      endDate: endTime.split(' ')[0],
+      endTime: endTime.split(' ')[1],
+      signupFromDate: signupFrom.split(' ')[0],
+      signupFromTime: signupFrom.split(' ')[1],
+      signupToDate: signupTo.split(' ')[0],
+      signupToTime: signupTo.split(' ')[1],
     }))
   }
 
@@ -333,31 +334,33 @@ class AdminEventForm extends Component {
                 <View className='input-title'>Tickets</View>
                 <AtIcon value='add-circle' onClick={this._handleAddTicket} />
               </View>
-              {
-                tickets.map((ticket, i) => (
-                  <View key={i} className='ticket-item'>
-                    <AtInput
-                      type='text'
-                      placeholder='Type'
-                      onChange={this._handleTicketChange.bind(this, i, 'ticketType')}
-                      value={ticket.ticketType}
-                    />
-                    <AtInput
-                      type='number'
-                      placeholder='Fee'
-                      onChange={this._handleTicketChange.bind(this, i, 'fee')}
-                      value={ticket.fee}
-                    />
-                    <AtInput
-                      type='number'
-                      placeholder='Quota'
-                      onChange={this._handleTicketChange.bind(this, i, 'quota')}
-                      value={ticket.quota}
-                    />
-                    <AtIcon value='subtract-circle' onClick={this._handleDeleteTicket.bind(this, i)} color='red' />
-                  </View>
-                ))
-              }
+              <View className='ticket-items'>
+                {
+                  tickets.map((ticket, i) => (
+                    <View key={i} className='ticket-item'>
+                      <AtInput
+                        type='text'
+                        placeholder='Type'
+                        onChange={this._handleTicketChange.bind(this, i, 'ticketType')}
+                        value={ticket.ticketType}
+                      />
+                      <AtInput
+                        type='number'
+                        placeholder='Fee'
+                        onChange={this._handleTicketChange.bind(this, i, 'fee')}
+                        value={ticket.fee}
+                      />
+                      <AtInput
+                        type='number'
+                        placeholder='Quota'
+                        onChange={this._handleTicketChange.bind(this, i, 'quota')}
+                        value={ticket.quota}
+                      />
+                      <AtIcon value='subtract-circle' onClick={this._handleDeleteTicket.bind(this, i)} color='red' />
+                    </View>
+                  ))
+                }
+              </View>
             </View>
             {/** Signup form */}
             <View className='formfield-section'>

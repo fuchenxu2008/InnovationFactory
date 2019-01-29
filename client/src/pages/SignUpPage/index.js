@@ -1,78 +1,102 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Picker } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
-// import { connect } from '@tarojs/redux'
+import { connect } from '@tarojs/redux'
+import { getEvent } from '../../actions/event'
 
 import './index.scss'
 
 const genderSet = ['男', '女'];
 
+@connect(({ event }) => ({
+  currentEvent: event.currentEvent
+}), (dispatch) => ({
+  getEvent(eventid) {
+    dispatch(getEvent(eventid))
+  }
+}))
 class SignUpPage extends Component {
   config = {
     navigationBarTitleText: '活动报名',
   }
 
   state = {
-    name: '',
-    gender: '',
-    age: '',
-    phone: '',
-    studentId: '',
+    Name: '',
+    Gender: 'Please Select',
+    Age: '',
+  }
+
+  componentDidMount() {
+    const { id } = this.$router.params;
+    if (id) this.props.getEvent(id);
   }
 
   _handleFormSubmit = () => {
-    console.log(this.state);
+    const { Name, Gender, Age } = this.state;
+    const { formFields } = this.props.currentEvent;
+    const form = { Name, Gender, Age };
+    const customizedFields = formFields.map(formfield => formfield.field);
+    customizedFields.forEach(field => form[field] = this.state[field] || '');
+    console.log(form);
   }
 
   _handleInputChange = (field, val) => this.setState({
     [field]: val
   })
 
-  _handleGenderChange = (field, e) => this.setState({
-    [field]: genderSet[e.detail.value]
+  _handleGenderChange = (e) => this.setState({
+    Gender: genderSet[e.detail.value]
   })
 
   render () {
-    const { name, gender, age, phone, studentId } = this.state;
+    const { type } = this.$router.params;
+    const { currentEvent } = this.props;
+    if (!currentEvent) return null;
+
+    const { formFields } = currentEvent;
+    const { Name, Gender, Age } = this.state;
+
     return (
       <View className='signUpPage'>
+        <View className='page-title'>Sign Up {type}</View>
         <AtForm
           onSubmit={this._handleFormSubmit}
+          reportSubmit
+          customStyle={{ padding: 0 }}
         >
           <AtInput
-            name='姓名'
-            title='姓名'
+            title='Name'
             type='text'
-            value={name}
-            onChange={this._handleInputChange.bind(this, 'name')}
+            value={Name}
+            onChange={this._handleInputChange.bind(this, 'Name')}
           />
-          <Picker mode='selector' range={genderSet} onChange={this._handleGenderChange.bind(this, 'gender')}>
-            <View className='picker'>
-              性别 {gender}
-            </View>
-          </Picker>
+          <View className='picker-section'>
+            <View className='picker-title'>Gender</View>
+            <Picker mode='selector' range={genderSet} onChange={this._handleGenderChange}>
+              <View className='picker'>
+                <View className='picker-value'>{Gender}</View>
+              </View>
+            </Picker>
+          </View>
           <AtInput
-            name='年龄'
-            title='年龄'
-            type='text'
-            value={age}
-            onChange={this._handleInputChange.bind(this, 'age')}
-          />
-          <AtInput
-            name='手机号'
-            title='手机号'
+            title='Age'
             type='number'
-            value={phone}
-            onChange={this._handleInputChange.bind(this, 'phone')}
+            value={Age}
+            onChange={this._handleInputChange.bind(this, 'Age')}
           />
-          <AtInput
-            name='学号'
-            title='学号'
-            type='number'
-            value={studentId}
-            onChange={this._handleInputChange.bind(this, 'studentId')}
-          />
-          <AtButton formType='submit'>提交并支付</AtButton>
+          {
+            formFields.map((formfield, i) => (
+              <View key={`formfield-${i}`}>
+                  <AtInput
+                    title={formfield.field}
+                    type={formfield.fieldType}
+                    value={this.state[formfield.field] || ''}
+                    onChange={this._handleInputChange.bind(this, formfield.field)}
+                  />
+              </View>
+            ))
+          }
+          <AtButton type='primary' formType='submit'>提交并支付</AtButton>
         </AtForm>
       </View>
     )

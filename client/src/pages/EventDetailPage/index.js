@@ -21,7 +21,7 @@ class EventDetailPage extends Component {
 
   componentDidMount() {
     const { id } = this.$router.params;
-    this.props.getEvent(id);
+    if (id) this.props.getEvent(id);
   }
 
   _handleEnterSignUp = () => {

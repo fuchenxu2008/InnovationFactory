@@ -12,7 +12,7 @@ class EventCard extends Component {
 
     render() {
       if (!this.props.event) return null;
-      const { _id, albumPicPath, title, startTime } = this.props.event;
+      const { _id, albumPicPath, title, subtitle, startTime } = this.props.event;
       return (
         <View
           className='eventcard'
@@ -30,9 +30,7 @@ class EventCard extends Component {
           }
           <View className='eventcard-content'>
             <View className='eventcard-titleEN'>{title}</View>
-            {
-              // <View className='eventcard-titleZH'>{desc}</View>
-            }
+            <View className='eventcard-titleZH'>{subtitle}</View>
             <View className='eventcard-time'>{startTime}</View>
           </View>
           <View className='eventcard-btn-group'>

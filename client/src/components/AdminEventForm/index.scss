@@ -78,6 +78,10 @@ $picker-font-size: 32px;
   align-items: center;
 }
 
+.ticket-items {
+  z-index: -1;
+}
+
 .ticket-item {
   display: flex;
   justify-content: space-between;

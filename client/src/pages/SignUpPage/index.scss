@@ -1,0 +1,29 @@
+$picker-font-size: 32px;
+
+.signUpPage {
+    padding: 3% 6% 10% 6%;
+}
+
+.page-title {
+    margin: 7% 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgb(70, 70, 70);
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.picker-section {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid rgb(237, 243, 248);
+  padding: 24px 0;
+}
+
+.picker-title {
+  font-size: $picker-font-size;
+}
+
+.picker-value {
+  font-size: $picker-font-size;
+}
