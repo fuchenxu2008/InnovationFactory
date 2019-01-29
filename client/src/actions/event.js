@@ -1,7 +1,7 @@
 import {
   ADD_EVENT,
   DELETE_EVENT,
-  // EDIT_EVENT,
+  EDIT_EVENT,
   GET_ALL_EVENTS,
   GET_CACHED_EVENT,
   GET_EVENT,
@@ -72,6 +72,21 @@ export const addEvent = (event) => (dispatch) => {
     })
     .catch(err => console.log(err))
   // throw error if occured
+}
+
+export const updateEvent = (edition) => (dispatch) => {
+  api.updateEvent(edition)
+    .then(res => typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data)
+    .then(data => {
+      console.log(data);
+      if (data.event) {
+        dispatch({
+          type: EDIT_EVENT,
+          payload: data.event,
+        })
+      }
+    })
+    .catch(err => console.log(err))
 }
 
 export const deleteEvent = (eventid) => (dispatch) => {

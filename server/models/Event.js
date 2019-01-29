@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const EventSchema = mongoose.Schema({
   albumPicPath: String,
   title: String,
-  subTitle: String,
+  subtitle: String,
   desc: String,
   startTime: String,
   endTime: String,
@@ -21,7 +21,7 @@ const EventSchema = mongoose.Schema({
   linkToArticle: String,
   formFields: [{
     field: String,
-    type: String,
+    fieldType: String,
     required: Boolean,
     _id: false,
   }],

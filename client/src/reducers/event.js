@@ -1,4 +1,11 @@
-import { ADD_EVENT, GET_ALL_EVENTS, DELETE_EVENT, GET_EVENT, GET_CACHED_EVENT } from '../constants/event'
+import {
+  ADD_EVENT,
+  EDIT_EVENT,
+  DELETE_EVENT,
+  GET_ALL_EVENTS,
+  GET_EVENT,
+  GET_CACHED_EVENT
+} from '../constants/event'
 
 const INITIAL_STATE = {
   allEvents: [],
@@ -27,6 +34,11 @@ export default function event (state = INITIAL_STATE, action) {
       return {
         ...state,
         allEvents: state.allEvents.concat(action.payload)
+      }
+    case EDIT_EVENT:
+      return {
+        ...state,
+        allEvents: state.allEvents.map(e => e._id === action.payload._id ? action.payload : e)
       }
     case DELETE_EVENT:
       return {

@@ -1,42 +1,42 @@
 export default [
     {
       field: 'Phone',
-      type: 'phone',
+      fieldType: 'phone',
       required: false
     },
     {
       field: 'IDnumber',
-      type: 'idcard',
+      fieldType: 'idcard',
       required: false
     },
     {
       field: 'Email',
-      type: 'text',
+      fieldType: 'text',
       required: false
     },
     {
       field: 'Major',
-      type: 'text',
+      fieldType: 'text',
       required: false
     },
     {
       field: 'School',
-      type: 'text',
+      fieldType: 'text',
       required: false
     },
     {
       field: 'Company',
-      type: 'text',
+      fieldType: 'text',
       required: false
     },
     {
       field: 'Grade',
-      type: 'text',
+      fieldType: 'text',
       required: false
     },
     {
       field: 'StudentID',
-      type: 'number',
+      fieldType: 'number',
       required: false
     },
 ]

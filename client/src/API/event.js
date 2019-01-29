@@ -15,6 +15,10 @@ export const getEvent = async(eventid) => {
   })
 }
 
+/**
+ * Admin APIs
+ */
+
 export const addEvent = async(event) => {
     return await Taro.uploadFile({
       url: `${ROOT_URL}/api/admin/event`,
@@ -24,6 +28,27 @@ export const addEvent = async(event) => {
         event: JSON.stringify(event)
       }
     });
+}
+
+export const updateEvent = async ({id, event}) => {
+  if (event.albumPicPath.startsWith(ROOT_URL)) {
+    // Update without changing cover photo
+    return await Taro.request({
+      url: `${ROOT_URL}/api/admin/event/${id}`,
+      method: 'PUT',
+      data: { event },
+    })
+  } else {
+    // Re-upload photo
+    return await Taro.uploadFile({
+      url: `${ROOT_URL}/api/admin/event/${id}`,
+      filePath: event.albumPicPath,
+      name: 'file',
+      formData: {
+        event: JSON.stringify(event),
+      }
+    });
+  }
 }
 
 export const deleteEvent = async(eventid) => {

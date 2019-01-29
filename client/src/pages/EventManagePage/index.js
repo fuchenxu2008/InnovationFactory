@@ -45,6 +45,12 @@ class ManageEventPage extends Component {
     })
   }
 
+  _editEvent = (eventid) => {
+    Taro.navigateTo({
+      url: `/pages/CreateUpdateEventPage/index?id=${eventid}`
+    })
+  }
+
   _deleteEvent = (eventid) => {
     this.props.deleteEvent(eventid);
   }
@@ -62,7 +68,6 @@ class ManageEventPage extends Component {
             <Button onClick={this._goAddEventPage}>Add Event</Button>
           </View>
         }
-        <Text>All Events</Text>
         <View className='admin-eventlist'>
           {
             this.props.allEvents.map(event => (
@@ -72,10 +77,16 @@ class ManageEventPage extends Component {
                 </View>
                 {
                   editing &&
-                  <View
-                    className='at-icon at-icon-subtract-circle delete-icon'
-                    onClick={this._deleteEvent.bind(this, event._id)}
-                  />
+                  <View className='admin-btn-group'>
+                    <View
+                      className='at-icon at-icon-edit edit-icon'
+                      onClick={this._editEvent.bind(this, event._id)}
+                    />
+                    <View
+                      className='at-icon at-icon-trash delete-icon'
+                      onClick={this._deleteEvent.bind(this, event._id)}
+                    />
+                  </View>
                 }
               </View>
             ))

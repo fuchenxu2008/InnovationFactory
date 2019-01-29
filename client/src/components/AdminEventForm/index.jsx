@@ -3,6 +3,7 @@ import { View, Image, Picker, Text } from '@tarojs/components';
 import { AtInput, AtForm, AtButton, AtSwitch, AtTextarea, AtIcon, AtFloatLayout } from 'taro-ui'
 import dayjs from 'dayjs'
 import preset from './preset'
+import { ROOT_URL } from '../../config'
 
 import './index.scss';
 
@@ -25,7 +26,7 @@ class AdminEventForm extends Component {
     signupFromTime: '00:00',
     signupToDate: today,
     signupToTime: '00:00',
-    addressText: '',
+    address: '',
     cancellable: true,
     tickets: [],
     formFields: [],
@@ -34,12 +35,36 @@ class AdminEventForm extends Component {
   }
 
   componentDidMount() {
-    if (this.props.event) {
-      this.setState((prevState) => ({
-        ...prevState,
-        ...this.props.event,
-      }))
-    }
+    if (this.props.event) this._readEventToUpdate(this.props.event);    
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.event) this._readEventToUpdate(nextProps.event);
+  }
+
+  _readEventToUpdate = (event) => {
+    const {
+      albumPicPath,
+      startTime,
+      endTime,
+      signupFrom,
+      signupTo,
+    } = event;
+    this.setState((prevState) => ({
+      ...prevState,
+      ...event,
+      // To loadable image
+      albumPicPath: `${ROOT_URL}${albumPicPath}`,
+      // Split time to picker components
+      startDate: dayjs(startTime).format('YYYY-MM-DD'),
+      startTime: dayjs(startTime).format('hh:mm'),
+      endDate: dayjs(endTime).format('YYYY-MM-DD'),
+      endTime: dayjs(endTime).format('hh:mm'),
+      signupFromDate: dayjs(signupFrom).format('YYYY-MM-DD'),
+      signupFromTime: dayjs(signupFrom).format('hh:mm'),
+      signupToDate: dayjs(signupTo).format('YYYY-MM-DD'),
+      signupToTime: dayjs(signupTo).format('hh:mm'),
+    }))
   }
 
   _handleFormSubmit = () => {
@@ -57,7 +82,7 @@ class AdminEventForm extends Component {
       signupFromTime,
       signupToDate,
       signupToTime,
-      addressText,
+      address,
       acceptSignup,
       cancellable,
       tickets,
@@ -77,7 +102,7 @@ class AdminEventForm extends Component {
       endTime: `${endDate} ${endTime}`,
       signupFrom: `${signupFromDate} ${signupFromTime}`,
       signupTo: `${signupToDate} ${signupToTime}`,
-      address: addressText,
+      address,
       linkToArticle,
       acceptSignup,
       cancellable,
@@ -85,7 +110,7 @@ class AdminEventForm extends Component {
       formFields,
     }
     console.log('event:', event);
-    this.props.onSubmitEvent();
+    this.props.onSubmitEvent(event);
   }
 
   _handleUploadImage = () => {
@@ -135,7 +160,7 @@ class AdminEventForm extends Component {
     this._handleAddFormField();
   }
 
-  _handleAddFormField = (formField = { field: '', type: 'text', required: false }) => {
+  _handleAddFormField = (formField = { field: '', fieldType: 'text', required: false }) => {
     this.setState((prevState) => ({
       formFields: prevState.formFields.concat(formField)
     }))
@@ -156,7 +181,7 @@ class AdminEventForm extends Component {
     const { formFields } = prevState;
     formFields[i] = {
       ...formFields[i],
-      type: typeSet[e.detail.value]
+      fieldType: typeSet[e.detail.value]
     }
     return { formFields }
   })
@@ -175,7 +200,7 @@ class AdminEventForm extends Component {
       signupFromTime,
       signupToDate,
       signupToTime,
-      addressText,
+      address,
       linkToArticle,
       acceptSignup,
       cancellable,
@@ -219,6 +244,7 @@ class AdminEventForm extends Component {
               placeholder='Enter a description'
               onChange={this._handleTextareaChange.bind(this, 'desc')}
               value={desc}
+              maxLength={1000}
             />
           </View>
           <View className='form-body-section-heading'>Detailed Information</View> 
@@ -253,8 +279,8 @@ class AdminEventForm extends Component {
                 title='Address'
                 type='text'
                 placeholder='Enter an address'
-                onChange={this._handleInputChange.bind(this, 'addressText')}
-                value={addressText}
+                onChange={this._handleInputChange.bind(this, 'address')}
+                value={address}
               />
             </View>
             { /** SignUp start & end time */ }
@@ -353,7 +379,7 @@ class AdminEventForm extends Component {
                       <View className='picker-section'>
                         <View className='picker-title'>Type</View>
                         <Picker mode='selector' range={typeSet} onChange={this._handleFormFieldTypeChange.bind(this, i)}>
-                          <View className='picker-value'>{formField.type}</View>
+                          <View className='picker-value'>{formField.fieldType}</View>
                         </Picker>
                       </View>
                       <View className='switch-section'>
@@ -396,7 +422,7 @@ class AdminEventForm extends Component {
               </AtFloatLayout>
             </View>
           </View>
-          <AtButton type='primary' formType='submit'>Create</AtButton>
+          <AtButton type='primary' formType='submit'>Submit</AtButton>
         </View>
       </AtForm>
     )

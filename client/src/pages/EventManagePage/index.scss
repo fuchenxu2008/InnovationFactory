@@ -11,9 +11,19 @@
   flex: 1;
 }
 
+.admin-btn-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-left: 7%;
+}
+
+.edit-icon {
+  font-size: 50px;
+  color: rgb(48, 58, 78);
+}
+
 .delete-icon {
   font-size: 50px;
-  align-self: center;
   color: red;
-  margin-left: 7%;
 }

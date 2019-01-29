@@ -32,6 +32,7 @@ class EventDetailPage extends Component {
   }
 
   render () {
+    if (!this.props.currentEvent) return null;
     const { title, albumPicPath, desc, startTime, endTime, address } = this.props.currentEvent;
     return (
       <View className='eventDetailPage'>
