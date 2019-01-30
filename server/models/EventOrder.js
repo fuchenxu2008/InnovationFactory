@@ -1,27 +1,15 @@
 const mongoose = require('mongoose');
+const dayjs = require('dayjs');
 
 const EventOrderSchema = mongoose.Schema({
   /**
    * WeChat User Identifier
    */
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
+  user: String,
   /**
    * EventOrder Form
    */
-  name: String,
-  gender: String,
-  age: Number,
-  phone: String,
-  email: String,
-  studentID: String,
-  grade: String,
-  major: String,
-  IdNumber: String,
-  company: String,
-  school: String,
+  form: Object,
   /**
    * Order Detail
    */
@@ -34,7 +22,10 @@ const EventOrderSchema = mongoose.Schema({
     quantity: Number,
   }],
   transactionAmount: Number,
-  created_at: String,
+  created_at: {
+    type: String,
+    default: dayjs().format('YYYY-MM-DD HH:mm'),
+  },
 });
 
 const EventOrder = mongoose.model('EventOrder', EventOrderSchema);

@@ -4,24 +4,11 @@ const PrinterOrderSchema = mongoose.Schema({
   /**
    * WeChat User Identifier
    */
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
+  user: String,
   /**
    * PrinterOrder Form
    */
-  name: String,
-  gender: String,
-  age: Number,
-  phone: String,
-  email: String,
-  studentID: String,
-  grade: String,
-  major: String,
-  IdNumber: String,
-  company: String,
-  school: String,
+  form: Object,
   /**
    * Order Detail
    */

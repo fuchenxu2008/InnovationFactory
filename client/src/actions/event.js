@@ -5,6 +5,7 @@ import {
   GET_ALL_EVENTS,
   GET_CACHED_EVENT,
   GET_EVENT,
+  SUBMIT_EVENT_ORDER,
 } from '../constants/event';
 
 import * as api from '../API/event'
@@ -48,6 +49,20 @@ export const getEvent = (eventid) => (dispatch, getState) => {
         }
       })
   }
+}
+
+export const submitEventOrder = (order) => (dispatch) => {
+  api.submitEventOrder(order)
+    .then(res => res.data)
+    .then(data => {
+      console.log(data);
+      if (data.eventOrder) {
+        dispatch({
+          type: SUBMIT_EVENT_ORDER,
+          payload: data.eventOrder,
+        })
+      }
+    })
 }
 
 /**

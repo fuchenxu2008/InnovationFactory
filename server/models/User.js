@@ -9,17 +9,9 @@ const UserSchema = mongoose.Schema({
   /**
    * Optional, for form auto filling
    */
-  name: String,
-  gender: String,
-  age: Number,
-  phone: String,
-  email: String,
-  studentID: String,
-  grade: String,
-  major: String,
-  IdNumber: String,
-  company: String,
-  school: String,
+  // name: String,
+  // gender: String,
+  // age: Number,
 });
 
 const User = mongoose.model('User', UserSchema);

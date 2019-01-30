@@ -24,6 +24,18 @@ class EventDetailPage extends Component {
     if (id) this.props.getEvent(id);
   }
 
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage () {
+    const { id } = this.$router.params;
+    const { title } = this.props.currentEvent;
+    return {
+      title: `New Event: ${title}`,
+      path: `/pages/EventDetailPage/index?id=${id}`,
+    }
+  }
+
   _handleEnterSignUp = () => {
     const { id } = this.$router.params;
     Taro.navigateTo({

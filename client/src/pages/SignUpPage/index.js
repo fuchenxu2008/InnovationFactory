@@ -2,17 +2,21 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Picker } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux'
-import { getEvent } from '../../actions/event'
+import { getEvent, submitEventOrder } from '../../actions/event'
 
 import './index.scss'
 
 const genderSet = ['男', '女'];
 
-@connect(({ event }) => ({
-  currentEvent: event.currentEvent
+@connect(({ event, global }) => ({
+  currentEvent: event.currentEvent,
+  currentUser: global.currentUser,
 }), (dispatch) => ({
   getEvent(eventid) {
     dispatch(getEvent(eventid))
+  },
+  submitEventOrder(eventOrder) {
+    dispatch(submitEventOrder(eventOrder))
   }
 }))
 class SignUpPage extends Component {
@@ -33,11 +37,18 @@ class SignUpPage extends Component {
 
   _handleFormSubmit = () => {
     const { Name, Gender, Age } = this.state;
-    const { formFields } = this.props.currentEvent;
+    const { formFields, _id } = this.props.currentEvent;
+    const { openid } = this.props.currentUser || {};
     const form = { Name, Gender, Age };
     const customizedFields = formFields.map(formfield => formfield.field);
     customizedFields.forEach(field => form[field] = this.state[field] || '');
     console.log(form);
+    const eventOrder = {
+      user: openid,
+      event: _id,
+      form,
+    }
+    this.props.submitEventOrder(eventOrder);
   }
 
   _handleInputChange = (field, val) => this.setState({

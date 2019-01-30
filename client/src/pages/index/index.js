@@ -1,8 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import EntryCard from '../../components/EntryCard';
 import SearchBar from '../../components/SearchBar';
-import img from '../../assets/images/最新活动.png'
 
 import './index.scss'
 
@@ -23,7 +22,7 @@ class Index extends Component {
         <SearchBar fixed />
         <View className='entrycards-section'>
           <EntryCard
-            img={img}
+            img={require('../../assets/images/最新活动.png')}
             titleZH='最新活动'
             titleEN='The latest events'
             onClick={this._handleEnterPage.bind(this, 'LatestEventPage')}
