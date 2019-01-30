@@ -1,7 +1,7 @@
 $picker-font-size: 32px;
 
 .signUpPage {
-    padding: 3% 6% 10% 6%;
+    padding: 3% 8% 10% 8%;
 }
 
 .page-title {
@@ -26,4 +26,8 @@ $picker-font-size: 32px;
 
 .picker-value {
   font-size: $picker-font-size;
+}
+
+.submit-btn {
+  margin-top: 10%;
 }

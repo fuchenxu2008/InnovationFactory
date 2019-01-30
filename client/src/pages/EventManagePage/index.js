@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import EventCard from '../../components/EventCard'
 import { getAllEvents, deleteEvent } from "../../actions/event";
@@ -9,12 +10,8 @@ import './index.scss'
 @connect(({ event }) => ({
   allEvents: event.allEvents,
 }), (dispatch) => ({
-  getAllEvents() {
-    dispatch(getAllEvents())
-  },
-  deleteEvent(eventid) {
-    dispatch(deleteEvent(eventid))
-  }
+  getAllEvents: () => dispatch(getAllEvents()),
+  deleteEvent: (eventid) => dispatch(deleteEvent(eventid))
 }))
 class ManageEventPage extends Component {
   config = {
@@ -60,12 +57,12 @@ class ManageEventPage extends Component {
 
     return (
       <View className='eventManagePage'>
-        <Button onClick={this._manageEvent}>
+        <AtButton onClick={this._manageEvent}>
           {editing ? 'Done' : 'Manage Event'}
-        </Button>
+        </AtButton>
         { editing &&
           <View>
-            <Button onClick={this._goAddEventPage}>Add Event</Button>
+            <AtButton onClick={this._goAddEventPage}>Add Event</AtButton>
           </View>
         }
         <View className='admin-eventlist'>

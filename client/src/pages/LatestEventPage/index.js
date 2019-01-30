@@ -11,9 +11,7 @@ import './index.scss'
 @connect(({ event }) => ({
   allEvents: event.allEvents,
 }), (dispatch) => ({
-  getAllEvents() {
-    dispatch(getAllEvents())
-  }
+  getAllEvents: () => dispatch(getAllEvents())
 }))
 class LatestEventPage extends Component {
   config = {

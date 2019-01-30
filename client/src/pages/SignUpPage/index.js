@@ -12,12 +12,8 @@ const genderSet = ['男', '女'];
   currentEvent: event.currentEvent,
   currentUser: global.currentUser,
 }), (dispatch) => ({
-  getEvent(eventid) {
-    dispatch(getEvent(eventid))
-  },
-  submitEventOrder(eventOrder) {
-    dispatch(submitEventOrder(eventOrder))
-  }
+  getEvent: (eventid) => dispatch(getEvent(eventid)),
+  submitEventOrder: (eventOrder) => dispatch(submitEventOrder(eventOrder))
 }))
 class SignUpPage extends Component {
   config = {
@@ -35,7 +31,7 @@ class SignUpPage extends Component {
     if (id) this.props.getEvent(id);
   }
 
-  _handleFormSubmit = () => {
+  _handleFormSubmit = (e) => {
     const { Name, Gender, Age } = this.state;
     const { formFields, _id } = this.props.currentEvent;
     const { openid } = this.props.currentUser || {};
@@ -44,11 +40,13 @@ class SignUpPage extends Component {
     customizedFields.forEach(field => form[field] = this.state[field] || '');
     console.log(form);
     const eventOrder = {
+      formId: e.detail.formId,
       user: openid,
       event: _id,
       form,
     }
-    this.props.submitEventOrder(eventOrder);
+    this.props.submitEventOrder(eventOrder)
+      .then(() => Taro.navigateBack())
   }
 
   _handleInputChange = (field, val) => this.setState({
@@ -73,7 +71,6 @@ class SignUpPage extends Component {
         <AtForm
           onSubmit={this._handleFormSubmit}
           reportSubmit
-          customStyle={{ padding: 0 }}
         >
           <AtInput
             title='Name'
@@ -107,7 +104,7 @@ class SignUpPage extends Component {
               </View>
             ))
           }
-          <AtButton type='primary' formType='submit'>提交并支付</AtButton>
+          <AtButton type='primary' formType='submit' className='submit-btn'>提交并支付</AtButton>
         </AtForm>
       </View>
     )

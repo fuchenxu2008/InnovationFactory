@@ -52,7 +52,7 @@ export const getEvent = (eventid) => (dispatch, getState) => {
 }
 
 export const submitEventOrder = (order) => (dispatch) => {
-  api.submitEventOrder(order)
+  return api.submitEventOrder(order)
     .then(res => res.data)
     .then(data => {
       console.log(data);
@@ -74,7 +74,7 @@ export const addEvent = (event) => (dispatch) => {
   // begin loading
   // dispatch()
   // send request
-  api.addEvent(event)
+  return api.addEvent(event)
     .then(res => JSON.parse(res.data))
     .then(data => {
       console.log(data);
@@ -90,7 +90,7 @@ export const addEvent = (event) => (dispatch) => {
 }
 
 export const updateEvent = (edition) => (dispatch) => {
-  api.updateEvent(edition)
+  return api.updateEvent(edition)
     .then(res => typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data)
     .then(data => {
       console.log(data);
@@ -105,7 +105,7 @@ export const updateEvent = (edition) => (dispatch) => {
 }
 
 export const deleteEvent = (eventid) => (dispatch) => {
-  api.deleteEvent(eventid)
+  return api.deleteEvent(eventid)
     .then(res => res.data)
     .then(data => {
       console.log(data);

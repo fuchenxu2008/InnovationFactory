@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text, Image } from '@tarojs/components'
-// import { AtButton } from 'taro-ui'
+import { View, Text, Image } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 
 import { setUserInfo } from '../../actions/global'
@@ -10,21 +10,20 @@ import './index.scss'
 @connect(({ global }) => ({
   currentUser: global.currentUser
 }), (dispatch) => ({
-  setUserInfo(info) {
-    dispatch(setUserInfo(info))
-  }
+  setUserInfo: (info) => dispatch(setUserInfo(info))
 }))
-class TestPage extends Component {
-
+class ProfilePage extends Component {
   config = {
-    navigationBarTitleText: 'TestPage'
+    navigationBarTitleText: 'ProfilePage'
   }
 
-  componentWillUnmount () { }
+  state = {
+    secretTap: -1,
+  }
 
-  componentDidShow () { }
+  componentDidShow () { console.log('show profile'); }
 
-  componentDidHide () { }
+  componentDidHide () { console.log('hide profile'); }
 
   _login = () => {
     Taro.getSetting()
@@ -39,6 +38,14 @@ class TestPage extends Component {
       })
   }
 
+  _handleSecretTap = () => {
+      this.setState((prevState) => ({
+          secretTap: prevState.secretTap >= 4 ? 0 : prevState.secretTap + 1,
+      }), () => {
+        if (this.state.secretTap === 4) this._goManageEventPage();
+      })
+  }
+
   _goManageEventPage = () => {
     Taro.navigateTo({
       url: '/pages/EventManagePage/index'
@@ -47,11 +54,10 @@ class TestPage extends Component {
 
   render () {
     const { currentUser } = this.props;
-    const { userInfo, openid } = currentUser || {};
-    console.log('currentUser: ', currentUser);
+    const { userInfo } = currentUser || {};
+
     return (
-      <View className='index'>
-        <Text>OpenID: {openid}</Text>
+      <View className='profilePage'>
         {
           userInfo
             ? (
@@ -62,16 +68,15 @@ class TestPage extends Component {
             )
             : (
               <View>
-                <View><Text>Test Login</Text></View>
-                <Button open-type='getUserInfo' onGetUserInfo={this._login}>Login</Button>
+                <View><Text>Profile Login</Text></View>
+                <AtButton open-type='getUserInfo' onGetUserInfo={this._login}>Login</AtButton>
               </View>
             )
         }
-        <View><Text>Admin Page</Text></View>
-        <Button onClick={this._goManageEventPage}>View Event</Button>
+        <View onClick={this._handleSecretTap}>Tap me {4 - this.state.secretTap}{' '} times</View>
       </View>
     )
   }
 }
 
-export default TestPage
+export default ProfilePage

@@ -10,15 +10,9 @@ import './index.scss'
 @connect(({ event }) => ({
   currentEvent: event.currentEvent,
 }), (dispatch) => ({
-  addEvent(event) {
-    dispatch(addEvent(event))
-  },
-  updateEvent(edition) {
-    dispatch(updateEvent(edition))
-  },
-  getEvent(eventid) {
-    dispatch(getEvent(eventid))
-  }
+  addEvent: (event) => dispatch(addEvent(event)),
+  updateEvent: (edition) => dispatch(updateEvent(edition)),
+  getEvent: (eventid) => dispatch(getEvent(eventid))
 }))
 class CreateUpdateEventPage extends Component {
   config = {
@@ -34,8 +28,9 @@ class CreateUpdateEventPage extends Component {
     const { id } = this.$router.params;
     id
       ? this.props.updateEvent({ id, event })
-      : this.props.addEvent(event);
-    Taro.navigateBack();
+        .then(() => Taro.navigateBack())
+      : this.props.addEvent(event)
+        .then(() => Taro.navigateBack())
   }
 
   render () {

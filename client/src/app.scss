@@ -1,2 +1,11 @@
 @import "~taro-ui/dist/style/index.scss";
 @import './assets/fonts/Din';
+
+.at-input {
+    margin-left: 0;
+    text-align: right;
+}
+
+.at-switch {
+    padding-right: 0;
+}

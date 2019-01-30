@@ -16,9 +16,7 @@ class EventCard extends Component {
       return (
         <View
           className='eventcard'
-          onClick={
-            this._goToEventDetailPage.bind(this, _id)
-          }
+          onClick={this._goToEventDetailPage.bind(this, _id)}
         >
           {
             albumPicPath &&
@@ -29,8 +27,8 @@ class EventCard extends Component {
             />
           }
           <View className='eventcard-content'>
-            <View className='eventcard-titleEN'>{title}</View>
-            <View className='eventcard-titleZH'>{subtitle}</View>
+            <View className='eventcard-title'>{title}</View>
+            <View className='eventcard-subtitle'>{subtitle}</View>
             <View className='eventcard-time'>{startTime}</View>
           </View>
           <View className='eventcard-btn-group'>
@@ -40,9 +38,5 @@ class EventCard extends Component {
       )
     }
 }
-
-// EventCard.defaultProps = {
-//   event: {},
-// }
 
 export default EventCard;

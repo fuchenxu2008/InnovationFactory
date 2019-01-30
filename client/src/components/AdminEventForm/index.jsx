@@ -211,7 +211,7 @@ class AdminEventForm extends Component {
     } = this.state;
     
     return (
-      <AtForm onSubmit={this._handleFormSubmit} reportSubmit customStyle={{ padding: 0 }}>
+      <AtForm onSubmit={this._handleFormSubmit} reportSubmit>
         {/** Cover image upload */}
         <View className='album-section'>
           <Image src={albumPicPath} className='albumPic' mode='aspectFill' />
@@ -321,12 +321,12 @@ class AdminEventForm extends Component {
             {/** Accept Signup switch */}
             <View className='switch-section'>
               <View className='input-title'>Accept SignUp</View>
-              <AtSwitch checked={acceptSignup} onChange={this._handleInputChange.bind(this, 'acceptSignup')} border={false} customStyle={{ paddingRight: 0 }} />
+              <AtSwitch checked={acceptSignup} onChange={this._handleInputChange.bind(this, 'acceptSignup')} border={false} />
             </View>
             {/** Cancellable switch */}
             <View className='switch-section'>
               <View className='input-title'>Cancellable</View>
-              <AtSwitch checked={cancellable} onChange={this._handleInputChange.bind(this, 'cancellable')} border={false} customStyle={{ paddingRight: 0 }} />
+              <AtSwitch checked={cancellable} onChange={this._handleInputChange.bind(this, 'cancellable')} border={false} />
             </View>
             {/** Tickets */}
             <View className='ticket-section'>
@@ -377,7 +377,6 @@ class AdminEventForm extends Component {
                         title='Field'
                         onChange={this._handleFormFieldChange.bind(this, i, 'field')}
                         value={formField.field}
-                        customStyle={{ textAlign: 'right' }}
                       />
                       <View className='picker-section'>
                         <View className='picker-title'>Type</View>
@@ -391,7 +390,6 @@ class AdminEventForm extends Component {
                           border={false}
                           checked={formField.required}
                           onChange={this._handleFormFieldChange.bind(this, i, 'required')}
-                          customStyle={{ paddingRight: 0 }}
                         />
                       </View>
                     </View>

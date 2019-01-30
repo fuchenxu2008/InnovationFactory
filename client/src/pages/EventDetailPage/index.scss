@@ -1,5 +1,5 @@
 .eventDetailPage {
-    padding: 0 8%;
+    padding: 0 8% 5% 8%;
 }
 
 .eventDetailPage-detailcard {
@@ -9,7 +9,9 @@
     min-height: 500px;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 3px 7px 30px rgba(43, 33, 69, 0.507);
+    box-shadow: 3px 7px 30px rgba(100, 100, 100, 0.2);
+    margin-bottom: 100px;
+    background-color: white;
 }
 
 .eventDetailPage-detailcard-img {
@@ -18,27 +20,56 @@
 
 .eventDetailPage-detailcard-content {
     padding: 6% 8%;
-    .eventDetailPage-detailcard-title {
+    .eventDetailPage-detailcard-titlesection {
+        transform: translateX(-10px);
         display: flex;
+        font-family: 'DIN';
+        color: rgb(40, 40, 40);
         font-weight: bold;
-        font-size: 1.1rem;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
+        .detailcard-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        .detailcard-subtitle {
+          font-size: 1rem;
+        }
     }
     .eventDetailPage-detailcard-timeplace {
-        color: rgb(178, 183, 198);
-        font-size: 0.6rem;
-        margin-bottom: 20px;
+        color: rgb(143, 144, 145);
+        font-size: 0.8rem;
+        margin-bottom: 30px;
+        .detailcard-time, .detailcard-address {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            .detailcard-info-heading {
+                display: flex;
+                flex-wrap: nowrap;
+                font-weight: 500;
+                color: rgb(100, 100, 100);
+                margin-right: 20px;
+                text {
+                    margin-left: 5px;
+                }
+            }
+        }
     }
     .eventDetailPage-detailcard-desc {
         color: rgb(127, 128, 131);
-        font-size: 0.7rem;
+        font-size: 0.8rem;
     }
 }
 
-.gradient-stick {
-    width: 10px;
-    background-image: linear-gradient(to bottom, rgb(254, 213, 83) 30%, rgb(252, 78, 159) 100%);
-    margin-right: 15px;
+.gradient-stick-section {
+    display: flex;
+    align-items: center;
+    .gradient-stick {
+        height: 85%;
+        width: 7px;
+        background-image: linear-gradient(120deg, rgb(254, 213, 83) 45%, rgb(252, 78, 159) 55%);
+        margin-right: 15px;
+    }
 }
 
 .eventDetailPage-detailcard-btnGroup {
@@ -56,8 +87,13 @@
         height: 130px;
         width: 130px;
         border-radius: 50%;
-        box-shadow: 3px 7px 30px rgba(43, 33, 69, 0.507);
+        box-shadow: 3px 5px 30px rgba(156, 156, 156, 0.3);
         font-weight: bold;
         color: rgb(71, 71, 71);
+    }
+    button[plain] {
+      border: none;
+      margin: 0;
+      padding: 0;
     }
 }
