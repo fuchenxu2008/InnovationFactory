@@ -1,10 +1,44 @@
+const dayjs = require('dayjs');
 const EventOrder = require('../models/EventOrder');
+const Event = require('../models/Event');
+const { sendTemplateMessage } = require('./notificationController');
+const { sendScheduledReminder } = require('../middlewares/cronJobs');
 
 const createEventOrder = (req, res) => {
   const { eventOrder } = req.body;
   EventOrder.create(eventOrder, (err, doc) => {
     if (err) return res.status(400).json({ message: 'Error while creating eventOrder', err });
-    return res.json({ message: 'Successfully created eventOrder!', eventOrder: doc });
+    res.json({ message: 'Successfully created eventOrder!', eventOrder: doc });
+    return Event.findById(doc.event, (err2, event) => {
+      if (err2) return console.log('Error while retrieving eventOrder related event', err);
+      return sendScheduledReminder({ activity: event, order: doc });
+    //   return sendTemplateMessage({
+    //     template_id: 'PhaC1oBnNp7U-Tf8cE-C3SSPX0QVgWlnwhYno7cZTBA',
+    //     touser: doc.user,
+    //     form_id: doc.formId,
+    //     page: `/pages/EventDetailPage/index?id=${event._id}`,
+    //     data: {
+    //       keyword1: {
+    //         value: event.title,
+    //       }, // 服务名称
+    //       keyword2: {
+    //         value: dayjs().format('YYYY-MM-DD HH:mm'), // 支付时间
+    //       },
+    //       keyword3: {
+    //         value: '100万', // 订单金额
+    //       },
+    //       keyword4: {
+    //         value: doc._id, // 单号
+    //       },
+    //       keyword5: {
+    //         value: event.startTime, // 开始时间
+    //       },
+    //       keyword6: {
+    //         value: event.address, // 地点
+    //       },
+    //     },
+    //   });
+    });
   });
 };
 

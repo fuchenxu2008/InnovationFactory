@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import EntryCard from '../../components/EntryCard';
 import SearchBar from '../../components/SearchBar';
 

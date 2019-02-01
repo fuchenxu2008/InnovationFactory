@@ -9,6 +9,7 @@ const server = require('http').Server(app);
 
 const { port, mongoURL } = require('./config');
 const setRouter = require('./routes');
+const { accessTokenManager, registerAllReminderTasks } = require('./middlewares/cronJobs');
 
 mongoose.connect(mongoURL, {
   useCreateIndex: true,
@@ -25,6 +26,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 setRouter(app);
+accessTokenManager();
+registerAllReminderTasks(); // Send reminder to participants
 
 server.listen(port, () => {
   console.log(chalk.blue(`[√] 🛰  Server is running on http://localhost:${port}`));
