@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import { View, Text } from '@tarojs/components'
+import { AtButton, AtAvatar } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 
 import { setUserInfo } from '../../actions/global'
@@ -14,7 +14,7 @@ import './index.scss'
 }))
 class ProfilePage extends Component {
   config = {
-    navigationBarTitleText: 'ProfilePage'
+    navigationBarTitleText: '个人中心'
   }
 
   state = {
@@ -61,19 +61,30 @@ class ProfilePage extends Component {
         {
           userInfo
             ? (
-              <View style={{ textAlign: 'center' }}>
-                <Image src={userInfo.avatarUrl} mode='aspectFit' style={{ width: '100px', height: '100px' }} />
-                <View><Text>{userInfo.nickName}</Text></View>
+              <View>
+                <View className='gradient-header' />
+                <View className='userinfo-section'>
+                  <AtAvatar circle image={userInfo.avatarUrl} size='large'></AtAvatar>
+                  <View className='userinfo-nickname'>{userInfo.nickName}</View>
+                </View>
+                <View className='user-data-section'>
+                  <View className='user-data-entry'>我的活动</View>
+                  <View className='user-data-entry'>我的课程</View>
+                  <View className='user-data-entry'>我的仪器</View>
+                </View>
               </View>
             )
             : (
               <View>
-                <View><Text>Profile Login</Text></View>
+                <View>Profile Login</View>
                 <AtButton open-type='getUserInfo' onGetUserInfo={this._login}>Login</AtButton>
               </View>
             )
         }
-        <View onClick={this._handleSecretTap}>Tap me {4 - this.state.secretTap}{' '} times</View>
+        {
+          // <View onClick={this._handleSecretTap}>Tap me {4 - this.state.secretTap}{' '} times</View>
+        }
+
       </View>
     )
   }
