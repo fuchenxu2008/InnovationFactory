@@ -18,9 +18,16 @@ class LatestEventPage extends Component {
     navigationBarTitleText: '最新活动',
   }
 
-  componentDidMount() {
+  componentDidMount() { 
     this.props.getAllEvents()
   }
+
+  // (component A & component B) <=======> redux store (state)
+  //   => dispatch action (login) =====> reducer 1, 2, 3,...n  reducer4(action) if (action.type === 'user_login')... return { ...state, currentUser: action.payload }   
+  //   {
+  //     type: 'USER_LOGIN',
+  //     payload: user
+  //   }
 
   render () {
     return (

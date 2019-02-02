@@ -30,11 +30,12 @@
     align-self: center;
     .entrycard-titleZH {
         font-size: 1.3rem;
-        font-weight: bold;
+        font-weight: 900;
+        font-family: 'Noto Sans S Chinese' !important;
     }
     .entrycard-titleEN {
         font-size: 0.8rem;
-        font-family: 'DIN';
+        font-family: 'DIN' !important;
     }
 }
 

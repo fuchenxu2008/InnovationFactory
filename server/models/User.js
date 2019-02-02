@@ -7,11 +7,12 @@ const UserSchema = mongoose.Schema({
   session_key: String,
   openid: String,
   /**
-   * Optional, for form auto filling
+   * Privacy Info
    */
-  // name: String,
-  // gender: String,
-  // age: Number,
+  nickName: String,
+  gender: String,
+  city: String,
+  avatarUrl: String,
 });
 
 const User = mongoose.model('User', UserSchema);

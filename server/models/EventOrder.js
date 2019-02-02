@@ -13,7 +13,7 @@ const EventOrderSchema = mongoose.Schema({
   /**
    * Used to send message to user
    */
-  formId: String,
+  formId: [{ type: String }],
   /**
    * Order Detail
    */

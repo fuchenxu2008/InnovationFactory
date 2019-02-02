@@ -22,19 +22,19 @@ class Index extends Component {
         <SearchBar fixed />
         <View className='entrycards-section'>
           <EntryCard
-            img={require('../../assets/images/最新活动.png')}
+            img={require('../../assets/images/latestEvent.png')}
             titleZH='最新活动'
             titleEN='The latest events'
             onClick={this._handleEnterPage.bind(this, 'LatestEventPage')}
           />
           <EntryCard
-            img={require('../../assets/images/课程报名.png')}
+            img={require('../../assets/images/workshopBooking.png')}
             titleZH='课程报名'
             titleEN='Apply for workshops'
             onClick={this._handleEnterPage.bind(this, 'LatestEventPage')}
           />
           <EntryCard
-            img={require('../../assets/images/仪器预约.png')}
+            img={require('../../assets/images/printerReservation.png')}
             titleZH='仪器预约'
             titleEN='Printer reservation'
             onClick={this._handleEnterPage.bind(this, 'LatestEventPage')}

@@ -14,11 +14,11 @@ const store = configStore()
 class App extends Component {
   config = {
     pages: [
-      'pages/ProfilePage/index',
       'pages/index/index',
       'pages/LatestEventPage/index',
       'pages/EventDetailPage/index',
       'pages/SignUpPage/index',
+      'pages/ProfilePage/index',
       // Admin pages
       'pages/EventManagePage/index',
       'pages/CreateUpdateEventPage/index',

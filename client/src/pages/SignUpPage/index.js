@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Picker } from '@tarojs/components'
-import { AtForm, AtInput, AtButton } from 'taro-ui'
+import { View, Picker, Button, Form } from '@tarojs/components'
+import { AtInput } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { getEvent, submitEventOrder } from '../../actions/event'
 
@@ -26,21 +26,31 @@ class SignUpPage extends Component {
     Age: '',
   }
 
+  formId = []
+
   componentDidMount() {
     const { id } = this.$router.params;
     if (id) this.props.getEvent(id);
   }
 
+  /**
+   * This function will run twice to get two form_id
+   */
   _handleFormSubmit = (e) => {
+    const newFormId = e.detail.formId;
+    if (newFormId === 'the formId is a mock one') return console.log('Stop on test'); // Stop if run on simulator
+    this.formId.push(newFormId);
     const { Name, Gender, Age } = this.state;
+    if (this.formId.length < 2) return; // Stop if not enough form_id
     const { formFields, _id } = this.props.currentEvent;
     const { openid } = this.props.currentUser || {};
+    // Initialize form and loop to add fields
     const form = { Name, Gender, Age };
     const customizedFields = formFields.map(formfield => formfield.field);
     customizedFields.forEach(field => form[field] = this.state[field] || '');
-    console.log(form);
+    // Create order object
     const eventOrder = {
-      formId: e.detail.formId,
+      formId: this.formId,
       user: openid,
       event: _id,
       form,
@@ -68,7 +78,7 @@ class SignUpPage extends Component {
     return (
       <View className='signUpPage'>
         <View className='page-title'>Sign Up {type}</View>
-        <AtForm
+        <Form
           onSubmit={this._handleFormSubmit}
           reportSubmit
         >
@@ -104,8 +114,14 @@ class SignUpPage extends Component {
               </View>
             ))
           }
-          <AtButton type='primary' formType='submit' className='submit-btn'>提交并支付</AtButton>
-        </AtForm>
+          <Button formType='submit' className='btn'>
+            <Form onSubmit={this._handleFormSubmit} report-submit>
+              <Button formType='submit' class='btn'>
+                <View className='submit-btn'>提交并支付</View>
+              </Button>
+            </Form>
+          </Button>
+        </Form>
       </View>
     )
   }

@@ -82,7 +82,7 @@ class ProfilePage extends Component {
             )
         }
         {
-          // <View onClick={this._handleSecretTap}>Tap me {4 - this.state.secretTap}{' '} times</View>
+          <View onClick={this._handleSecretTap}>Tap me {4 - this.state.secretTap}{' '} times</View>
         }
 
       </View>

@@ -29,5 +29,26 @@ $picker-font-size: 32px;
 }
 
 .submit-btn {
-  margin-top: 10%;
+  position: fixed;
+  bottom: 50px;
+  width: 84%;
+  line-height: 90px;
+  border-radius: 15px;
+  background: #1a1a1a;
+  font-size: 38px;
+  font-weight: bolder;
+  color: #fff;
+}
+
+.btn {
+  position: relative;
+}
+
+form button {
+  padding: 0;
+}
+
+form button::after {
+  content: '';
+  display: none;
 }
