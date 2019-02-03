@@ -5,11 +5,12 @@ import Carousel from '../../components/Carousel'
 import EventCard from '../../components/EventCard'
 import GradientHeader from '../../components/GradientHeader'
 import { getAllEvents } from "../../actions/event";
+import getOrdedEvents from '../../selectors/latest_events';
 
 import './index.scss'
 
 @connect(({ event }) => ({
-  allEvents: event.allEvents,
+  allEvents: getOrdedEvents(event),
 }), (dispatch) => ({
   getAllEvents: () => dispatch(getAllEvents())
 }))

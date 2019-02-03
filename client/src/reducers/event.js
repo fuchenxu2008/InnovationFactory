@@ -5,7 +5,7 @@ import {
   GET_ALL_EVENTS,
   GET_EVENT,
   GET_CACHED_EVENT
-} from '../constants/event'
+} from '../constants/event';
 
 const INITIAL_STATE = {
   allEvents: [],
@@ -17,7 +17,7 @@ export default function event (state = INITIAL_STATE, action) {
     case GET_ALL_EVENTS:
       return {
         ...state,
-        allEvents: action.payload
+        allEvents: action.payload,
       }
     case GET_EVENT:
       return {

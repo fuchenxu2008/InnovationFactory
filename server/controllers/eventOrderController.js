@@ -21,7 +21,7 @@ const getMyEventOrder = (req, res) => {
   if (!user) return res.status(400).json({ message: 'No user openid provided while getting my eventOrders' });
   return EventOrder.find({ user }, (err, docs) => {
     if (err) return res.status(400).json({ message: 'Error while getting my eventOrders.', err });
-    return res.json({ myEventOrders: docs });
+    return res.json({ myOrders: docs });
   });
 };
 

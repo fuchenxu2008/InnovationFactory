@@ -1,0 +1,2 @@
+export const SUBMIT_EVENT_ORDER = 'SUBMIT_EVENT_ORDER';
+export const GET_MY_ORDERS = 'GET_MY_ORDERS';

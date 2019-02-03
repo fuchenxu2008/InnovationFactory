@@ -3,19 +3,27 @@ const schedule = require('node-schedule');
 const dayjs = require('dayjs');
 const fs = require('fs');
 const path = require('path');
-const { APPID, APPSECRET, validBefore } = require('../../config');
+const { APPID, APPSECRET } = require('../../config');
+const readJSON = require('../readJSON');
 
 const getAccessToken = async () => {
   const { data } = await axios.get(`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${APPID}&secret=${APPSECRET}`);
-  if (data.access_token) {
-    fs.writeFile(path.join(global.__root, 'config/accessToken.json'), JSON.stringify({
-      access_token: data.access_token,
-      validBefore: dayjs().add(2, 'hour').format('YYYY-MM-DD HH:mm:ss'),
-    }), (err) => {
-      if (err) console.log('Update access_token error:', err);
-      else console.log('access_token updated!');
-    });
-  }
+  return new Promise((resolve, reject) => {
+    if (data.access_token) {
+      fs.writeFile(path.join(global.__root, 'config/accessToken.json'), JSON.stringify({
+        access_token: data.access_token,
+        validBefore: dayjs().add(2, 'hour').format('YYYY-MM-DD HH:mm:ss'),
+      }), (err) => {
+        if (err) {
+          console.log('Update access_token error:', err);
+          reject(err);
+        } else {
+          console.log('access_token updated!');
+          resolve(data.access_token);
+        }
+      });
+    } else reject();
+  });
 };
 
 const recurUpdateToken = () => {
@@ -24,12 +32,16 @@ const recurUpdateToken = () => {
   setTimeout(recurUpdateToken, 1000 * 60 * 60 * 1.9);
 };
 
-const accessTokenManager = () => {
+const accessTokenManager = async () => {
   // Manage the initial start time of updating
+  const { validBefore } = await readJSON('../config/accessToken.json');
   const startTime = dayjs(validBefore).isBefore(dayjs())
     ? dayjs().add(1, 'second').format('YYYY-MM-DD HH:mm:ss')
     : validBefore;
   schedule.scheduleJob(startTime, recurUpdateToken);
 };
 
-module.exports = accessTokenManager;
+module.exports = {
+  getAccessToken,
+  accessTokenManager,
+};

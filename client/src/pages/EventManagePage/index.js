@@ -4,11 +4,12 @@ import { AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import EventCard from '../../components/EventCard'
 import { getAllEvents, deleteEvent } from "../../actions/event";
+import getOrdedAllEvents from '../../selectors/latest_events';
 
 import './index.scss'
 
 @connect(({ event }) => ({
-  allEvents: event.allEvents,
+  allEvents: getOrdedAllEvents(event),
 }), (dispatch) => ({
   getAllEvents: () => dispatch(getAllEvents()),
   deleteEvent: (eventid) => dispatch(deleteEvent(eventid))
@@ -25,12 +26,6 @@ class ManageEventPage extends Component {
   componentDidMount() {
     this.props.getAllEvents();
   }
-
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
 
   _manageEvent = () => {
     this.setState((prevState) => ({ editing: !prevState.editing }))

@@ -2,7 +2,8 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Picker, Button, Form } from '@tarojs/components'
 import { AtInput } from 'taro-ui'
 import { connect } from '@tarojs/redux'
-import { getEvent, submitEventOrder } from '../../actions/event'
+import { getEvent } from '../../actions/event'
+import { submitEventOrder } from '../../actions/order'
 
 import './index.scss'
 

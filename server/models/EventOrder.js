@@ -28,7 +28,7 @@ const EventOrderSchema = mongoose.Schema({
   transactionAmount: Number,
   created_at: {
     type: String,
-    default: dayjs().format('YYYY-MM-DD HH:mm'),
+    default: dayjs().format('YYYY-MM-DD HH:mm:ss'),
   },
 });
 

@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { AtButton, AtAvatar } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 
@@ -21,10 +21,6 @@ class ProfilePage extends Component {
     secretTap: -1,
   }
 
-  componentDidShow () { console.log('show profile'); }
-
-  componentDidHide () { console.log('hide profile'); }
-
   _login = () => {
     Taro.getSetting()
       .then(res => res.authSetting)
@@ -36,6 +32,12 @@ class ProfilePage extends Component {
             })
         }
       })
+  }
+
+  _goOrderPage = (type) => {
+    Taro.navigateTo({
+      url: `/pages/MyOrderPage/index?type=${type}`
+    })
   }
 
   _handleSecretTap = () => {
@@ -58,19 +60,31 @@ class ProfilePage extends Component {
 
     return (
       <View className='profilePage'>
+        <View className='background' />
         {
           userInfo
             ? (
               <View>
-                <View className='gradient-header' />
-                <View className='userinfo-section'>
-                  <AtAvatar circle image={userInfo.avatarUrl} size='large'></AtAvatar>
-                  <View className='userinfo-nickname'>{userInfo.nickName}</View>
+                <View className='gradient-header'>
+                  <View className='userinfo-section'>
+                    <AtAvatar circle image={userInfo.avatarUrl} size='large'></AtAvatar>
+                    <View className='userinfo-nickname'>{userInfo.nickName}</View>
+                  </View>
+                  <View className='at-icon at-icon-settings settings-icon' />
                 </View>
                 <View className='user-data-section'>
-                  <View className='user-data-entry'>我的活动</View>
-                  <View className='user-data-entry'>我的课程</View>
-                  <View className='user-data-entry'>我的仪器</View>
+                  <View className='user-data-entry' onClick={this._goOrderPage.bind(this, 'event')}>
+                    <View className='iconfont icon-balloon entry-icon'>{' '}我的活动</View>
+                    <View className='at-icon at-icon-chevron-right' />
+                  </View>
+                  <View className='user-data-entry' onClick={this._goOrderPage.bind(this, 'workshop')}>
+                    <View className='iconfont icon-platform entry-icon'>{' '}我的课程</View>
+                    <View className='at-icon at-icon-chevron-right' />
+                  </View>
+                  <View className='user-data-entry' onClick={this._goOrderPage.bind(this, 'printer')}>
+                    <View className='iconfont icon-yiqiguanlidanweishu entry-icon'>{' '}我的仪器</View>
+                    <View className='at-icon at-icon-chevron-right' />
+                  </View>
                 </View>
               </View>
             )
@@ -82,9 +96,10 @@ class ProfilePage extends Component {
             )
         }
         {
-          <View onClick={this._handleSecretTap}>Tap me {4 - this.state.secretTap}{' '} times</View>
+          <View onClick={this._handleSecretTap} className='secretAdminEntrance'>
+            v0.0.1
+          </View>
         }
-
       </View>
     )
   }

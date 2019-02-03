@@ -2,6 +2,12 @@
 @import './assets/fonts/Din';
 @import './assets/fonts/NotoSans';
 
+page {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .at-input {
     margin-left: 0;
     text-align: right;

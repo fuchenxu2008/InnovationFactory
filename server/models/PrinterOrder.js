@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const dayjs = require('dayjs');
 
 const PrinterOrderSchema = mongoose.Schema({
   /**
@@ -25,7 +26,10 @@ const PrinterOrderSchema = mongoose.Schema({
     to: String,
   },
   transactionAmount: Number,
-  created_at: String,
+  created_at: {
+    type: String,
+    default: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+  },
 });
 
 const PrinterOrder = mongoose.model('PrinterOrder', PrinterOrderSchema);

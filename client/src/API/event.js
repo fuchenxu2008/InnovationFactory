@@ -15,14 +15,6 @@ export const getEvent = async(eventid) => {
   })
 }
 
-export const submitEventOrder = async(eventOrder) => {
-  return await Taro.request({
-    url: `${ROOT_URL}/api/order/event`,
-    method: 'POST',
-    data: { eventOrder }
-  })
-}
-
 /**
  * Admin APIs
  */
