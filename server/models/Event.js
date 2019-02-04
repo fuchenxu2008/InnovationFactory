@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const dayjs = require('dayjs');
 
 const EventSchema = mongoose.Schema({
   albumPicPath: String,
@@ -27,10 +26,7 @@ const EventSchema = mongoose.Schema({
     required: Boolean,
     _id: false,
   }],
-  created_at: {
-    type: String,
-    default: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-  },
+  created_at: String,
 });
 
 const Event = mongoose.model('Event', EventSchema);

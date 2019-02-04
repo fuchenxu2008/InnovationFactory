@@ -30,6 +30,7 @@ class AdminEventForm extends Component {
     cancellable: true,
     tickets: [],
     formFields: [],
+    created_at: null,
     // Other state
     modalOpened: false,
   }
@@ -87,7 +88,8 @@ class AdminEventForm extends Component {
       acceptSignup,
       cancellable,
       tickets,
-      formFields
+      formFields,
+      created_at,
     } = this.state;
 
     if (!albumPicPath) return Taro.atMessage({
@@ -109,6 +111,7 @@ class AdminEventForm extends Component {
       cancellable,
       tickets,
       formFields,
+      created_at: created_at ? created_at : dayjs().format('YYYY-MM-DD HH:mm:ss'),
     }
     console.log('event:', event);
     this.props.onSubmitEvent(event);

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const dayjs = require('dayjs');
 
 const EventOrderSchema = mongoose.Schema({
   /**
@@ -26,10 +25,7 @@ const EventOrderSchema = mongoose.Schema({
     quantity: Number,
   }],
   transactionAmount: Number,
-  created_at: {
-    type: String,
-    default: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-  },
+  created_at: String,
 });
 
 const EventOrder = mongoose.model('EventOrder', EventOrderSchema);
