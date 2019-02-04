@@ -4,10 +4,14 @@ import {
 } from '../constants/order';
 import * as api from '../API/order';
 
-export const submitEventOrder = (order) => (dispatch) => {
-  return api.submitEventOrder(order)
-    .then(res => res.data)
-    .then(data => {
+/**
+ * Need token to authenticate
+ */
+export const submitEventOrder = (order) => (dispatch, getState) => {
+  const { currentUser } = getState().global;
+  if (!currentUser) return console.log('Requires user login');
+  return api.submitEventOrder(order, currentUser.token)
+    .then(({data}) => {
       console.log(data);
       if (data.eventOrder) {
         dispatch({
@@ -18,10 +22,14 @@ export const submitEventOrder = (order) => (dispatch) => {
     })
 }
 
-export const getMyOrders = (type, openid) => (dispatch) => {
-  return api.getMyOrders(type, openid)
-    .then(res => res.data)
-    .then(data => {
+/**
+ * Need token to authenticate
+ */
+export const getMyOrders = (type) => (dispatch, getState) => {
+  const { currentUser } = getState().global;
+  if (!currentUser) return console.log('Requires user login');
+  return api.getMyOrders(type, currentUser.token)
+    .then(({data}) => {
       console.log(data);
       if (data.myOrders) {
         dispatch({

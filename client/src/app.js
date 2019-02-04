@@ -48,12 +48,9 @@ class App extends Component {
   }
 
   componentDidMount () {
-    Taro.checkSession()
-      .then(() => {
-        if (!store.getState().global.currentUser) {
-          store.dispatch(login())
-        }
-      })
+    if (!store.getState().global.currentUser)
+      store.dispatch(login())
+    else Taro.checkSession()
       .catch(() => store.dispatch(login()))
   }
 

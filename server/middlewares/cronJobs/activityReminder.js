@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 const schedule = require('node-schedule');
-const { sendReminder } = require('../../controllers/notificationController');
+const { sendBeginningReminder } = require('../../controllers/notificationController');
 const EventOrder = require('../../models/EventOrder');
 const Event = require('../../models/Event');
 
@@ -10,7 +10,10 @@ const Event = require('../../models/Event');
 const sendScheduledReminder = ({ order, activity }) => {
   schedule.scheduleJob(
     dayjs(activity.startTime).subtract(1, 'day').format('YYYY-MM-DD HH:mm'),
-    () => sendReminder({ order, activity }),
+    () => {
+      console.log(sendBeginningReminder);
+      sendBeginningReminder({ order, activity });
+    },
   );
 };
 
@@ -28,13 +31,10 @@ const registerAllReminderTasks = () => {
   }, (err, futureEvents) => {
     if (err) console.log('Error while finding all future events', err);
     futureEvents.forEach((futureEvent) => {
-      EventOrder.find({ event: futureEvent._id }, (err2, orders) => {
-        if (err2) console.log('Error while finding all orders for future event', err);
+      EventOrder.find({ event: futureEvent._id }).populate('user', 'openid').exec((err2, orders) => {
+        if (err2) console.log('Error while finding all orders for future event', err2);
         orders.forEach((order) => {
-          schedule.scheduleJob(
-            dayjs(futureEvent.startTime).subtract(1, 'day').format('YYYY-MM-DD HH:mm'),
-            () => sendScheduledReminder({ activity: futureEvent, order }),
-          );
+          sendScheduledReminder({ activity: futureEvent, order });
         });
       });
     });

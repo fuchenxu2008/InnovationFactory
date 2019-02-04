@@ -11,8 +11,7 @@ import * as api from '../API/event'
 
 export const getAllEvents = () => (dispatch) => {
   api.getAllEvents()
-    .then(res => res.data)
-    .then(data => {
+    .then(({data}) => {
       console.log(data);
       if (data.events) {
         dispatch({
@@ -22,7 +21,6 @@ export const getAllEvents = () => (dispatch) => {
       }
     })
     .catch(err => console.log(err))
-  // throw error if occured
 }
 
 export const getEvent = (eventid) => (dispatch, getState) => {
@@ -37,8 +35,7 @@ export const getEvent = (eventid) => (dispatch, getState) => {
     })
   } else {
     api.getEvent(eventid)
-      .then(res => res.data)
-      .then(data => {
+      .then(({data}) => {
         console.log(data);
         if (data.event) {
           dispatch({
@@ -53,13 +50,14 @@ export const getEvent = (eventid) => (dispatch, getState) => {
 /**
  * 
  * Admin actions
+ *
+ * Need token to authenticate
  */
 
-export const addEvent = (event) => (dispatch) => {
-  // begin loading
-  // dispatch()
-  // send request
-  return api.addEvent(event)
+export const addEvent = (event) => (dispatch, getState) => {
+  const { currentUser } = getState().global;
+  if (!currentUser) return console.log('Requires user login');
+  return api.addEvent(event, currentUser.token)
     .then(res => JSON.parse(res.data))
     .then(data => {
       console.log(data);
@@ -71,11 +69,12 @@ export const addEvent = (event) => (dispatch) => {
       }
     })
     .catch(err => console.log(err))
-  // throw error if occured
 }
 
-export const updateEvent = (edition) => (dispatch) => {
-  return api.updateEvent(edition)
+export const updateEvent = (edition) => (dispatch, getState) => {
+  const { currentUser } = getState().global;
+  if (!currentUser) return console.log('Requires user login');
+  return api.updateEvent(edition, currentUser.token)
     .then(res => typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data)
     .then(data => {
       console.log(data);
@@ -89,10 +88,11 @@ export const updateEvent = (edition) => (dispatch) => {
     .catch(err => console.log(err))
 }
 
-export const deleteEvent = (eventid) => (dispatch) => {
-  return api.deleteEvent(eventid)
-    .then(res => res.data)
-    .then(data => {
+export const deleteEvent = (eventid) => (dispatch, getState) => {
+  const { currentUser } = getState().global;
+  if (!currentUser) return console.log('Requires user login');
+  return api.deleteEvent(eventid, currentUser.token)
+    .then(({data}) => {
       console.log(data);
       if (data.event) {
         dispatch({

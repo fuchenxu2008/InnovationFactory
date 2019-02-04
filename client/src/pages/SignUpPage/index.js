@@ -45,7 +45,7 @@ class SignUpPage extends Component {
     const { Name, Gender, Age } = this.state;
     if (this.formId.length < 2) return; // Stop if not enough form_id
     const { formFields, _id } = this.props.currentEvent;
-    const { openid } = this.props.currentUser || {};
+    const currentUser = this.props.currentUser || {};
     // Initialize form and loop to add fields
     const form = { Name, Gender, Age };
     const customizedFields = formFields.map(formfield => formfield.field);
@@ -53,7 +53,7 @@ class SignUpPage extends Component {
     // Create order object
     const eventOrder = {
       formId: this.formId,
-      user: openid,
+      user: currentUser._id,
       event: _id,
       form,
       created_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),

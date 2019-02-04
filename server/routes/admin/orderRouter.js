@@ -3,7 +3,7 @@ const { getEventOrders, getEventOrder } = require('../../controllers/admin/event
 
 const orderRouter = express.Router();
 
-// Query: /event?event={eventid}
+// Query: /event?event={eventid}&user={id}
 orderRouter.get('/event', getEventOrders);
 orderRouter.get('/event/:orderid', getEventOrder);
 

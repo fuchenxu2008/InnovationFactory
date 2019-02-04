@@ -1,19 +1,19 @@
-import Taro from '@tarojs/taro';
+import request from '../utils/request';
 import { ROOT_URL } from '../config';
 
-export const getMyOrders = async (type, openid) => {
-    return await Taro.request({
-      url: `${ROOT_URL}/api/order/${type}?user=${openid}`,
+export const getMyOrders = async (type, token) => {
+    return await request({
+      url: `${ROOT_URL}/api/myorder/${type}`,
       method: 'GET',
+      token,
     })
 };
 
-export const submitEventOrder = async (eventOrder) => {
-  return await Taro.request({
-    url: `${ROOT_URL}/api/order/event`,
+export const submitEventOrder = async (eventOrder, token) => {
+  return await request({
+    url: `${ROOT_URL}/api/myorder/event`,
     method: 'POST',
-    data: {
-      eventOrder
-    }
+    data: { eventOrder },
+    token,
   })
 }

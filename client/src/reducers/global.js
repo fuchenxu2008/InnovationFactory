@@ -11,7 +11,8 @@ export default function event(state = INITIAL_STATE, action) {
         ...state,
         currentUser: {
             ...state.currentUser,
-            openid: action.payload,
+            _id: action.payload._id,
+            token: action.payload.token,
         },
       }
     case SET_USER_INFO:

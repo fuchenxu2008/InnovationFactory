@@ -7,7 +7,14 @@ const UserSchema = mongoose.Schema({
   session_key: String,
   openid: String,
   /**
-   * Privacy Info
+   * Administrator Indentifier
+   */
+  role: {
+    type: String,
+    default: 'user',
+  },
+  /**
+   * Optional Privacy Info
    */
   nickName: String,
   gender: String,

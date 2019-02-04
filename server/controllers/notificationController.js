@@ -34,7 +34,7 @@ const sendTemplateMessage = async ({ touser, template_id, form_id, page, data })
 const sendOrderSuccessNotification = ({ order, activity }) => {
   sendTemplateMessage({
     template_id: 'PhaC1oBnNp7U-Tf8cE-C3SSPX0QVgWlnwhYno7cZTBA',
-    touser: order.user,
+    touser: order.user.openid,
     form_id: order.formId[0],
     page: `/pages/EventDetailPage/index?id=${activity._id}`,
     data: {
@@ -60,9 +60,9 @@ const sendOrderSuccessNotification = ({ order, activity }) => {
   });
 };
 
-const sendReminder = ({ order, activity }) => {
+const sendBeginningReminder = ({ order, activity }) => {
   sendTemplateMessage({
-    touser: order.user,
+    touser: order.user.openid,
     template_id: 'YUwJMeOH6uzDpJEIWDKlW47LJrvADsvVQI_tLOtXHl4',
     form_id: order.formId[1],
     page: `/pages/EventDetailPage/index?id=${activity._id}`,
@@ -89,5 +89,5 @@ const sendReminder = ({ order, activity }) => {
 module.exports = {
   sendTemplateMessage,
   sendOrderSuccessNotification,
-  sendReminder,
+  sendBeginningReminder,
 };

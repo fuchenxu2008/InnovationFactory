@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const PrinterOrderSchema = mongoose.Schema({
-  /**
-   * WeChat User Identifier
-   */
-  user: String,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
   /**
    * PrinterOrder Form
    */

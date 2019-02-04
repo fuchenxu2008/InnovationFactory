@@ -9,7 +9,7 @@ import './index.scss'
   currentUser: global.currentUser,
   myOrders: order.myOrders,
 }), (dispatch) => ({
-  getMyOrders: (type, openid) => dispatch(getMyOrders(type, openid))
+  getMyOrders: (type) => dispatch(getMyOrders(type))
 }))
 class MyOrderPage extends Component {
   config = {
@@ -22,9 +22,8 @@ class MyOrderPage extends Component {
 
   componentDidMount() {
     const { type } = this.$router.params;
-    const { currentUser } = this.props;
-    if (currentUser) {
-      this.props.getMyOrders(type, currentUser.openid);
+    if (this.props.currentUser) {
+      this.props.getMyOrders(type);
     }
   }
 
