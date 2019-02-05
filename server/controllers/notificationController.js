@@ -4,31 +4,30 @@ const { getAccessToken } = require('../middlewares/cronJobs/getAccessToken');
 
 // eslint-disable-next-line
 const sendTemplateMessage = async ({ touser, template_id, form_id, page, data }) => {
-  const { access_token } = await readJSON('../config/accessToken.json');
-  axios.post(`https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=${access_token}`, {
-    touser,
-    template_id,
-    form_id,
-    page,
-    data,
-  })
-    .then((res) => {
-      // If access_token is not valid, refetch and run again
-      if (res.data.errcode !== 0) {
-        getAccessToken()
-          .then(() => {
-            console.log('Retrying send notification...');
-            sendTemplateMessage({
-              touser,
-              template_id,
-              form_id,
-              page,
-              data,
-            });
-          })
-          .catch(err => console.log(err));
-      } else console.log('Notification sent!');
-    });
+  const retry = () => {
+    getAccessToken()
+      .then(() => {
+        console.log('Retrying send notification...');
+        sendTemplateMessage({ touser, template_id, form_id, page, data }); // eslint-disable-line
+      })
+      .catch(err => console.log(err));
+  };
+  readJSON('../config/accessToken.json')
+    .then(({ access_token }) => {
+      axios.post(`https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=${access_token}`, {
+        touser,
+        template_id,
+        form_id,
+        page,
+        data,
+      })
+        .then((res) => {
+          // If access_token is not valid, refetch and run again
+          if (res.data.errcode !== 0) retry();
+          else console.log('Notification sent!');
+        });
+    })
+    .catch(() => retry());
 };
 
 const sendOrderSuccessNotification = ({ order, activity }) => {

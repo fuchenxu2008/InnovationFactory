@@ -34,11 +34,17 @@ const recurUpdateToken = () => {
 
 const accessTokenManager = async () => {
   // Manage the initial start time of updating
-  const { validBefore } = await readJSON('../config/accessToken.json');
-  const startTime = dayjs(validBefore).isBefore(dayjs())
-    ? dayjs().add(1, 'second').format('YYYY-MM-DD HH:mm:ss')
-    : validBefore;
-  schedule.scheduleJob(startTime, recurUpdateToken);
+  readJSON('../config/accessToken.json')
+    .then(({ validBefore }) => {
+      const startTime = dayjs(validBefore).isBefore(dayjs())
+        ? dayjs().add(1, 'second').format('YYYY-MM-DD HH:mm:ss')
+        : validBefore;
+      schedule.scheduleJob(startTime, recurUpdateToken);
+    })
+    .catch((err) => {
+      console.log('Error while running accessTokenManager', err);
+      recurUpdateToken();
+    });
 };
 
 module.exports = {

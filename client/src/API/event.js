@@ -1,5 +1,4 @@
-import Taro from '@tarojs/taro';
-import request from '../utils/request';
+import { request, multipartRequest } from '../utils/request';
 import { ROOT_URL } from '../config';
 
 export const getAllEvents = async() => {
@@ -21,16 +20,14 @@ export const getEvent = async(eventid) => {
  */
 
 export const addEvent = async(event, token) => {
-    return await Taro.uploadFile({
+    return await multipartRequest({
       url: `${ROOT_URL}/api/admin/event`,
       filePath: event.albumPicPath,
       name: 'file',
       formData: {
         event: JSON.stringify(event)
       },
-      header: {
-        'Authorization': `Bearer ${token}`
-      },
+      token: token,
     });
 }
 
@@ -45,16 +42,14 @@ export const updateEvent = async ({id, event}, token) => {
     })
   } else {
     // Re-upload photo
-    return await Taro.uploadFile({
+    return await multipartRequest({
       url: `${ROOT_URL}/api/admin/event/${id}`,
       filePath: event.albumPicPath,
       name: 'file',
       formData: {
         event: JSON.stringify(event),
       },
-      header: {
-        'Authorization': `Bearer ${token}`
-      },
+      token,
     });
   }
 }

@@ -58,8 +58,7 @@ export const addEvent = (event) => (dispatch, getState) => {
   const { currentUser } = getState().global;
   if (!currentUser) return console.log('Requires user login');
   return api.addEvent(event, currentUser.token)
-    .then(res => JSON.parse(res.data))
-    .then(data => {
+    .then(({data}) => {
       console.log(data);
       if (data.event) {
         dispatch({
@@ -75,8 +74,7 @@ export const updateEvent = (edition) => (dispatch, getState) => {
   const { currentUser } = getState().global;
   if (!currentUser) return console.log('Requires user login');
   return api.updateEvent(edition, currentUser.token)
-    .then(res => typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data)
-    .then(data => {
+    .then(({data}) => {
       console.log(data);
       if (data.event) {
         dispatch({

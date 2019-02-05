@@ -1,4 +1,4 @@
-import request from '../utils/request';
+import { request } from '../utils/request';
 import { ROOT_URL } from '../config';
 
 export const getMyOrders = async (type, token) => {
