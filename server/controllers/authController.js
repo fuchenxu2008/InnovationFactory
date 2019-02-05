@@ -36,6 +36,18 @@ const login = async (req, res) => {
   });
 };
 
+const updateUserInfo = (req, res) => {
+  const { userInfo } = req.body;
+  User.findByIdAndUpdate(req.user._id, {
+    ...req.user.toObject(),
+    userInfo,
+  }, (err) => {
+    if (err) return res.status(400).json({ message: 'Error while updating user', err });
+    return res.json({ message: 'User updated!' });
+  });
+};
+
 module.exports = {
   login,
+  updateUserInfo,
 };

@@ -8,10 +8,10 @@ import * as api from '../API/order';
  * Need token to authenticate
  */
 export const submitEventOrder = (order) => (dispatch, getState) => {
-  const { currentUser } = getState().global;
-  if (!currentUser) return console.log('Requires user login');
-  return api.submitEventOrder(order, currentUser.token)
-    .then(({data}) => {
+  const { token } = getState().global.currentUser || {};
+  if (!token) return console.log('Requires user login token');
+  return api.submitEventOrder(order, token)
+    .then(({ data }) => {
       console.log(data);
       if (data.eventOrder) {
         dispatch({
@@ -20,16 +20,17 @@ export const submitEventOrder = (order) => (dispatch, getState) => {
         })
       }
     })
+    .catch(err => console.log(err))
 }
 
 /**
  * Need token to authenticate
  */
 export const getMyOrders = (type) => (dispatch, getState) => {
-  const { currentUser } = getState().global;
-  if (!currentUser) return console.log('Requires user login');
-  return api.getMyOrders(type, currentUser.token)
-    .then(({data}) => {
+  const { token } = getState().global.currentUser || {};
+  if (!token) return console.log('Requires user login token');
+  return api.getMyOrders(type, token)
+    .then(({ data }) => {
       console.log(data);
       if (data.myOrders) {
         dispatch({
@@ -41,4 +42,5 @@ export const getMyOrders = (type) => (dispatch, getState) => {
         })
       }
     })
+    .catch(err => console.log(err))
 }

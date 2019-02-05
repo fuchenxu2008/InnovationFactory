@@ -1,5 +1,5 @@
 const adminRouter = require('./admin');
-const wechatRouter = require('./wechatRoutes');
+const authRouter = require('./authRoutes');
 const eventRouter = require('./eventRoutes');
 const orderRouter = require('./orderRoutes');
 const { authenticateAdmin, authenticateUser } = require('../middlewares/authentication');
@@ -9,7 +9,7 @@ module.exports = (app) => {
   // admin
   app.use('/api/admin', authenticateAdmin, adminRouter);
   // user
-  app.use('/api/wechat', wechatRouter);
+  app.use('/api/auth', authRouter);
   app.use('/api/event', eventRouter);
   app.use('/api/myorder', authenticateUser, orderRouter);
   app.get('/api/image/:img', getImage);

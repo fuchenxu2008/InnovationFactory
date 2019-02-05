@@ -1,16 +1,18 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtButton, AtAvatar } from 'taro-ui'
+import dayjs from 'dayjs'
 import { connect } from '@tarojs/redux'
-
-import { setUserInfo } from '../../actions/global'
+import { setUserInfo, authenticateAdmin } from '../../actions/global'
 
 import './index.scss'
 
 @connect(({ global }) => ({
-  currentUser: global.currentUser
+  currentUser: global.currentUser,
+  adminAccessBefore: global.adminAccessBefore,
 }), (dispatch) => ({
-  setUserInfo: (info) => dispatch(setUserInfo(info))
+  setUserInfo: (info) => dispatch(setUserInfo(info)),
+  authenticateAdmin: () => dispatch(authenticateAdmin()),
 }))
 class ProfilePage extends Component {
   config = {
@@ -41,22 +43,42 @@ class ProfilePage extends Component {
   }
 
   _handleSecretTap = () => {
-      this.setState((prevState) => ({
-          secretTap: prevState.secretTap >= 4 ? 0 : prevState.secretTap + 1,
-      }), () => {
-        if (this.state.secretTap === 4) this._goManageEventPage();
-      })
+    this.setState((prevState) => ({
+        secretTap: prevState.secretTap >= 4 ? 0 : prevState.secretTap + 1,
+    }), () => {
+      if (this.state.secretTap === 4) this._authenticateAdmin();
+    })
   }
 
-  _goManageEventPage = () => {
+  _authenticateAdmin = () => {
+    const fetchPermitAndAccessIfValid = () => {
+      this.props.authenticateAdmin().then(() => {
+        if (this.props.adminAccessBefore) { // If got permit, check if expire
+          if (dayjs().isBefore(dayjs(this.props.adminAccessBefore))) {
+            this._goAdminPage();
+          }
+        }
+      })
+    }
+    if (!this.props.adminAccessBefore) {  // If no access permit, request for permit
+      fetchPermitAndAccessIfValid();
+    } else {  // Already has permit, check if expire
+      if (dayjs().isBefore(dayjs(this.props.adminAccessBefore))) {
+        this._goAdminPage();
+      } else { // If expire, refetch permit
+        fetchPermitAndAccessIfValid();
+      }
+    }
+  }
+
+  _goAdminPage = () => {
     Taro.navigateTo({
       url: '/pages/EventManagePage/index'
     })
   }
 
   render () {
-    const { currentUser } = this.props;
-    const { userInfo } = currentUser || {};
+    const { userInfo } = this.props.currentUser || {};
 
     return (
       <View className='profilePage'>

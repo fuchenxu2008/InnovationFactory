@@ -1,15 +1,15 @@
 import { request, multipartRequest } from '../utils/request';
 import { ROOT_URL } from '../config';
 
-export const getAllEvents = async() => {
-  return await request({
+export const getAllEvents = () => {
+  return request({
     url: `${ROOT_URL}/api/event`,
     method: 'GET',
   })
 }
 
-export const getEvent = async(eventid) => {
-  return await request({
+export const getEvent = (eventid) => {
+  return request({
     url: `${ROOT_URL}/api/event/${eventid}`,
     method: 'GET',
   })
@@ -19,8 +19,8 @@ export const getEvent = async(eventid) => {
  * Admin APIs
  */
 
-export const addEvent = async(event, token) => {
-    return await multipartRequest({
+export const addEvent = (event, token) => {
+    return multipartRequest({
       url: `${ROOT_URL}/api/admin/event`,
       filePath: event.albumPicPath,
       name: 'file',
@@ -31,10 +31,10 @@ export const addEvent = async(event, token) => {
     });
 }
 
-export const updateEvent = async ({id, event}, token) => {
+export const updateEvent = ({id, event}, token) => {
   if (event.albumPicPath.startsWith(ROOT_URL)) {
     // Update without changing cover photo
-    return await request({
+    return request({
       url: `${ROOT_URL}/api/admin/event/${id}`,
       method: 'PUT',
       data: { event },
@@ -42,7 +42,7 @@ export const updateEvent = async ({id, event}, token) => {
     })
   } else {
     // Re-upload photo
-    return await multipartRequest({
+    return multipartRequest({
       url: `${ROOT_URL}/api/admin/event/${id}`,
       filePath: event.albumPicPath,
       name: 'file',
@@ -54,8 +54,8 @@ export const updateEvent = async ({id, event}, token) => {
   }
 }
 
-export const deleteEvent = async(eventid, token) => {
-  return await request({
+export const deleteEvent = (eventid, token) => {
+  return request({
     url: `${ROOT_URL}/api/admin/event/${eventid}`,
     method: 'DELETE',
     token,

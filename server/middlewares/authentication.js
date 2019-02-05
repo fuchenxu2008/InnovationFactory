@@ -3,7 +3,7 @@ const User = require('../models/User');
 const { APPSECRET } = require('../config');
 
 const getToken = ({ authorization }) => {
-  let token = authorization; // Express headers are auto converted to lowercase
+  let token = authorization || ''; // Express headers are auto converted to lowercase
   if (token.startsWith('Bearer ')) {
     token = token.slice(7, token.length);
   }

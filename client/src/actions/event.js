@@ -11,7 +11,7 @@ import * as api from '../API/event'
 
 export const getAllEvents = () => (dispatch) => {
   api.getAllEvents()
-    .then(({data}) => {
+    .then(({ data }) => {
       console.log(data);
       if (data.events) {
         dispatch({
@@ -35,7 +35,7 @@ export const getEvent = (eventid) => (dispatch, getState) => {
     })
   } else {
     api.getEvent(eventid)
-      .then(({data}) => {
+      .then(({ data }) => {
         console.log(data);
         if (data.event) {
           dispatch({
@@ -44,6 +44,7 @@ export const getEvent = (eventid) => (dispatch, getState) => {
           })
         }
       })
+      .catch(err => console.log(err))
   }
 }
 
@@ -55,10 +56,10 @@ export const getEvent = (eventid) => (dispatch, getState) => {
  */
 
 export const addEvent = (event) => (dispatch, getState) => {
-  const { currentUser } = getState().global;
-  if (!currentUser) return console.log('Requires user login');
-  return api.addEvent(event, currentUser.token)
-    .then(({data}) => {
+  const { token } = getState().global.currentUser || {};
+  if (!token) return console.log('Requires user login token');
+  return api.addEvent(event, token)
+    .then(({ data }) => {
       console.log(data);
       if (data.event) {
         dispatch({
@@ -71,10 +72,10 @@ export const addEvent = (event) => (dispatch, getState) => {
 }
 
 export const updateEvent = (edition) => (dispatch, getState) => {
-  const { currentUser } = getState().global;
-  if (!currentUser) return console.log('Requires user login');
-  return api.updateEvent(edition, currentUser.token)
-    .then(({data}) => {
+  const { token } = getState().global.currentUser || {};
+  if (!token) return console.log('Requires user login token');
+  return api.updateEvent(edition, token)
+    .then(({ data }) => {
       console.log(data);
       if (data.event) {
         dispatch({
@@ -87,10 +88,10 @@ export const updateEvent = (edition) => (dispatch, getState) => {
 }
 
 export const deleteEvent = (eventid) => (dispatch, getState) => {
-  const { currentUser } = getState().global;
-  if (!currentUser) return console.log('Requires user login');
-  return api.deleteEvent(eventid, currentUser.token)
-    .then(({data}) => {
+  const { token } = getState().global.currentUser || {};
+  if (!token) return console.log('Requires user login token');
+  return api.deleteEvent(eventid, token)
+    .then(({ data }) => {
       console.log(data);
       if (data.event) {
         dispatch({

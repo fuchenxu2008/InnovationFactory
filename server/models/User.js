@@ -16,10 +16,15 @@ const UserSchema = mongoose.Schema({
   /**
    * Optional Privacy Info
    */
-  nickName: String,
-  gender: String,
-  city: String,
-  avatarUrl: String,
+  userInfo: {
+    nickName: String,
+    gender: Number,
+    city: String,
+    language: String,
+    province: String,
+    country: String,
+    avatarUrl: String,
+  },
 });
 
 const User = mongoose.model('User', UserSchema);
