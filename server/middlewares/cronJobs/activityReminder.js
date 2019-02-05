@@ -1,8 +1,8 @@
 const dayjs = require('dayjs');
 const schedule = require('node-schedule');
-const { sendBeginningReminder } = require('../../controllers/notificationController');
 const EventOrder = require('../../models/EventOrder');
 const Event = require('../../models/Event');
+const { sendReminder } = require('../../controllers/notificationController');
 
 /**
  * Run each time when an order is created
@@ -10,10 +10,7 @@ const Event = require('../../models/Event');
 const sendScheduledReminder = ({ order, activity }) => {
   schedule.scheduleJob(
     dayjs(activity.startTime).subtract(1, 'day').format('YYYY-MM-DD HH:mm'),
-    () => {
-      console.log(sendBeginningReminder);
-      sendBeginningReminder({ order, activity });
-    },
+    () => sendReminder({ order, activity }),
   );
 };
 

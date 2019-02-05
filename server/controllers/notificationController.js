@@ -1,6 +1,6 @@
 const axios = require('axios');
 const readJSON = require('../middlewares/readJSON');
-const { getAccessToken } = require('../middlewares/cronJobs');
+const { getAccessToken } = require('../middlewares/cronJobs/getAccessToken');
 
 // eslint-disable-next-line
 const sendTemplateMessage = async ({ touser, template_id, form_id, page, data }) => {
@@ -60,7 +60,7 @@ const sendOrderSuccessNotification = ({ order, activity }) => {
   });
 };
 
-const sendBeginningReminder = ({ order, activity }) => {
+const sendReminder = ({ order, activity }) => {
   sendTemplateMessage({
     touser: order.user.openid,
     template_id: 'YUwJMeOH6uzDpJEIWDKlW47LJrvADsvVQI_tLOtXHl4',
@@ -89,5 +89,5 @@ const sendBeginningReminder = ({ order, activity }) => {
 module.exports = {
   sendTemplateMessage,
   sendOrderSuccessNotification,
-  sendBeginningReminder,
+  sendReminder,
 };
