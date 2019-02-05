@@ -1,7 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Picker, Button, Form } from '@tarojs/components'
 import { AtInput } from 'taro-ui'
-import dayjs from 'dayjs'
 import { connect } from '@tarojs/redux'
 import { getEvent } from '../../actions/event'
 import { submitEventOrder } from '../../actions/order'
@@ -56,7 +55,6 @@ class SignUpPage extends Component {
       user: currentUser._id,
       event: _id,
       form,
-      created_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),
     }
     this.props.submitEventOrder(eventOrder)
       .then(() => Taro.navigateBack())

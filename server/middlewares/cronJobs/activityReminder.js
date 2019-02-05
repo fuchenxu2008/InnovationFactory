@@ -1,4 +1,4 @@
-const dayjs = require('dayjs');
+const moment = require('moment-timezone');
 const schedule = require('node-schedule');
 const EventOrder = require('../../models/EventOrder');
 const Event = require('../../models/Event');
@@ -9,7 +9,7 @@ const { sendReminder } = require('../../controllers/notificationController');
  */
 const sendScheduledReminder = ({ order, activity }) => {
   schedule.scheduleJob(
-    dayjs(activity.startTime).subtract(1, 'day').format('YYYY-MM-DD HH:mm'),
+    moment(activity.startTime).subtract(1, 'day').format('YYYY-MM-DD HH:mm'),
     () => sendReminder({ order, activity }),
   );
 };
@@ -23,7 +23,7 @@ const registerAllReminderTasks = () => {
    */
   Event.find({
     startTime: {
-      $gt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      $gt: moment().add(1, 'day').format('YYYY-MM-DD HH:mm:ss'),
     },
   }, (err, futureEvents) => {
     if (err) console.log('Error while finding all future events', err);

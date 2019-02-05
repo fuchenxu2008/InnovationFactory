@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment-timezone');
 
 const PrinterOrderSchema = mongoose.Schema({
   user: {
@@ -25,7 +26,10 @@ const PrinterOrderSchema = mongoose.Schema({
     to: String,
   },
   transactionAmount: Number,
-  created_at: String,
+  created_at: {
+    type: String,
+    default: moment().format('YYYY-MM-DD HH:mm:ss'),
+  },
 });
 
 const PrinterOrder = mongoose.model('PrinterOrder', PrinterOrderSchema);

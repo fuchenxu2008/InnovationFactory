@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment-timezone');
 
 const EventSchema = mongoose.Schema({
   albumPicPath: String,
@@ -26,7 +27,10 @@ const EventSchema = mongoose.Schema({
     required: Boolean,
     _id: false,
   }],
-  created_at: String,
+  created_at: {
+    type: String,
+    default: moment().format('YYYY-MM-DD HH:mm:ss'),
+  },
 });
 
 const Event = mongoose.model('Event', EventSchema);

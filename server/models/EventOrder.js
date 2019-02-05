@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment-timezone');
 
 const EventOrderSchema = mongoose.Schema({
   user: {
@@ -25,7 +26,10 @@ const EventOrderSchema = mongoose.Schema({
     quantity: Number,
   }],
   transactionAmount: Number,
-  created_at: String,
+  created_at: {
+    type: String,
+    default: moment().format('YYYY-MM-DD HH:mm:ss'),
+  },
 });
 
 const EventOrder = mongoose.model('EventOrder', EventOrderSchema);
