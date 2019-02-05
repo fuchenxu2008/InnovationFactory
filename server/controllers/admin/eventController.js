@@ -49,19 +49,21 @@ const updateEventWithImage = (req, res) => {
   if (!editedEvent || !filename || !eventid) return res.status(400).json({ message: 'Missing info while updating event.' });
   return Event.findById(eventid, (err, event) => {
     if (err) return res.status(400).json({ message: 'Error while finding event before updating.', err });
+    // Remove old picture attached to the event
+    const pathArr = event.albumPicPath.split('/');
+    const picFile = pathArr[pathArr.length - 1];
+    console.log('unlinking:', picFile);
+    fs.unlink(path.join(global.__root, `storage/${picFile}`), (error) => {
+      if (error) console.log('Error while deleting file:', error);
+    });
+    // Update event
     event.set({
       ...editedEvent,
       albumPicPath: `/api/image/${filename}`,
     });
     return event.save((err2, updatedEvent) => {
       if (err2) return res.status(400).json({ message: 'Error while finding event before updating.', err: err2 });
-      res.json({ message: 'Successfully updated event!', event: updatedEvent });
-      // Remove old picture attached to the event
-      const pathArr = event.albumPicPath.split('/');
-      const picFile = pathArr[pathArr.length - 1];
-      return fs.unlink(path.join(global.__root, `storage/${picFile}`), (error) => {
-        if (error) console.log('Error while deleting file:', error);
-      });
+      return res.json({ message: 'Successfully updated event!', event: updatedEvent });
     });
   });
 };
