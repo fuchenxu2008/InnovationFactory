@@ -37,6 +37,12 @@ class ManageEventPage extends Component {
     })
   }
 
+  _goAddCategoryPage = () => {
+    Taro.navigateTo({
+      url: '/pages/CreateUpdateEventPage/index'
+    })
+  }
+
   _editEvent = (eventid) => {
     Taro.navigateTo({
       url: `/pages/CreateUpdateEventPage/index?id=${eventid}`
@@ -58,6 +64,7 @@ class ManageEventPage extends Component {
         { editing &&
           <View>
             <AtButton onClick={this._goAddEventPage}>Add Event</AtButton>
+            <AtButton onClick={this._goAddCategoryPage}>Add Category</AtButton>
           </View>
         }
         <View className='admin-eventlist'>

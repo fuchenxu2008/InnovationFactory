@@ -21,10 +21,11 @@ const createEventOrder = (req, res) => {
 const getMyEventOrder = (req, res) => {
   const { user } = req;
   if (!user) return res.status(400).json({ message: 'No user provided while getting my eventOrders' });
-  return EventOrder.find({ user: user._id }, (err, docs) => {
-    if (err) return res.status(400).json({ message: 'Error while getting my eventOrders.', err });
-    return res.json({ myOrders: docs });
-  });
+  return EventOrder.find({ user: user._id })
+    .populate('event', ['title', 'albumPicPath']).exec((err, docs) => {
+      if (err) return res.status(400).json({ message: 'Error while getting my eventOrders.', err });
+      return res.json({ myOrders: docs });
+    });
 };
 
 const getEventOrder = (req, res) => {

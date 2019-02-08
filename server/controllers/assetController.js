@@ -1,12 +1,14 @@
 const path = require('path');
+const fs = require('fs');
 
 const getImage = (req, res) => {
-  try {
-    res.sendFile(path.join(global.__root, `storage/${req.params.img}`));
-  } catch (err) {
-    console.log('err: ', err);
-    res.status(400).send(err);
-  }
+  const { img } = req.params;
+  const dir = img.split('_')[0];
+  const filePath = path.join(global.__root, `storage/${dir}/${img}`);
+  fs.stat(filePath, (err) => {
+    if (err) return res.status(404).json({ message: 'Resource not found!', err });
+    return res.sendFile(filePath);
+  });
 };
 
 module.exports = {

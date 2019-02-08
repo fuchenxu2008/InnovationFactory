@@ -22,6 +22,7 @@ class App extends Component {
       'pages/ProfilePage/index',
       'pages/MyOrderPage/index',
       // Admin pages
+      'pages/AdminHomePage/index',
       'pages/EventManagePage/index',
       'pages/CreateUpdateEventPage/index',
     ],

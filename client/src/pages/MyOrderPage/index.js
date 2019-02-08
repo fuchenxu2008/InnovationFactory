@@ -3,6 +3,7 @@ import { View } from '@tarojs/components'
 // import { AtButton, AtAvatar } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { getMyOrders } from '../../actions/order'
+import OrderCard from '../../components/OrderCard'
 import './index.scss'
 
 @connect(({ global, order }) => ({
@@ -35,13 +36,10 @@ class MyOrderPage extends Component {
     return (
       <View className='myOrderPage'>
         <View>My {type} orders</View>
-        <View>
+        <View className='myOrderList'>
           {
             myOrders.map(order => (
-              <View key={order._id}>
-                <View>{order.user}</View>
-                <View>{order.created_at}</View>
-              </View>
+              <OrderCard key={order._id} order={order} />
             ))
           }
         </View>

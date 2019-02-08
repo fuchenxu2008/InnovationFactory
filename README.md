@@ -2,7 +2,7 @@
 
 1. [ ] Finish up Profile Page and my orders page
 2. [x] API access control and authentication
-3. [ ] Sorting activities by start time (memorised for performance)
+3. [x] Sorting activities by start time (memorised for performance)
 4. [ ] Async requests loading indicator
 5. [ ] Prevent user from re-clicking submit button
 6. [ ] Prompt user to fill required form fields

@@ -28,7 +28,7 @@ const PrinterOrderSchema = mongoose.Schema({
   transactionAmount: Number,
   created_at: {
     type: String,
-    default: moment().format('YYYY-MM-DD HH:mm:ss'),
+    default: () => moment().format('YYYY-MM-DD HH:mm:ss'),
   },
 });
 

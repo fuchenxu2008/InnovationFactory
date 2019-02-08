@@ -37,7 +37,9 @@ export const getMyOrders = (type) => (dispatch, getState) => {
           type: GET_MY_ORDERS,
           payload: {
             orderType: type,
-            orders: data.myOrders
+            orders: data.myOrders.sort((a, b) => {
+              return new Date(b.created_at.replace(/-/g, '/')) - new Date(a.created_at.replace(/-/g, '/'));
+            })
           },
         })
       }

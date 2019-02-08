@@ -73,7 +73,7 @@ class ProfilePage extends Component {
 
   _goAdminPage = () => {
     Taro.navigateTo({
-      url: '/pages/EventManagePage/index'
+      url: '/pages/AdminHomePage/index'
     })
   }
 

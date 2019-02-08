@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment-timezone');
 
 const UserSchema = mongoose.Schema({
   /**
@@ -24,6 +25,10 @@ const UserSchema = mongoose.Schema({
     province: String,
     country: String,
     avatarUrl: String,
+  },
+  created_at: {
+    type: String,
+    default: () => moment().format('YYYY-MM-DD HH:mm:ss'),
   },
 });
 
