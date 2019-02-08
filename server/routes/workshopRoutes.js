@@ -1,8 +1,9 @@
 const express = require('express');
-// const { getAllEvents } = require('../controllers/eventController');
+const { getAllWorkshops, getWorkshop } = require('../controllers/workshopController');
 
 const workshopRouter = express.Router();
 
-// workshopRouter.get('/', getAllworkshops);
+workshopRouter.get('/', getAllWorkshops);
+workshopRouter.get('/:workshopid', getWorkshop);
 
 module.exports = workshopRouter;

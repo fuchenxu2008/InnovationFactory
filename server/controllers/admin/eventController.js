@@ -30,7 +30,7 @@ const deleteEvent = (req, res) => {
     // Remove picture attached to the event
     const pathArr = doc.albumPicPath.split('/');
     const picFile = pathArr[pathArr.length - 1];
-    return fs.unlink(path.join(global.__root, `storage/${picFile}`), (error) => {
+    return fs.unlink(path.join(global.__root, `storage/event/${picFile}`), (error) => {
       if (error) console.log('Error while deleting file:', error);
     });
   });
@@ -52,8 +52,7 @@ const updateEventWithImage = (req, res) => {
     // Remove old picture attached to the event
     const pathArr = event.albumPicPath.split('/');
     const picFile = pathArr[pathArr.length - 1];
-    console.log('unlinking:', picFile);
-    fs.unlink(path.join(global.__root, `storage/${picFile}`), (error) => {
+    fs.unlink(path.join(global.__root, `storage/event/${picFile}`), (error) => {
       if (error) console.log('Error while deleting file:', error);
     });
     // Update event

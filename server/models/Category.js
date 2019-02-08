@@ -3,8 +3,8 @@ const moment = require('moment-timezone');
 
 const CategorySchema = mongoose.Schema({
   name: String,
-  bannerImage: String, // Banner image path
-  type: String, // Event or Workshop
+  albumPicPath: String, // Banner image path
+  type: String, // 'event' or 'workshop'
   created_at: {
     type: String,
     default: () => moment().format('YYYY-MM-DD HH:mm:ss'),

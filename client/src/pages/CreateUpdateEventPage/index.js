@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtMessage } from 'taro-ui'
 import { connect } from '@tarojs/redux'
-import { addEvent, updateEvent,getEvent } from '../../actions/event'
+import { addEvent, updateEvent, getEvent } from '../../actions/event'
 import AdminEventForm from '../../components/AdminEventForm'
 
 import './index.scss'

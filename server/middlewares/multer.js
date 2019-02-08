@@ -31,24 +31,24 @@ const printerStorage = multer.diskStorage({
   },
 });
 
-const bannerStorage = multer.diskStorage({
+const categoryStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'storage/banner/');
+    cb(null, 'storage/category/');
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
-    cb(null, `banner_${Date.now()}${ext}`);
+    cb(null, `category_${Date.now()}${ext}`);
   },
 });
 
 const eventUpload = multer({ storage: eventStorage });
 const workshopUpload = multer({ storage: workshopStorage });
 const printerUpload = multer({ storage: printerStorage });
-const bannerUpload = multer({ storage: bannerStorage });
+const categoryUpload = multer({ storage: categoryStorage });
 
 module.exports = {
   eventUpload,
   workshopUpload,
   printerUpload,
-  bannerUpload,
+  categoryUpload,
 };
