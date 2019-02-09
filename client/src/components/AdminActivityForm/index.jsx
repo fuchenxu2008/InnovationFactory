@@ -10,7 +10,7 @@ import './index.scss';
 const today = dayjs().format('YYYY-MM-DD');
 const typeSet = ['text', 'number', 'password', 'phone', 'idcard', 'digit'];
 
-class AdminEventForm extends Component {
+class AdminActivityForm extends Component {
   state = {
     albumPicPath: '',
     title: '',
@@ -35,25 +35,25 @@ class AdminEventForm extends Component {
   }
 
   componentDidMount() {
-    if (this.props.event) this._readEventToUpdate(this.props.event);    
+    if (this.props.activity) this._readActivityToUpdate(this.props.activity);    
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.event) this._readEventToUpdate(nextProps.event);
+    if (nextProps.activity) this._readActivityToUpdate(nextProps.activity);
   }
 
-  _readEventToUpdate = (event) => {
+  _readActivityToUpdate = (activity) => {
     const {
       albumPicPath,
       startTime,
       endTime,
       signupFrom,
       signupTo,
-    } = event;
+    } = activity;
 
     this.setState((prevState) => ({
       ...prevState,
-      ...event,
+      ...activity,
       // To loadable image
       albumPicPath: `${ROOT_URL}${albumPicPath}`,
       // Split time to picker components
@@ -94,7 +94,7 @@ class AdminEventForm extends Component {
       'message': 'Must upload a cover image!',
       'type': 'error',
     })
-    const event = {
+    const activity = {
       albumPicPath,
       title,
       subtitle,
@@ -110,8 +110,8 @@ class AdminEventForm extends Component {
       tickets,
       formFields,
     }
-    console.log('event:', event);
-    this.props.onSubmitEvent(event);
+    console.log('activity:', activity);
+    this.props.onSubmitActivity(activity);
   }
 
   _handleUploadImage = () => {
@@ -250,7 +250,7 @@ class AdminEventForm extends Component {
           </View>
           <View className='form-body-section-heading'>Detailed Information</View> 
           <View className='form-body-section'>
-            {/** Event start & end time */}
+            {/** Activity start & end time */}
             <View className='picker-section'>
               <View className='picker-title'>Start Time</View>
               <View className='time-picker-group'>
@@ -430,4 +430,4 @@ class AdminEventForm extends Component {
   }
 }
 
-export default AdminEventForm;
+export default AdminActivityForm;

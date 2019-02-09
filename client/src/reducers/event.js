@@ -33,7 +33,7 @@ export default function event (state = INITIAL_STATE, action) {
     case ADD_EVENT:
       return {
         ...state,
-        allEvents: state.allEvents.concat(action.payload)
+        allEvents: [action.payload, ...state.allEvents]
       }
     case EDIT_EVENT:
       return {

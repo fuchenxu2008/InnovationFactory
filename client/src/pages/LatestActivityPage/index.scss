@@ -1,26 +1,26 @@
-.latestEventPage {
+.latestActivityPage {
     flex: 1;
 }
 
-.latestEventPage-carousel {
+.latestActivityPage-carousel {
     transform: translateY(110rpx);
     padding: 0 8% 17% 8%;
 }
 
-.latestEventPage-eventlist-heading {
+.latestActivityPage-activitylist-heading {
     text-align: center;
     margin: 10% 0 2% 0;
     display: flex;
     justify-content: center;
 }
 
-.latestEventPage-eventlist-title {
+.latestActivityPage-activitylist-title {
     padding: 0 5%;
     border-left: 1px solid black;
     border-right: 1px solid black;
 }
 
-.latestEventPage-eventlist {
+.latestActivityPage-activitylist {
     width: 100%;
     padding: 5% 4%;
     display: flex;
@@ -30,7 +30,7 @@
     }
 }
 
-.latestEventPage-eventlistitem {
+.latestActivityPage-activitylistitem {
     width: 47%;
     flex: none;
 }

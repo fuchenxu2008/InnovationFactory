@@ -3,17 +3,17 @@ const { sendOrderSuccessNotification } = require('./notificationController');
 const { sendScheduledReminder } = require('../middlewares/cronJobs/activityReminder');
 
 const createEventOrder = (req, res) => {
-  const { eventOrder } = req.body;
-  EventOrder.create(eventOrder, (err, newOrder) => {
+  const { order } = req.body;
+  EventOrder.create(order, (err, newOrder) => {
     if (err) return res.status(400).json({ message: 'Error while creating eventOrder', err });
-    res.json({ message: 'Successfully created eventOrder!', eventOrder: newOrder });
+    res.json({ message: 'Successfully created eventOrder!', order: newOrder });
     return EventOrder.findById(newOrder._id)
       .populate('event')
       .populate('user', 'openid')
-      .exec((err2, order) => {
+      .exec((err2, doc) => {
         if (err2) return console.log('Error while populating eventOrder', err2);
-        sendOrderSuccessNotification({ order, activity: order.event });
-        return sendScheduledReminder({ order, activity: order.event });
+        sendOrderSuccessNotification({ order: doc, activity: doc.event });
+        return sendScheduledReminder({ order: doc, activity: doc.event });
       });
   });
 };

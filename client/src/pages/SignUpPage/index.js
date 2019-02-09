@@ -3,18 +3,21 @@ import { View, Picker, Button, Form } from '@tarojs/components'
 import { AtInput } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { getEvent } from '../../actions/event'
-import { submitEventOrder } from '../../actions/order'
+import { getWorkshop } from '../../actions/workshop'
+import { submitOrder } from '../../actions/order'
 
 import './index.scss'
 
 const genderSet = ['男', '女'];
 
-@connect(({ event, global }) => ({
+@connect(({ event, workshop, global }) => ({
   currentEvent: event.currentEvent,
+  currentWorkshop: workshop.currentWorkshop,
   currentUser: global.currentUser,
 }), (dispatch) => ({
   getEvent: (eventid) => dispatch(getEvent(eventid)),
-  submitEventOrder: (eventOrder) => dispatch(submitEventOrder(eventOrder))
+  getWorkshop: (workshopid) => dispatch(getWorkshop(workshopid)),
+  submitOrder: ({order, type}) => dispatch(submitOrder({order, type}))
 }))
 class SignUpPage extends Component {
   config = {
@@ -30,8 +33,11 @@ class SignUpPage extends Component {
   formId = []
 
   componentDidMount() {
-    const { id } = this.$router.params;
-    if (id) this.props.getEvent(id);
+    const { id, type } = this.$router.params;
+    if (id) {
+      if (type === 'event') this.props.getEvent(id);
+      if (type === 'workshop') this.props.getWorkshop(id);
+    }
   }
 
   /**
@@ -43,20 +49,25 @@ class SignUpPage extends Component {
     this.formId.push(newFormId);
     const { Name, Gender, Age } = this.state;
     if (this.formId.length < 2) return; // Stop if not enough form_id
-    const { formFields, _id } = this.props.currentEvent;
+    // Type of order
+    const { type } = this.$router.params;
+    let currentActivity;
+    if (type === 'event') currentActivity = this.props.currentEvent;
+    if (type === 'workshop') currentActivity = this.props.currentWorkshop;
+    const { formFields, _id } = currentActivity || {};
     const currentUser = this.props.currentUser || {};
     // Initialize form and loop to add fields
     const form = { Name, Gender, Age };
     const customizedFields = formFields.map(formfield => formfield.field);
     customizedFields.forEach(field => form[field] = this.state[field] || '');
     // Create order object
-    const eventOrder = {
+    const order = {
       formId: this.formId,
       user: currentUser._id,
-      event: _id,
+      [type]: _id, // event or workshop id
       form,
     }
-    this.props.submitEventOrder(eventOrder)
+    this.props.submitOrder({order, type})
       .then(() => Taro.navigateBack())
   }
 
@@ -70,10 +81,12 @@ class SignUpPage extends Component {
 
   render () {
     const { type } = this.$router.params;
-    const { currentEvent } = this.props;
-    if (!currentEvent) return null;
+    let currentActivity;
+    if (type === 'event') currentActivity = this.props.currentEvent;
+    if (type === 'workshop') currentActivity = this.props.currentWorkshop;
+    if (!currentActivity) return null;
 
-    const { formFields } = currentEvent;
+    const { formFields } = currentActivity;
     const { Name, Gender, Age } = this.state;
 
     return (

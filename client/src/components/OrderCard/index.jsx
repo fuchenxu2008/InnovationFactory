@@ -5,19 +5,25 @@ import './index.scss';
 
 class OrderCard extends Component {
     render() {
-      if (!this.props.order) return null;
-      const { _id, created_at, event } = this.props.order;
+      const { type, order } = this.props;
+      if (!order || !type) return null;
+      const { _id, created_at } = order;
+      const activity = order[type];
+
       return (
         <View className='ordercard'>
-          <Image
-            src={`${ROOT_URL}${event.albumPicPath}`}
-            mode='aspectFill'
-            className='ordercard-img'
-          />
+          {
+            activity.albumPicPath &&
+            <Image
+              src={`${ROOT_URL}${activity.albumPicPath}`}
+              mode='aspectFill'
+              className='ordercard-img'
+            />
+          }
           <View className='ordercard-detail'>
             <View>订单编号： {_id}</View>
             <View>下单时间： {created_at}</View>
-            <View>活动名称： {event.title}</View>
+            <View>活动名称： {activity.title}</View>
           </View>
         </View>
       )

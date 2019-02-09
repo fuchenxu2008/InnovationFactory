@@ -1,17 +1,17 @@
-.eventManagePage {
+.manageActivityPage {
   flex: 1;
 }
 
-.admin-eventlist {
+.admin-activitylist {
   padding: 3% 5%;
 }
 
-.admin-event {
+.admin-activity {
   display: flex;
   margin-bottom: 5%;
 }
 
-.admin-event-card {
+.admin-activity-card {
   flex: 1;
 }
 
@@ -19,15 +19,21 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin-left: 7%;
+  margin-left: 5%;
 }
 
 .edit-icon {
   font-size: 50px;
   color: rgb(48, 58, 78);
+  border-radius: 50%;
+  box-shadow: 3px 5px 20px rgb(200, 200, 200);
+  padding: 10Px;
 }
 
 .delete-icon {
   font-size: 50px;
   color: red;
+  border-radius: 50%;
+  box-shadow: 3px 5px 20px rgb(200, 200, 200);
+  padding: 10Px;
 }

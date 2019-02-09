@@ -7,7 +7,7 @@ const getEventOrders = (req, res) => {
   if (user) searchTerm.user = user;
   EventOrder.find(searchTerm, (err, docs) => {
     if (err) return res.status(400).json({ message: 'Error while getting all eventOrders', err });
-    return res.json({ eventOrders: docs, searchTerm });
+    return res.json({ orders: docs, searchTerm });
   });
 };
 
@@ -16,7 +16,7 @@ const getEventOrder = (req, res) => {
   EventOrder.findById(orderid, (err, doc) => {
     if (err) return res.status(400).json({ message: 'Error while getting eventOrder.', err });
     if (!doc) return res.status(404).json({ message: 'No eventOrder found with this ID.' });
-    return res.json({ eventOrder: doc });
+    return res.json({ order: doc });
   });
 };
 

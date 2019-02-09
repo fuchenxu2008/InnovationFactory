@@ -1,5 +1,5 @@
 import {
-  SUBMIT_EVENT_ORDER,
+  SUBMIT_ORDER,
   GET_MY_ORDERS,
 } from '../constants/order';
 import * as api from '../API/order';
@@ -7,16 +7,16 @@ import * as api from '../API/order';
 /**
  * Need token to authenticate
  */
-export const submitEventOrder = (order) => (dispatch, getState) => {
+export const submitOrder = ({order, type}) => (dispatch, getState) => {
   const { token } = getState().global.currentUser || {};
   if (!token) return console.log('Requires user login token');
-  return api.submitEventOrder(order, token)
+  return api.submitOrder({order, type}, token)
     .then(({ data }) => {
       console.log(data);
-      if (data.eventOrder) {
+      if (data.order) {
         dispatch({
-          type: SUBMIT_EVENT_ORDER,
-          payload: data.eventOrder,
+          type: SUBMIT_ORDER,
+          payload: data.order,
         })
       }
     })

@@ -1,9 +1,9 @@
-.eventDetailPage {
+.activityDetailPage {
     padding: 0 6% 5% 6%;
     flex: 1;
 }
 
-.eventDetailPage-detailcard {
+.activityDetailPage-detailcard {
     display: flex;
     flex-direction: column;
     transform: translateY(130rpx);
@@ -15,13 +15,13 @@
     background-color: white;
 }
 
-.eventDetailPage-detailcard-img {
+.activityDetailPage-detailcard-img {
     width: 100%;
 }
 
-.eventDetailPage-detailcard-content {
+.activityDetailPage-detailcard-content {
     padding: 6% 7%;
-    .eventDetailPage-detailcard-titlesection {
+    .activityDetailPage-detailcard-titlesection {
         transform: translateX(-10px);
         display: flex;
         font-family: 'DIN';
@@ -36,7 +36,7 @@
           font-size: 1rem;
         }
     }
-    .eventDetailPage-detailcard-timeplace {
+    .activityDetailPage-detailcard-timeplace {
         color: rgb(143, 144, 145);
         font-size: 0.8rem;
         margin-bottom: 30px;
@@ -56,7 +56,7 @@
             }
         }
     }
-    .eventDetailPage-detailcard-desc {
+    .activityDetailPage-detailcard-desc {
         color: rgb(127, 128, 131);
         font-size: 0.8rem;
     }
@@ -73,7 +73,7 @@
     }
 }
 
-.eventDetailPage-detailcard-btnGroup {
+.activityDetailPage-detailcard-btnGroup {
     display: flex;
     justify-content: space-between;
     align-items: center;

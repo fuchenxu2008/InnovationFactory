@@ -16,15 +16,15 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
-      'pages/LatestEventPage/index',
-      'pages/EventDetailPage/index',
+      'pages/LatestActivityPage/index',
+      'pages/ActivityDetailPage/index',
       'pages/SignUpPage/index',
       'pages/ProfilePage/index',
       'pages/MyOrderPage/index',
       // Admin pages
       'pages/AdminHomePage/index',
-      'pages/EventManagePage/index',
-      'pages/CreateUpdateEventPage/index',
+      'pages/ManageActivityPage/index',
+      'pages/CreateUpdateActivityPage/index',
     ],
     window: {
       backgroundTextStyle: 'light',

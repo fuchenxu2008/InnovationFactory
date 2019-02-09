@@ -9,11 +9,11 @@ export const getMyOrders = (type, token) => {
     })
 };
 
-export const submitEventOrder = (eventOrder, token) => {
+export const submitOrder = ({order, type}, token) => {
   return request({
-    url: `${ROOT_URL}/api/myorder/event`,
+    url: `${ROOT_URL}/api/myorder/${type}`,
     method: 'POST',
-    data: { eventOrder },
+    data: { order },
     token,
   })
 }

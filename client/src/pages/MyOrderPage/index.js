@@ -39,7 +39,11 @@ class MyOrderPage extends Component {
         <View className='myOrderList'>
           {
             myOrders.map(order => (
-              <OrderCard key={order._id} order={order} />
+              <OrderCard
+                key={order._id}
+                order={order}
+                type={type}
+              />
             ))
           }
         </View>

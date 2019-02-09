@@ -16,7 +16,9 @@ export const getAllEvents = () => (dispatch) => {
       if (data.events) {
         dispatch({
           type: GET_ALL_EVENTS,
-          payload: data.events,
+          payload: data.events.sort((a, b) => {
+            return new Date(b.created_at.replace(/-/g, '/')) - new Date(a.created_at.replace(/-/g, '/'));
+          }),
         })
       }
     })

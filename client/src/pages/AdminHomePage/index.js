@@ -19,9 +19,9 @@ class AdminHomePage extends Component {
   state = {
   }
 
-  _goEventManagePage = () => {
+  _goActivityManagePage = (type) => {
     Taro.navigateTo({
-      url: '/pages/EventManagePage/index'
+      url: `/pages/ManageActivityPage/index?type=${type}`
     })
   }
 
@@ -29,9 +29,9 @@ class AdminHomePage extends Component {
     return (
       <View className='adminHomePage'>
         Admin Hub
-        <AtButton onClick={this._goEventManagePage}>Manage Event</AtButton>
-        <AtButton onClick={this._goEventManagePage}>Manage Workshop</AtButton>
-        <AtButton onClick={this._goEventManagePage}>Manage Printer</AtButton>
+        <AtButton onClick={this._goActivityManagePage.bind(this, 'event')}>Manage Event</AtButton>
+        <AtButton onClick={this._goActivityManagePage.bind(this, 'workshop')}>Manage Workshop</AtButton>
+        <AtButton onClick={this._goActivityManagePage}>Manage Printer</AtButton>
       </View>
     )
   }
