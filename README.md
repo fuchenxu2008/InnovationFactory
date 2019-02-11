@@ -1,16 +1,16 @@
 # ToDo List
 
-1. [ ] Finish up Profile Page and my orders page
+1. [x] Finish up Profile Page and my orders page
 2. [x] API access control and authentication
 3. [x] Sorting activities by start time (memorised for performance)
 4. [ ] Async requests loading indicator
 5. [ ] Prevent user from re-clicking submit button
 6. [ ] Prompt user to fill required form fields
-7. [ ] Add Event category database
+7. [x] Add Event category database
 8. [ ] Allow creating new category with banner image and selecting while creating
 9. [ ] User swipe categories to view corresponding activities
 10. [ ] Pagination (infinate scrolling)
-11. [ ] Copycat to implement workshop section
+11. [x] Copycat to implement workshop section
 12. [ ] Design and add printer database
 13. [ ] Implement printer section and figure out time dimentional reservation
 

@@ -6,10 +6,19 @@ import {
   GET_EVENT,
   GET_CACHED_EVENT
 } from '../constants/event';
+import {
+  GET_CACHED_EVENT_CATEGORY,
+  GET_EVENT_CATEGORY,  
+  ADD_EVENT_CATEGORY,
+  EDIT_EVENT_CATEGORY,
+  DELETE_EVENT_CATEGORY,
+} from '../constants/category';
 
 const INITIAL_STATE = {
   allEvents: [],
   currentEvent: null,
+  eventCategories: [],
+  currentEventCategory: null,
 }
 
 export default function event (state = INITIAL_STATE, action) {
@@ -17,7 +26,8 @@ export default function event (state = INITIAL_STATE, action) {
     case GET_ALL_EVENTS:
       return {
         ...state,
-        allEvents: action.payload,
+        allEvents: action.payload.events,
+        eventCategories: action.payload.categories,
       }
     case GET_EVENT:
       return {
@@ -45,7 +55,33 @@ export default function event (state = INITIAL_STATE, action) {
         ...state,
         allEvents: state.allEvents.filter(existingEvent => existingEvent._id !== action.payload._id)
       }
-     default:
-       return state
+    case GET_EVENT_CATEGORY:
+      return {
+        ...state,
+        currentEventCategory: action.payload,
+        eventCategories: state.eventCategories.concat(action.payload),
+      }
+    case GET_CACHED_EVENT_CATEGORY:
+      return {
+        ...state,
+        currentEventCategory: action.payload,
+      }
+    case ADD_EVENT_CATEGORY:
+      return {
+        ...state,
+        eventCategories: state.eventCategories.concat(action.payload)
+      }
+    case EDIT_EVENT_CATEGORY:
+      return {
+        ...state,
+        eventCategories: state.eventCategories.map(e => e._id === action.payload._id ? action.payload : e)
+      }
+    case DELETE_EVENT_CATEGORY:
+      return {
+        ...state,
+        eventCategories: state.eventCategories.filter(existingEventCategory => existingEventCategory._id !== action.payload._id)
+      }
+    default:
+      return state
   }
 }

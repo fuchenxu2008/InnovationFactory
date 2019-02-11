@@ -13,12 +13,15 @@ export const getAllEvents = () => (dispatch) => {
   api.getAllEvents()
     .then(({ data }) => {
       console.log(data);
-      if (data.events) {
+      if (data.events && data.categories) {
         dispatch({
           type: GET_ALL_EVENTS,
-          payload: data.events.sort((a, b) => {
-            return new Date(b.created_at.replace(/-/g, '/')) - new Date(a.created_at.replace(/-/g, '/'));
-          }),
+          payload: {
+            events: data.events.sort((a, b) => {
+              return new Date(b.created_at.replace(/-/g, '/')) - new Date(a.created_at.replace(/-/g, '/'));
+            }),
+            categories: data.categories,
+          }
         })
       }
     })

@@ -40,7 +40,7 @@ class ActivityDetailPage extends Component {
     const { title } = currentActivity;
     return {
       title: `New Event: ${title}`,
-      path: `/pages/ActivityDetailPage/index?type=$${type}&id=${id}`,
+      path: `/pages/ActivityDetailPage/index?type=${type}&id=${id}`,
     }
   }
 

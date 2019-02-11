@@ -211,7 +211,7 @@ class AdminActivityForm extends Component {
     } = this.state;
     
     return (
-      <AtForm onSubmit={this._handleFormSubmit} reportSubmit>
+      <AtForm onSubmit={this._handleFormSubmit}>
         {/** Cover image upload */}
         <View className='album-section'>
           <Image src={albumPicPath} className='albumPic' mode='aspectFill' />

@@ -51,7 +51,7 @@ class CreateUpdateActivityPage extends Component {
     let currentActivity;
     if (type === 'event') currentActivity = this.props.currentEvent;
     if (type === 'workshop') currentActivity = this.props.currentWorkshop;
-    if (!currentActivity) return null;
+    if (id && !currentActivity) return null;
 
     return (
       <View className='createUpdateActivityPage'>

@@ -44,9 +44,10 @@ class ManageActivityPage extends Component {
   }
 
   _goAddCategoryPage = () => {
-    // Taro.navigateTo({
-    //   url: '/pages/CreateUpdateEventPage/index'
-    // })
+    const { type } = this.$router.params;
+    Taro.navigateTo({
+      url: `/pages/CreateUpdateCategoryPage/index?type=${type}`
+    })
   }
 
   _handleClickActivity = (activityid) => {
@@ -79,15 +80,17 @@ class ManageActivityPage extends Component {
 
     return (
       <View className='manageActivityPage'>
-        <AtButton onClick={this._manageActivity}>
-          {editing ? 'Done' : `Manage ${type}`}
-        </AtButton>
-        { editing &&
-          <View>
-            <AtButton onClick={this._goAddActivityPage}>Add {type}</AtButton>
-            <AtButton onClick={this._goAddCategoryPage}>Add Category</AtButton>
-          </View>
-        }
+        <View className='manageActivityPage-btnGroup'>
+          <AtButton onClick={this._manageActivity} type='primary'>
+            {editing ? 'Done' : `Manage ${type}`}
+          </AtButton>
+          { editing &&
+            <View>
+              <AtButton onClick={this._goAddActivityPage}>Add {type}</AtButton>
+              <AtButton onClick={this._goAddCategoryPage}>Add Category</AtButton>
+            </View>
+          }
+        </View>
         <View className='admin-activitylist'>
           {
             activities.map(activity => (

@@ -35,7 +35,7 @@ class MyOrderPage extends Component {
 
     return (
       <View className='myOrderPage'>
-        <View>My {type} orders</View>
+        <View className='myOrderPage-title'>{`My ${type} Orders`}</View>
         <View className='myOrderList'>
           {
             myOrders.map(order => (

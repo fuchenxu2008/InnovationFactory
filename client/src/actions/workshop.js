@@ -13,10 +13,15 @@ export const getAllWorkshops = () => (dispatch) => {
   api.getAllWorkshops()
     .then(({ data }) => {
       console.log(data);
-      if (data.workshops) {
+      if (data.workshops && data.categories) {
         dispatch({
           type: GET_ALL_WORKSHOPS,
-          payload: data.workshops,
+          payload: {
+            workshops: data.workshops.sort((a, b) => {
+              return new Date(b.created_at.replace(/-/g, '/')) - new Date(a.created_at.replace(/-/g, '/'));
+            }),
+            categories: data.categories,
+          }
         })
       }
     })

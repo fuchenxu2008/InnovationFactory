@@ -25,6 +25,7 @@ class App extends Component {
       'pages/AdminHomePage/index',
       'pages/ManageActivityPage/index',
       'pages/CreateUpdateActivityPage/index',
+      'pages/CreateUpdateCategoryPage/index',
     ],
     window: {
       backgroundTextStyle: 'light',

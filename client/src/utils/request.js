@@ -26,7 +26,7 @@ export const multipartRequest = ({ url, filePath, name, formData, token, }) => {
     const options = {
       url,
       filePath,
-      name,
+      name, // file field name
     }
     if (formData) options.formData = formData;
     if (token) options.header = {

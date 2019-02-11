@@ -1,10 +1,14 @@
 const Workshop = require('../models/Workshop');
+const Category = require('../models/Category');
 
 const getAllWorkshops = (req, res) => {
   const searchTerm = req.query;
-  Workshop.find(searchTerm, (err, docs) => {
+  Workshop.find(searchTerm, (err, workshops) => {
     if (err) return res.status(400).json({ message: 'Error while getting all workshops.', err });
-    return res.json({ workshops: docs, searchTerm });
+    return Category.find({ type: 'workshop' }, (err2, categories) => {
+      if (err2) return res.status(400).json({ message: 'Error while getting all categories.', err: err2 });
+      return res.json({ workshops, categories, searchTerm });
+    });
   });
 };
 
