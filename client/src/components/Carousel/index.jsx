@@ -1,11 +1,19 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components';
+import { View, Image, Swiper, SwiperItem } from '@tarojs/components';
+import { ROOT_URL } from '../../config'
 
 import './index.scss';
 
 class Carousel extends Component {
+  _handleSwiperChange = (e) => {
+    const { categories, onSwiperChange } = this.props;
+    const { current } = e.detail;
+    onSwiperChange(categories[current]);
+  }
+
   render() {
-    // const { img, titleZH, titleEN, onClick } = this.props;
+    const categories = this.props.categories || [];
+
     return (
       <View className='carousel'>
         <Swiper
@@ -14,23 +22,18 @@ class Carousel extends Component {
           indicatorActiveColor='rgb(141, 92, 243)'
           circular
           indicatorDots
+          onChange={this._handleSwiperChange}
           // autoplay
         >
-          <SwiperItem className='carousel-swiperitem'>
-            <View className='demo-text'>
-              <Image src={require('../../assets/images/latestEvent.png')} mode='widthFix' className='carousel-swiperitem-img' />
-            </View>
-          </SwiperItem>
-          <SwiperItem className='carousel-swiperitem'>
-            <View className='demo-text'>
-              <Image src={require('../../assets/images/workshopBooking.png')} mode='widthFix' className='carousel-swiperitem-img' />
-            </View>
-          </SwiperItem>
-          <SwiperItem className='carousel-swiperitem'>
-            <View className='demo-text'>
-              <Image src={require('../../assets/images/printerReservation.png')} mode='widthFix' className='carousel-swiperitem-img' />
-            </View>
-          </SwiperItem>
+          {
+            categories.map(category => (
+              <SwiperItem key={category._id} className='carousel-swiperitem'>
+                <View className='carousel-swiperitem-img-wraper'>
+                  <Image src={`${ROOT_URL}${category.albumPicPath}`} mode='widthFix' className='carousel-swiperitem-img' />
+                </View>
+              </SwiperItem>
+            ))
+          }
         </Swiper>
       </View>
     )

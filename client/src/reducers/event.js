@@ -28,6 +28,7 @@ export default function event (state = INITIAL_STATE, action) {
         ...state,
         allEvents: action.payload.events,
         eventCategories: action.payload.categories,
+        currentEventCategory: action.payload.categories[0],
       }
     case GET_EVENT:
       return {

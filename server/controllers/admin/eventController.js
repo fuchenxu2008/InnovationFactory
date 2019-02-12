@@ -18,7 +18,10 @@ const addEvent = (req, res) => {
     albumPicPath: `/api/image/${filename}`,
   }, (err, doc) => {
     if (err) return res.status(400).json({ message: 'Error while creating event.', err });
-    return res.json({ message: 'Successfully created event!', event: doc });
+    return Event.findById(doc._id).populate('category', ['name', '_id']).exec((err2, newEvent) => {
+      if (err2) return res.status(400).json({ message: 'Error while populating event.', err: err2 });
+      return res.json({ message: 'Successfully created event!', event: newEvent });
+    });
   });
 };
 
@@ -60,9 +63,12 @@ const updateEventWithImage = (req, res) => {
       ...editedEvent,
       albumPicPath: `/api/image/${filename}`,
     });
-    return event.save((err2, updatedEvent) => {
+    return event.save((err2, doc) => {
       if (err2) return res.status(400).json({ message: 'Error while finding event before updating.', err: err2 });
-      return res.json({ message: 'Successfully updated event!', event: updatedEvent });
+      return Event.findById(doc._id).populate('category', ['name', '_id']).exec((err3, updatedEvent) => {
+        if (err3) return res.status(400).json({ message: 'Error while populating event.', err: err3 });
+        return res.json({ message: 'Successfully updated event!', event: updatedEvent });
+      });
     });
   });
 };
@@ -79,10 +85,13 @@ const updateEventWithoutImage = (req, res) => {
       ...editedEvent,
       albumPicPath: `/api/image/${filename}`,
     });
-    return event.save((err2, updatedEvent) => {
+    return event.save((err2, doc) => {
       if (err2) return res.status(400).json({ message: 'Error while updating event.', err: err2 });
-      if (!updatedEvent) return res.status(404).json({ message: 'Could not find event with specified _id' });
-      return res.json({ message: 'Successfully updated event!', event: updatedEvent });
+      if (!doc) return res.status(404).json({ message: 'Could not find event with specified _id' });
+      return Event.findById(doc._id).populate('category', ['name', '_id']).exec((err3, updatedEvent) => {
+        if (err3) return res.status(400).json({ message: 'Error while populating event.', err: err3 });
+        return res.json({ message: 'Successfully updated event!', event: updatedEvent });
+      });
     });
   });
 };

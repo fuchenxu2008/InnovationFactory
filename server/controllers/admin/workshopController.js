@@ -18,7 +18,10 @@ const addWorkshop = (req, res) => {
     albumPicPath: `/api/image/${filename}`,
   }, (err, doc) => {
     if (err) return res.status(400).json({ message: 'Error while creating workshop.', err });
-    return res.json({ message: 'Successfully created workshop!', workshop: doc });
+    return Workshop.findById(doc._id).populate('category', ['name', '_id']).exec((err2, newWorkshop) => {
+      if (err2) return res.status(400).json({ message: 'Error while populating workshop.', err: err2 });
+      return res.json({ message: 'Successfully created workshop!', workshop: newWorkshop });
+    });
   });
 };
 
@@ -60,9 +63,13 @@ const updateWorkshopWithImage = (req, res) => {
       ...editedWorkshop,
       albumPicPath: `/api/image/${filename}`,
     });
-    return workshop.save((err2, updatedWorkshop) => {
+    return workshop.save((err2, doc) => {
       if (err2) return res.status(400).json({ message: 'Error while finding workshop before updating.', err: err2 });
-      return res.json({ message: 'Successfully updated workshop!', workshop: updatedWorkshop });
+      if (!doc) return res.status(404).json({ message: 'Could not find workshop with specified _id' });
+      return Workshop.findById(doc._id).populate('category', ['name', '_id']).exec((err3, updatedWorkshop) => {
+        if (err3) return res.status(400).json({ message: 'Error while populating workshop.', err: err3 });
+        return res.json({ message: 'Successfully updated workshop!', workshop: updatedWorkshop });
+      });
     });
   });
 };
@@ -79,10 +86,13 @@ const updateWorkshopWithoutImage = (req, res) => {
       ...editedWorkshop,
       albumPicPath: `/api/image/${filename}`,
     });
-    return workshop.save((err2, updatedWorkshop) => {
+    return workshop.save((err2, doc) => {
       if (err2) return res.status(400).json({ message: 'Error while updating workshop.', err: err2 });
-      if (!updatedWorkshop) return res.status(404).json({ message: 'Could not find workshop with specified _id' });
-      return res.json({ message: 'Successfully updated workshop!', workshop: updatedWorkshop });
+      if (!doc) return res.status(404).json({ message: 'Could not find workshop with specified _id' });
+      return Workshop.findById(doc._id).populate('category', ['name', '_id']).exec((err3, updatedWorkshop) => {
+        if (err3) return res.status(400).json({ message: 'Error while populating workshop.', err: err3 });
+        return res.json({ message: 'Successfully updated workshop!', workshop: updatedWorkshop });
+      });
     });
   });
 };

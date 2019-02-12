@@ -26,7 +26,8 @@ class CreateUpdateCategoryPage extends Component {
   }
 
   _handleReceiveCategory = async(category) => {
-    const { id } = this.$router.params;
+    const { id, type } = this.$router.params;
+    category.type = type;
     id ? await this.props.updateCategory({ id, category })
       : await this.props.addCategory(category)
     Taro.navigateBack();

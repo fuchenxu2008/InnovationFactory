@@ -11,6 +11,8 @@ import './index.scss'
 @connect(({ event, workshop }) => ({
   currentEvent: event.currentEvent,
   currentWorkshop: workshop.currentWorkshop,
+  eventCategories: event.eventCategories,
+  workshopCategories: workshop.workshopCategories,
 }), (dispatch) => ({
   addEvent: (event) => dispatch(addEvent(event)),
   updateEvent: (edition) => dispatch(updateEvent(edition)),
@@ -49,8 +51,15 @@ class CreateUpdateActivityPage extends Component {
     // If id exist, then it's editing workshop; else would be creating new workshop
     const { id, type } = this.$router.params;
     let currentActivity;
-    if (type === 'event') currentActivity = this.props.currentEvent;
-    if (type === 'workshop') currentActivity = this.props.currentWorkshop;
+    let availbleCategories = [];
+    if (type === 'event') {
+      currentActivity = this.props.currentEvent;
+      availbleCategories = this.props.eventCategories;
+    }
+    if (type === 'workshop') {
+      currentActivity = this.props.currentWorkshop;
+      availbleCategories = this.props.workshopCategories;
+    }
     if (id && !currentActivity) return null;
 
     return (
@@ -60,6 +69,7 @@ class CreateUpdateActivityPage extends Component {
         <AdminActivityForm
           activity={id ? currentActivity : null}
           onSubmitActivity={this._handleReceiveActivity}
+          availableCategories={availbleCategories}
         />
       </View>
     )

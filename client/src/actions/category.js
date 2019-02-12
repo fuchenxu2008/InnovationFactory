@@ -12,6 +12,16 @@ import {
 } from '../constants/category';
 import * as api from '../API/category';
 
+export const setCurrentCategory = (category) => (dispatch) => {
+  let type;
+  if (category.type === 'event') type = GET_CACHED_EVENT_CATEGORY;
+  if (category.type === 'workshop') type = GET_CACHED_WORKSHOP_CATEGORY;
+  dispatch({
+    type,
+    payload: category,
+  })
+}
+
 export const getCategory = ({ id, type }) => (dispatch, getState) => {
   // Get local state cache
   // If has the category, read from cache else fetch from server

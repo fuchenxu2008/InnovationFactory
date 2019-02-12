@@ -6,7 +6,10 @@ const WorkshopSchema = mongoose.Schema({
   title: String,
   subtitle: String,
   desc: String,
-  category: String,
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+  },
   startTime: String,
   endTime: String,
   address: String,

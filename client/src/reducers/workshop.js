@@ -28,6 +28,7 @@ export default function workshop (state = INITIAL_STATE, action) {
         ...state,
         allWorkshops: action.payload.workshops,
         workshopCategories: action.payload.categories,
+        currentWorkshopCategory: action.payload.categories[0],
       }
     case GET_WORKSHOP:
       return {

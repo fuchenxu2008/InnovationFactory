@@ -6,15 +6,21 @@ import ActivityCard from '../../components/ActivityCard'
 import GradientHeader from '../../components/GradientHeader'
 import { getAllEvents } from "../../actions/event";
 import { getAllWorkshops } from "../../actions/workshop";
+import { setCurrentCategory } from '../../actions/category';
+import getEventsUnderCategory from '../../selectors/events_under_category';
+import getWorkshopsUnderCategory from '../../selectors/workshops_under_category';
 
 import './index.scss'
 
 @connect(({ event, workshop }) => ({
-  allEvents: event.allEvents,
-  allWorkshops: workshop.allWorkshops,
+  allEvents: getEventsUnderCategory(event),
+  allWorkshops: getWorkshopsUnderCategory(workshop),
+  eventCategories: event.eventCategories,
+  workshopCategories: workshop.workshopCategories,
 }), (dispatch) => ({
   getAllEvents: () => dispatch(getAllEvents()),
-  getAllWorkshops: () => dispatch(getAllWorkshops())
+  getAllWorkshops: () => dispatch(getAllWorkshops()),
+  setCurrentCategory: (category) => dispatch(setCurrentCategory(category))
 }))
 class LatestActivityPage extends Component {
   config = {
@@ -27,6 +33,10 @@ class LatestActivityPage extends Component {
     if (type === 'workshop') this.props.getAllWorkshops();
   }
 
+  _handleChangeCategory = (category) => {
+    this.props.setCurrentCategory(category)
+  }
+
   _handleClickActivity = (activityid) => {
     const { type } = this.$router.params;
     Taro.navigateTo({
@@ -37,14 +47,24 @@ class LatestActivityPage extends Component {
   render () {
     const { type } = this.$router.params;
     let allActivities = [];
-    if (type === 'event') allActivities = this.props.allEvents;
-    if (type === 'workshop') allActivities = this.props.allWorkshops;
+    let allCategories = [];
+    if (type === 'event') {
+      allActivities = this.props.allEvents;
+      allCategories = this.props.eventCategories;
+    }
+    if (type === 'workshop') {
+      allActivities = this.props.allWorkshops;
+      allCategories = this.props.workshopCategories;
+    }
 
     return (
       <View className='latestActivityPage'>
         <GradientHeader pageTitle={`The latest ${type}`} />
         <View className='latestActivityPage-carousel'>
-          <Carousel />
+          <Carousel
+            categories={allCategories}
+            onSwiperChange={this._handleChangeCategory}
+          />
         </View>
         <View>
           <View className='latestActivityPage-activitylist-heading'>

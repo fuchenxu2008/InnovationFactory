@@ -3,7 +3,7 @@ const Category = require('../models/Category');
 
 const getAllEvents = (req, res) => {
   const searchTerm = req.query;
-  Event.find(searchTerm, (err, events) => {
+  Event.find(searchTerm).populate('category', ['name', '_id']).exec((err, events) => {
     if (err) return res.status(400).json({ message: 'Error while getting all events.', err });
     return Category.find({ type: 'event' }, (err2, categories) => {
       if (err2) return res.status(400).json({ message: 'Error while getting all categories.', err: err2 });
@@ -15,7 +15,7 @@ const getAllEvents = (req, res) => {
 const getEvent = (req, res) => {
   const { eventid } = req.params;
   if (!eventid) return res.status(400).json({ message: 'No ID provided while getting event.' });
-  return Event.findById(eventid, (err, event) => {
+  return Event.findById(eventid).populate('category', ['name', '_id']).exec((err, event) => {
     if (err) return res.status(400).json({ message: 'Error while getting event.', err });
     if (!event) return res.status(404).json({ message: 'No event found with this ID.' });
     return res.json({ event });

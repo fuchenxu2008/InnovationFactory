@@ -15,6 +15,7 @@ class AdminActivityForm extends Component {
     albumPicPath: '',
     title: '',
     subtitle: '',
+    category: null,
     desc: '',
     startDate: today,
     startTime: '00:00',
@@ -74,6 +75,7 @@ class AdminActivityForm extends Component {
       title,
       subtitle,
       desc,
+      category,
       startDate,
       startTime,
       endDate,
@@ -99,6 +101,7 @@ class AdminActivityForm extends Component {
       title,
       subtitle,
       desc,
+      category: category._id,
       startTime: `${startDate} ${startTime}`,
       endTime: `${endDate} ${endTime}`,
       signupFrom: `${signupFromDate} ${signupFromTime}`,
@@ -126,6 +129,7 @@ class AdminActivityForm extends Component {
   _handleInputChange = (field, val) => this.setState({ [field]: val })
   _handleTextareaChange = (field, e) => this.setState({ [field]: e.target.value })
   _handleTimePickerChange = (field, e) => this.setState({ [field]: e.detail.value })
+  _handleCategoryChange = (e) => this.setState({ category: this.props.availableCategories[e.detail.value] })
   
   _handleAddTicket = () => this.setState((prevState) => ({
     tickets: prevState.tickets.concat({
@@ -192,6 +196,7 @@ class AdminActivityForm extends Component {
       albumPicPath,
       title,
       subtitle,
+      category,
       desc,
       startDate,
       startTime,
@@ -209,7 +214,9 @@ class AdminActivityForm extends Component {
       formFields,
       modalOpened,
     } = this.state;
-    
+
+    const categories = (this.props.availableCategories || []).map(cate => cate.name);
+
     return (
       <AtForm onSubmit={this._handleFormSubmit}>
         {/** Cover image upload */}
@@ -239,6 +246,18 @@ class AdminActivityForm extends Component {
               onChange={this._handleInputChange.bind(this, 'subtitle')}
               value={subtitle}
             />
+            <View className='picker-section'>
+              <View className='picker-title'>Category</View>
+              <Picker
+                mode='selector'
+                range={categories}
+                onChange={this._handleCategoryChange}
+              >
+                <View className='picker-value'>
+                  {category ? category.name : 'Please Select'}
+                </View>
+              </Picker>
+            </View>
             <View className='input-title'>Description</View>
             <AtTextarea
               name='description'

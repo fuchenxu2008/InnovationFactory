@@ -7,8 +7,8 @@
 5. [ ] Prevent user from re-clicking submit button
 6. [ ] Prompt user to fill required form fields
 7. [x] Add Event category database
-8. [ ] Allow creating new category with banner image and selecting while creating
-9. [ ] User swipe categories to view corresponding activities
+8. [x] Allow creating new category with banner image and selecting while creating
+9. [x] User swipe categories to view corresponding activities
 10. [ ] Pagination (infinate scrolling)
 11. [x] Copycat to implement workshop section
 12. [ ] Design and add printer database
