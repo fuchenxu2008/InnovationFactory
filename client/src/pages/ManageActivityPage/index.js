@@ -3,19 +3,28 @@ import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import ActivityCard from '../../components/ActivityCard'
+import Carousel from '../../components/Carousel';
 import { getAllEvents, deleteEvent } from "../../actions/event";
 import { getAllWorkshops, deleteWorkshop } from "../../actions/workshop";
+import { setCurrentCategory } from '../../actions/category';
+import getEventsUnderCategory from '../../selectors/events_under_category';
+import getWorkshopsUnderCategory from '../../selectors/workshops_under_category';
 
 import './index.scss'
 
 @connect(({ event, workshop }) => ({
-  allEvents: event.allEvents,
-  allWorkshops: workshop.allWorkshops,
+  allEvents: getEventsUnderCategory(event),
+  eventCategories: event.eventCategories,
+  currentEventCategory: event.currentEventCategory,
+  allWorkshops: getWorkshopsUnderCategory(workshop),
+  workshopCategories: workshop.workshopCategories,
+  currentWorkshopCategory: workshop.currentWorkshopCategory,
 }), (dispatch) => ({
   getAllEvents: () => dispatch(getAllEvents()),
   deleteEvent: (eventid) => dispatch(deleteEvent(eventid)),
   getAllWorkshops: () => dispatch(getAllWorkshops()),
   deleteWorkshop: (workshopid) => dispatch(deleteWorkshop(workshopid)),
+  setCurrentCategory: (category) => dispatch(setCurrentCategory(category)),
 }))
 class ManageActivityPage extends Component {
   config = {
@@ -50,6 +59,17 @@ class ManageActivityPage extends Component {
     })
   }
 
+  _handleChangeCategory = (category) => {
+    this.props.setCurrentCategory(category);
+  }
+
+  _editCategory = (categoryid) => {
+    const { type } = this.$router.params;
+    Taro.navigateTo({
+      url: `/pages/CreateUpdateCategoryPage/index?type=${type}&id=${categoryid}`
+    })
+  }
+
   _handleClickActivity = (activityid) => {
     const { type } = this.$router.params;
     Taro.navigateTo({
@@ -74,9 +94,17 @@ class ManageActivityPage extends Component {
     const { type } = this.$router.params;
     if (!type) return null;
     const { editing } = this.state;
-    let activities = [];
-    if (type === 'event') activities = this.props.allEvents;
-    if (type === 'workshop') activities = this.props.allWorkshops;
+    let activities, categories, currentCategory;
+    if (type === 'event') {
+      activities = this.props.allEvents;
+      categories = this.props.eventCategories;
+      currentCategory = this.props.currentEventCategory;
+    }
+    if (type === 'workshop') {
+      activities = this.props.allWorkshops;
+      categories = this.props.workshopCategories;
+      currentCategory = this.props.currentWorkshopCategory;
+    }
 
     return (
       <View className='manageActivityPage'>
@@ -90,6 +118,17 @@ class ManageActivityPage extends Component {
               <AtButton onClick={this._goAddCategoryPage}>Add Category</AtButton>
             </View>
           }
+        </View>
+        <View className='admin-carousel'>
+          <Carousel
+            categories={categories}
+            onSwiperChange={this._handleChangeCategory}
+            onClickItem={this._editCategory}
+          />
+          <View className='category-text-section'>
+            <View className='category-name'>{(currentCategory || {}).name}</View>
+            <View className='category-desc'>{(currentCategory || {}).desc}</View>
+          </View>
         </View>
         <View className='admin-activitylist'>
           {

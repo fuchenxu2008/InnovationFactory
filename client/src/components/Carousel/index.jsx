@@ -12,7 +12,7 @@ class Carousel extends Component {
   }
 
   render() {
-    const categories = this.props.categories || [];
+    const { categories, onClickItem } = this.props;
 
     return (
       <View className='carousel'>
@@ -26,8 +26,8 @@ class Carousel extends Component {
           // autoplay
         >
           {
-            categories.map(category => (
-              <SwiperItem key={category._id} className='carousel-swiperitem'>
+            (categories || []).map(category => (
+              <SwiperItem key={category._id} className='carousel-swiperitem' onClick={onClickItem.bind(this, category._id)}>
                 <View className='carousel-swiperitem-img-wraper'>
                   <Image src={`${ROOT_URL}${category.albumPicPath}`} mode='widthFix' className='carousel-swiperitem-img' />
                 </View>

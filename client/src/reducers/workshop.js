@@ -50,7 +50,8 @@ export default function workshop (state = INITIAL_STATE, action) {
     case EDIT_WORKSHOP:
       return {
         ...state,
-        allWorkshops: state.allWorkshops.map(e => e._id === action.payload._id ? action.payload : e)
+        allWorkshops: state.allWorkshops.map(e => e._id === action.payload._id ? action.payload : e),
+        currentWorkshopCategory: state.currentWorkshopCategory._id === action.payload._id ? action.payload : state.currentWorkshopCategory,
       }
     case DELETE_WORKSHOP:
       return {

@@ -75,7 +75,8 @@ export default function event (state = INITIAL_STATE, action) {
     case EDIT_EVENT_CATEGORY:
       return {
         ...state,
-        eventCategories: state.eventCategories.map(e => e._id === action.payload._id ? action.payload : e)
+        eventCategories: state.eventCategories.map(e => e._id === action.payload._id ? action.payload : e),
+        currentEventCategory: state.currentEventCategory._id === action.payload._id ? action.payload : state.currentEventCategory,
       }
     case DELETE_EVENT_CATEGORY:
       return {
