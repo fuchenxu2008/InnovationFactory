@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-const PrinterMenuSchema = mongoose.Schema({
+const PrinterSchema = mongoose.Schema({
+  albumPicPath: String,
   type: String, // FDM, DSP, DLP
   consumables: String, // 树脂
   consumableCost: String,
@@ -14,6 +15,6 @@ const PrinterMenuSchema = mongoose.Schema({
   remark: String,
 });
 
-const PrinterMenu = mongoose.model('PrinterMenu', PrinterMenuSchema);
+const Printer = mongoose.model('Printer', PrinterSchema);
 
-module.exports = PrinterMenu;
+module.exports = Printer;

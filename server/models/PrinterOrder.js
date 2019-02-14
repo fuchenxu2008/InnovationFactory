@@ -21,10 +21,8 @@ const PrinterOrderSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Printer',
   },
-  timeSlot: {
-    from: String,
-    to: String,
-  },
+  timeSlot: String,
+  guidance: String,
   transactionAmount: Number,
   created_at: {
     type: String,

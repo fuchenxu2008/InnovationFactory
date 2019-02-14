@@ -4,6 +4,7 @@ import { AtButton, AtAvatar } from 'taro-ui'
 import dayjs from 'dayjs'
 import { connect } from '@tarojs/redux'
 import { setUserInfo, authenticateAdmin } from '../../actions/global'
+import { VERSION_CODE } from '../../config';
 
 import './index.scss'
 
@@ -119,7 +120,7 @@ class ProfilePage extends Component {
         }
         {
           <View onClick={this._handleSecretTap} className='secretAdminEntrance'>
-            v0.0.1
+            v{VERSION_CODE}
           </View>
         }
       </View>
