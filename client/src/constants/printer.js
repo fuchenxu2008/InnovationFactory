@@ -1,0 +1,3 @@
+export const GET_ALL_PRINTERS = 'GET_ALL_PRINTERS';
+export const GET_CACHED_PRINTER = 'GET_CACHED_PRINTER';
+export const GET_PRINTER = 'GET_PRINTER';

@@ -4,6 +4,7 @@ import { connect } from '@tarojs/redux'
 import Carousel from '../../components/Carousel'
 import ActivityCard from '../../components/ActivityCard'
 import GradientHeader from '../../components/GradientHeader'
+import PopUpModal from '../../components/PopUpModal'
 import { getAllEvents } from "../../actions/event";
 import { getAllWorkshops } from "../../actions/workshop";
 import { setCurrentCategory } from '../../actions/category';
@@ -59,6 +60,7 @@ class LatestActivityPage extends Component {
 
     return (
       <View className='latestActivityPage'>
+        <PopUpModal />
         <GradientHeader pageTitle={`The latest ${type}`} />
         <View className='latestActivityPage-carousel'>
           <Carousel

@@ -1,0 +1,33 @@
+.popUpModal-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background-color: rgba(20, 20, 20, 0.7);
+}
+
+.popUpModal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 78%;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 0.9rem;
+
+    .modal-content {
+        padding: 9% 9% 5% 9%;
+        font-size: 0.8rem;
+    }
+
+    .modal-button {
+        background-color: rgb(253, 229, 57);
+        padding: 4%;
+        text-align: center;
+    }
+}
+

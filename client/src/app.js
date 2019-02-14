@@ -18,6 +18,7 @@ class App extends Component {
       'pages/index/index',
       'pages/LatestActivityPage/index',
       'pages/ActivityDetailPage/index',
+      'pages/BrowsePrinterPage/index',
       'pages/SignUpPage/index',
       'pages/ProfilePage/index',
       'pages/MyOrderPage/index',
