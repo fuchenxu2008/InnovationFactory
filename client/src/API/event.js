@@ -1,9 +1,16 @@
 import { request, multipartRequest } from '../utils/request';
 import { ROOT_URL } from '../config';
 
-export const getAllEvents = () => {
+export const getInitialEvents = () => {
   return request({
     url: `${ROOT_URL}/api/event`,
+    method: 'GET',
+  })
+}
+
+export const getPaginatedEvents = ({ start, count }) => {
+  return request({
+    url: `${ROOT_URL}/api/event?start=${start}&count=${count}`,
     method: 'GET',
   })
 }

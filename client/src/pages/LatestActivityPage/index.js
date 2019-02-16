@@ -5,7 +5,7 @@ import Carousel from '../../components/Carousel'
 import ActivityCard from '../../components/ActivityCard'
 import GradientHeader from '../../components/GradientHeader'
 import PopUpModal from '../../components/PopUpModal'
-import { getAllEvents } from "../../actions/event";
+import { getInitialEvents } from "../../actions/event";
 import { getAllWorkshops } from "../../actions/workshop";
 import { setCurrentCategory } from '../../actions/category';
 import getEventsUnderCategory from '../../selectors/events_under_category';
@@ -19,7 +19,7 @@ import './index.scss'
   eventCategories: event.eventCategories,
   workshopCategories: workshop.workshopCategories,
 }), (dispatch) => ({
-  getAllEvents: () => dispatch(getAllEvents()),
+  getInitialEvents: () => dispatch(getInitialEvents()),
   getAllWorkshops: () => dispatch(getAllWorkshops()),
   setCurrentCategory: (category) => dispatch(setCurrentCategory(category))
 }))
@@ -30,7 +30,7 @@ class LatestActivityPage extends Component {
 
   componentDidMount() { 
     const { type } = this.$router.params;
-    if (type === 'event') this.props.getAllEvents();
+    if (type === 'event') this.props.getInitialEvents();
     if (type === 'workshop') this.props.getAllWorkshops();
   }
 
@@ -60,7 +60,9 @@ class LatestActivityPage extends Component {
 
     return (
       <View className='latestActivityPage'>
-        <PopUpModal />
+        {
+          // <PopUpModal />
+        }
         <GradientHeader pageTitle={`The latest ${type}`} />
         <View className='latestActivityPage-carousel'>
           <Carousel

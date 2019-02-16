@@ -2,24 +2,22 @@ import {
   ADD_EVENT,
   DELETE_EVENT,
   EDIT_EVENT,
-  GET_ALL_EVENTS,
+  GET_INITIAL_EVENTS,
   GET_CACHED_EVENT,
   GET_EVENT,
 } from '../constants/event';
 
 import * as api from '../API/event'
 
-export const getAllEvents = () => (dispatch) => {
-  api.getAllEvents()
+export const getInitialEvents = () => (dispatch) => {
+  api.getInitialEvents()
     .then(({ data }) => {
       console.log(data);
       if (data.events && data.categories) {
         dispatch({
-          type: GET_ALL_EVENTS,
+          type: GET_INITIAL_EVENTS,
           payload: {
-            events: data.events.sort((a, b) => {
-              return new Date(b.created_at.replace(/-/g, '/')) - new Date(a.created_at.replace(/-/g, '/'));
-            }),
+            events: data.events,
             categories: data.categories,
           }
         })

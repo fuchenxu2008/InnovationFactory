@@ -4,7 +4,7 @@ import { AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import ActivityCard from '../../components/ActivityCard'
 import Carousel from '../../components/Carousel';
-import { getAllEvents, deleteEvent } from "../../actions/event";
+import { getInitialEvents, deleteEvent } from "../../actions/event";
 import { getAllWorkshops, deleteWorkshop } from "../../actions/workshop";
 import { setCurrentCategory } from '../../actions/category';
 import getEventsUnderCategory from '../../selectors/events_under_category';
@@ -20,7 +20,7 @@ import './index.scss'
   workshopCategories: workshop.workshopCategories,
   currentWorkshopCategory: workshop.currentWorkshopCategory,
 }), (dispatch) => ({
-  getAllEvents: () => dispatch(getAllEvents()),
+  getInitialEvents: () => dispatch(getInitialEvents()),
   deleteEvent: (eventid) => dispatch(deleteEvent(eventid)),
   getAllWorkshops: () => dispatch(getAllWorkshops()),
   deleteWorkshop: (workshopid) => dispatch(deleteWorkshop(workshopid)),
@@ -37,7 +37,7 @@ class ManageActivityPage extends Component {
 
   componentDidMount() {
     const { type } = this.$router.params;
-    if (type === 'event') this.props.getAllEvents();
+    if (type === 'event') this.props.getInitialEvents();
     if (type === 'workshop') this.props.getAllWorkshops();
   }
 

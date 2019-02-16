@@ -2,7 +2,7 @@ import {
   ADD_EVENT,
   EDIT_EVENT,
   DELETE_EVENT,
-  GET_ALL_EVENTS,
+  GET_INITIAL_EVENTS,
   GET_EVENT,
   GET_CACHED_EVENT
 } from '../constants/event';
@@ -23,7 +23,7 @@ const INITIAL_STATE = {
 
 export default function event (state = INITIAL_STATE, action) {
   switch (action.type) {
-    case GET_ALL_EVENTS:
+    case GET_INITIAL_EVENTS:
       return {
         ...state,
         allEvents: action.payload.events,
