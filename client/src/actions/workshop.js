@@ -2,24 +2,21 @@ import {
   ADD_WORKSHOP,
   DELETE_WORKSHOP,
   EDIT_WORKSHOP,
-  GET_ALL_WORKSHOPS,
-  GET_CACHED_WORKSHOP,
+  GET_INITIAL_WORKSHOPS,
   GET_WORKSHOP,
 } from '../constants/workshop';
 
 import * as api from '../API/workshop'
 
-export const getAllWorkshops = () => (dispatch) => {
-  api.getAllWorkshops()
+export const getInitialWorkshops = () => (dispatch) => {
+  api.getInitialWorkshops()
     .then(({ data }) => {
       console.log(data);
       if (data.workshops && data.categories) {
         dispatch({
-          type: GET_ALL_WORKSHOPS,
+          type: GET_INITIAL_WORKSHOPS,
           payload: {
-            workshops: data.workshops.sort((a, b) => {
-              return new Date(b.created_at.replace(/-/g, '/')) - new Date(a.created_at.replace(/-/g, '/'));
-            }),
+            workshops: data.workshops,
             categories: data.categories,
           }
         })
@@ -28,29 +25,18 @@ export const getAllWorkshops = () => (dispatch) => {
     .catch(err => console.log(err))
 }
 
-export const getWorkshop = (workshopid) => (dispatch, getState) => {
-  // Get local state cache
-  // If has the workshop, read from cache else fetch from server
-  const { allWorkshops } = getState().workshop;
-  const cachedWorkshop = allWorkshops.filter(workshop => workshop._id === workshopid)[0]
-  if (cachedWorkshop) {
-    dispatch({
-      type: GET_CACHED_WORKSHOP,
-      payload: cachedWorkshop
+export const getWorkshop = (workshopid) => (dispatch) => {
+  api.getWorkshop(workshopid)
+    .then(({ data }) => {
+      console.log(data);
+      if (data.workshop) {
+        dispatch({
+          type: GET_WORKSHOP,
+          payload: data.workshop,
+        })
+      }
     })
-  } else {
-    api.getWorkshop(workshopid)
-      .then(({ data }) => {
-        console.log(data);
-        if (data.workshop) {
-          dispatch({
-            type: GET_WORKSHOP,
-            payload: data.workshop,
-          })
-        }
-      })
-      .catch(err => console.log(err))
-  }
+    .catch(err => console.log(err))
 }
 
 /**
@@ -67,9 +53,14 @@ export const addWorkshop = (workshop) => (dispatch, getState) => {
     .then(({ data }) => {
       console.log(data);
       if (data.workshop) {
+        const category = (data.workshop.category || {})._id;
+        if (!category) throw Error('No category supplied!');
         dispatch({
           type: ADD_WORKSHOP,
-          payload: data.workshop,
+          payload: {
+            workshop: data.workshop,
+            category,
+          }
         })
       }
     })
@@ -83,9 +74,14 @@ export const updateWorkshop = (edition) => (dispatch, getState) => {
     .then(({ data }) => {
       console.log(data);
       if (data.workshop) {
+        const category = (data.workshop.category || {})._id;
+        if (!category) throw Error('No category supplied!');
         dispatch({
           type: EDIT_WORKSHOP,
-          payload: data.workshop,
+          payload: {
+            workshop: data.workshop,
+            category,
+          }
         })
       }
     })
@@ -99,9 +95,14 @@ export const deleteWorkshop = (workshopid) => (dispatch, getState) => {
     .then(({ data }) => {
       console.log(data);
       if (data.workshop) {
+        const category = (data.workshop.category || {})._id;
+        if (!category) throw Error('No category supplied!');
         dispatch({
           type: DELETE_WORKSHOP,
-          payload: data.workshop,
+          payload: {
+            workshop: data.workshop,
+            category,
+          }
         })
       }
     })

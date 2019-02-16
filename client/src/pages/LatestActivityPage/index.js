@@ -6,7 +6,7 @@ import ActivityCard from '../../components/ActivityCard'
 import GradientHeader from '../../components/GradientHeader'
 import PopUpModal from '../../components/PopUpModal'
 import { getInitialEvents } from "../../actions/event";
-import { getAllWorkshops } from "../../actions/workshop";
+import { getInitialWorkshops } from "../../actions/workshop";
 import { setCurrentCategory } from '../../actions/category';
 import getEventsUnderCategory from '../../selectors/events_under_category';
 import getWorkshopsUnderCategory from '../../selectors/workshops_under_category';
@@ -20,7 +20,7 @@ import './index.scss'
   workshopCategories: workshop.workshopCategories,
 }), (dispatch) => ({
   getInitialEvents: () => dispatch(getInitialEvents()),
-  getAllWorkshops: () => dispatch(getAllWorkshops()),
+  getInitialWorkshops: () => dispatch(getInitialWorkshops()),
   setCurrentCategory: (category) => dispatch(setCurrentCategory(category))
 }))
 class LatestActivityPage extends Component {
@@ -31,7 +31,7 @@ class LatestActivityPage extends Component {
   componentDidMount() { 
     const { type } = this.$router.params;
     if (type === 'event') this.props.getInitialEvents();
-    if (type === 'workshop') this.props.getAllWorkshops();
+    if (type === 'workshop') this.props.getInitialWorkshops();
   }
 
   _handleChangeCategory = (category) => {

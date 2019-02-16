@@ -5,7 +5,7 @@ import { connect } from '@tarojs/redux'
 import ActivityCard from '../../components/ActivityCard'
 import Carousel from '../../components/Carousel';
 import { getInitialEvents, deleteEvent } from "../../actions/event";
-import { getAllWorkshops, deleteWorkshop } from "../../actions/workshop";
+import { getInitialWorkshops, deleteWorkshop } from "../../actions/workshop";
 import { setCurrentCategory } from '../../actions/category';
 import getEventsUnderCategory from '../../selectors/events_under_category';
 import getWorkshopsUnderCategory from '../../selectors/workshops_under_category';
@@ -22,7 +22,7 @@ import './index.scss'
 }), (dispatch) => ({
   getInitialEvents: () => dispatch(getInitialEvents()),
   deleteEvent: (eventid) => dispatch(deleteEvent(eventid)),
-  getAllWorkshops: () => dispatch(getAllWorkshops()),
+  getInitialWorkshops: () => dispatch(getInitialWorkshops()),
   deleteWorkshop: (workshopid) => dispatch(deleteWorkshop(workshopid)),
   setCurrentCategory: (category) => dispatch(setCurrentCategory(category)),
 }))
@@ -38,7 +38,7 @@ class ManageActivityPage extends Component {
   componentDidMount() {
     const { type } = this.$router.params;
     if (type === 'event') this.props.getInitialEvents();
-    if (type === 'workshop') this.props.getAllWorkshops();
+    if (type === 'workshop') this.props.getInitialWorkshops();
   }
 
   _manageActivity = () => {

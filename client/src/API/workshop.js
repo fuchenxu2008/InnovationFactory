@@ -1,9 +1,16 @@
 import { request, multipartRequest } from '../utils/request';
 import { ROOT_URL } from '../config';
 
-export const getAllWorkshops = () => {
+export const getInitialWorkshops = () => {
   return request({
     url: `${ROOT_URL}/api/workshop`,
+    method: 'GET',
+  })
+}
+
+export const getPaginatedWorkshops = ({ start, count, category }) => {
+  return request({
+    url: `${ROOT_URL}/api/workshop?start=${start}&count=${count}&category=${category}`,
     method: 'GET',
   })
 }

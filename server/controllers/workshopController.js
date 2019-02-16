@@ -2,14 +2,38 @@ const Workshop = require('../models/Workshop');
 const Category = require('../models/Category');
 
 const getAllWorkshops = (req, res) => {
-  const searchTerm = req.query;
-  Workshop.find(searchTerm).populate('category', ['name', '_id']).exec((err, workshops) => {
-    if (err) return res.status(400).json({ message: 'Error while getting all workshops.', err });
-    return Category.find({ type: 'workshop' }, (err2, categories) => {
-      if (err2) return res.status(400).json({ message: 'Error while getting all categories.', err: err2 });
-      return res.json({ workshops, categories, searchTerm });
+  // If no query variables => app initial load, return 3 from each category
+  if (Object.keys(req.query).length === 0) {
+    return Category.find({ type: 'workshop' }, async (err, categories) => {
+      if (err) return res.status(400).json({ message: 'Error while getting all categories.', err });
+      const workshops = await categories.reduce(async (previousPromise, category) => {
+        const obj = await previousPromise;
+        try {
+          return {
+            ...obj,
+            [category._id]: await Workshop.find({ category: category._id })
+              .limit(3)
+              .populate('category', ['name', '_id'])
+              .sort({ created_at: -1 }),
+          };
+        } catch (error) {
+          return res.status(400).json({ message: 'Error while getting initial workshops.', err: error });
+        }
+      }, Promise.resolve({}));
+      return res.json({ workshops, categories, message: 'Successfully retrieved 3 workshops from each category.' });
     });
-  });
+  }
+  // If has query, return as requested (default all)
+  const { start, count, ...searchTerm } = req.query;
+  return Workshop.find(searchTerm)
+    .skip(start * 1 || 0)
+    .limit(count * 1 || 0)
+    .populate('category', ['name', '_id'])
+    .sort({ created_at: -1 })
+    .exec((err, workshops) => {
+      if (err) return res.status(400).json({ message: 'Error while getting filtered workshops.', err });
+      return res.json({ workshops, searchTerm });
+    });
 };
 
 const getWorkshop = (req, res) => {

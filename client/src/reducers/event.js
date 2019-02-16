@@ -4,7 +4,6 @@ import {
   DELETE_EVENT,
   GET_INITIAL_EVENTS,
   GET_EVENT,
-  GET_CACHED_EVENT
 } from '../constants/event';
 import {
   GET_CACHED_EVENT_CATEGORY,
@@ -15,7 +14,7 @@ import {
 } from '../constants/category';
 
 const INITIAL_STATE = {
-  allEvents: [],
+  allEvents: {},
   currentEvent: null,
   eventCategories: [],
   currentEventCategory: null,
@@ -34,27 +33,30 @@ export default function event (state = INITIAL_STATE, action) {
       return {
         ...state,
         currentEvent: action.payload,
-        allEvents: state.allEvents.concat(action.payload)
-      }
-    case GET_CACHED_EVENT:
-      return {
-        ...state,
-        currentEvent: action.payload,
       }
     case ADD_EVENT:
       return {
         ...state,
-        allEvents: [action.payload, ...state.allEvents]
+        allEvents: {
+          ...state.allEvents,
+          [action.payload.category]: state.allEvents[action.payload.category].concat(action.payload.event)
+        }
       }
     case EDIT_EVENT:
       return {
         ...state,
-        allEvents: state.allEvents.map(e => e._id === action.payload._id ? action.payload : e)
+        allEvents: {
+          ...state.allEvents,
+          [action.payload.category]: state.allEvents[action.payload.category].map(e => e._id === action.payload.event._id ? action.payload.event : e)
+        }
       }
     case DELETE_EVENT:
       return {
         ...state,
-        allEvents: state.allEvents.filter(existingEvent => existingEvent._id !== action.payload._id)
+        allEvents: {
+          ...state.allEvents,
+          [action.payload.category]: state.allEvents[action.payload.category].filter(existingEvent => existingEvent._id !== action.payload.event._id)
+        }
       }
     case GET_EVENT_CATEGORY:
       return {

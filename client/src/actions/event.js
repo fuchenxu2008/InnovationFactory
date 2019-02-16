@@ -3,7 +3,6 @@ import {
   DELETE_EVENT,
   EDIT_EVENT,
   GET_INITIAL_EVENTS,
-  GET_CACHED_EVENT,
   GET_EVENT,
 } from '../constants/event';
 
@@ -26,29 +25,18 @@ export const getInitialEvents = () => (dispatch) => {
     .catch(err => console.log(err))
 }
 
-export const getEvent = (eventid) => (dispatch, getState) => {
-  // Get local state cache
-  // If has the event, read from cache else fetch from server
-  const { allEvents } = getState().event;
-  const cachedEvent = allEvents.filter(event => event._id === eventid)[0]
-  if (cachedEvent) {
-    dispatch({
-      type: GET_CACHED_EVENT,
-      payload: cachedEvent
+export const getEvent = (eventid) => (dispatch) => {
+  api.getEvent(eventid)
+    .then(({ data }) => {
+      console.log(data);
+      if (data.event) {
+        dispatch({
+          type: GET_EVENT,
+          payload: data.event,
+        })
+      }
     })
-  } else {
-    api.getEvent(eventid)
-      .then(({ data }) => {
-        console.log(data);
-        if (data.event) {
-          dispatch({
-            type: GET_EVENT,
-            payload: data.event,
-          })
-        }
-      })
-      .catch(err => console.log(err))
-  }
+    .catch(err => console.log(err))
 }
 
 /**
@@ -65,9 +53,14 @@ export const addEvent = (event) => (dispatch, getState) => {
     .then(({ data }) => {
       console.log(data);
       if (data.event) {
+        const category = (data.event.category || {})._id;
+        if (!category) throw Error('No category supplied!');
         dispatch({
           type: ADD_EVENT,
-          payload: data.event,
+          payload: {
+            event: data.event,
+            category,
+          }
         })
       }
     })
@@ -81,9 +74,14 @@ export const updateEvent = (edition) => (dispatch, getState) => {
     .then(({ data }) => {
       console.log(data);
       if (data.event) {
+        const category = (data.event.category || {})._id;
+        if (!category) throw Error('No category supplied!');
         dispatch({
           type: EDIT_EVENT,
-          payload: data.event,
+          payload: {
+            event: data.event,
+            category,
+          }
         })
       }
     })
@@ -97,9 +95,14 @@ export const deleteEvent = (eventid) => (dispatch, getState) => {
     .then(({ data }) => {
       console.log(data);
       if (data.event) {
+        const category = (data.event.category || {})._id;
+        if (!category) throw Error('No category supplied!');
         dispatch({
           type: DELETE_EVENT,
-          payload: data.event,
+          payload: {
+            event: data.event,
+            category,
+          }
         })
       }
     })
