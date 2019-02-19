@@ -26,7 +26,7 @@ const createPrinterOrder = async (req, res) => {
     if (!moment(dateA).isSame(dateB)) return false;
     const [startA, endA] = intervalA.split('-');
     const [startB, endB] = intervalB.split('-');
-    if (moment(endA, 'HH:mm').isBefore(moment(startB, 'HH:mm')) || moment(endB, 'HH:mm').isBefore(moment(startA, 'HH:mm'))) return false;
+    if (!moment(endA, 'HH:mm').isAfter(moment(startB, 'HH:mm')) || !moment(endB, 'HH:mm').isAfter(moment(startA, 'HH:mm'))) return false;
     return true;
   };
 

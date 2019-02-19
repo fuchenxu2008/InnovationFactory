@@ -1,0 +1,99 @@
+.printer-swiper-item-content {
+    height: 100%;
+}
+
+.printer-card {
+    background-color: rgb(234, 234, 234);
+    box-shadow: 6px 6px 30px rgba(120, 120, 120, 0.35);
+    border-radius: 20px;
+    padding: 3% 8%;
+    margin: 5% 5%;
+}
+
+.printer-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3%;
+}
+
+.printer-intro {
+    display: flex;
+    align-items: center;
+}
+
+.printer-number {
+    margin-right: 20px;
+    font-weight: bold;
+    font-size: 3rem;
+    color: white;
+    text-shadow: 6px 6px 30px rgba(120, 120, 120, 0.35);
+}
+
+.printer-heading {
+    transform: translateY(20%);
+}
+
+.printer-type {
+    font-size: 0.7rem;
+}
+
+.printer-consumables {
+    font-size: 0.6rem;
+    color: rgb(103, 103, 103);
+}
+
+.printer-detail {
+    flex: 0.8;
+    font-size: 0.4rem;
+    color: rgb(103, 103, 103);
+    padding-left: 15px;
+    border-left: 8px solid rgb(253, 191, 45);
+}
+
+.detail-title {
+  font-weight: bold;
+}
+
+.printer-img {
+    width: 100%;
+}
+
+.printer-booking {
+    margin: 1% 5%;
+}
+
+.printer-booking-info {
+    padding: 0 5%;
+}
+
+.printer-full-name {
+    font-weight: bold;
+}
+
+.printer-location {
+    color: rgb(103, 103, 103);
+    font-size: 0.9rem;
+}
+
+.printer-booking-timeslot {
+    background-color: rgb(234, 234, 234);
+    box-shadow: 6px 6px 30px rgba(120, 120, 120, 0.35);
+    border-radius: 20px;
+    padding: 3% 8%;
+    margin: 5% 5%;
+}
+
+.time-picker-group {
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 0.2;
+}
+
+.picker-value {
+  font-size: 32px;
+}
+
+.printer-booking-btn {
+    background-color: rgb(253, 191, 45);
+}
