@@ -27,7 +27,7 @@ class BrowsePrinterPage extends Component {
       <View className='browsePrinterPage'>
         <Swiper
           className='printer-swiper'
-          indicatorColor='white'
+          indicatorColor='rgb(235, 235, 235)'
           indicatorActiveColor='rgb(141, 92, 243)'
           // circular
           indicatorDots

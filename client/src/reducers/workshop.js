@@ -3,6 +3,7 @@ import {
   EDIT_WORKSHOP,
   DELETE_WORKSHOP,
   GET_INITIAL_WORKSHOPS,
+  GET_PAGINATED_WORKSHOPS,
   GET_WORKSHOP,
 } from '../constants/workshop';
 import {
@@ -28,6 +29,14 @@ export default function workshop (state = INITIAL_STATE, action) {
         allWorkshops: action.payload.workshops,
         workshopCategories: action.payload.categories,
         currentWorkshopCategory: action.payload.categories[0],
+      }
+    case GET_PAGINATED_WORKSHOPS:
+      return {
+        ...state,
+        allWorkshops: {
+          ...state.allWorkshops,
+          [action.payload.category]: state.allWorkshops[action.payload.category].concat(action.payload.workshops),
+        }
       }
     case GET_WORKSHOP:
       return {

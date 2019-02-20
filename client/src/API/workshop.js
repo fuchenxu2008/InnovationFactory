@@ -8,7 +8,7 @@ export const getInitialWorkshops = () => {
   })
 }
 
-export const getPaginatedWorkshops = ({ start, count, category }) => {
+export const getPaginatedWorkshops = ({ start, count = 3, category }) => {
   return request({
     url: `${ROOT_URL}/api/workshop?start=${start}&count=${count}&category=${category}`,
     method: 'GET',

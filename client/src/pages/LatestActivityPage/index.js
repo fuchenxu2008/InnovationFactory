@@ -4,9 +4,9 @@ import { connect } from '@tarojs/redux'
 import Carousel from '../../components/Carousel'
 import ActivityCard from '../../components/ActivityCard'
 import GradientHeader from '../../components/GradientHeader'
-import PopUpModal from '../../components/PopUpModal'
-import { getInitialEvents } from "../../actions/event";
-import { getInitialWorkshops } from "../../actions/workshop";
+// import PopUpModal from '../../components/PopUpModal'
+import { getInitialEvents, getPaginatedEvents } from "../../actions/event";
+import { getInitialWorkshops, getPaginatedWorkshops } from "../../actions/workshop";
 import { setCurrentCategory } from '../../actions/category';
 import getEventsUnderCategory from '../../selectors/events_under_category';
 import getWorkshopsUnderCategory from '../../selectors/workshops_under_category';
@@ -17,10 +17,14 @@ import './index.scss'
   allEvents: getEventsUnderCategory(event),
   allWorkshops: getWorkshopsUnderCategory(workshop),
   eventCategories: event.eventCategories,
+  currentEventCategory: event.currentEventCategory,
   workshopCategories: workshop.workshopCategories,
+  currentWorkshopCategory: workshop.currentWorkshopCategory,
 }), (dispatch) => ({
   getInitialEvents: () => dispatch(getInitialEvents()),
+  getPaginatedEvents: (options) => dispatch(getPaginatedEvents(options)),
   getInitialWorkshops: () => dispatch(getInitialWorkshops()),
+  getInitialWorkshops: (options) => dispatch(getPaginatedWorkshops(options)),
   setCurrentCategory: (category) => dispatch(setCurrentCategory(category))
 }))
 class LatestActivityPage extends Component {
@@ -28,10 +32,30 @@ class LatestActivityPage extends Component {
     navigationBarTitleText: '最新活动',
   }
 
+  state = {
+    startIndex: 3,
+  }
+
   componentDidMount() { 
     const { type } = this.$router.params;
     if (type === 'event') this.props.getInitialEvents();
     if (type === 'workshop') this.props.getInitialWorkshops();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ startIndex: nextProps.allEvents.length })
+  }
+
+  _handlePaginationLoad = async() => {
+    const { type } = this.$router.params;
+    if (type === 'event') await this.props.getPaginatedEvents({
+      start: this.state.startIndex,
+      category: (this.props.currentEventCategory || {})._id,
+    });
+    if (type === 'workshop') await this.props.getPaginatedWorkshops({
+      start: this.state.startIndex,
+      category: (this.props.currentWorkshopCategory || {})._id,
+    });
   }
 
   _handleChangeCategory = (category) => {
@@ -74,7 +98,7 @@ class LatestActivityPage extends Component {
           <View className='latestActivityPage-activitylist-heading'>
             <View className='latestActivityPage-activitylist-title'>活动列表</View>
           </View>
-          <ScrollView scrollX scrollWithAnimation>
+          <ScrollView scrollX onScrollToLower={this._handlePaginationLoad} lowerThreshold={1}>
             <View className='latestActivityPage-activitylist'>
               {
                 allActivities.map(activity => (

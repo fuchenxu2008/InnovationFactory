@@ -3,6 +3,7 @@ import {
   EDIT_EVENT,
   DELETE_EVENT,
   GET_INITIAL_EVENTS,
+  GET_PAGINATED_EVENTS,
   GET_EVENT,
 } from '../constants/event';
 import {
@@ -28,6 +29,14 @@ export default function event (state = INITIAL_STATE, action) {
         allEvents: action.payload.events,
         eventCategories: action.payload.categories,
         currentEventCategory: action.payload.categories[0],
+      }
+    case GET_PAGINATED_EVENTS:
+      return {
+        ...state,
+        allEvents: {
+          ...state.allEvents,
+          [action.payload.category]: state.allEvents[action.payload.category].concat(action.payload.events),
+        }
       }
     case GET_EVENT:
       return {

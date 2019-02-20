@@ -3,6 +3,7 @@ import {
   DELETE_WORKSHOP,
   EDIT_WORKSHOP,
   GET_INITIAL_WORKSHOPS,
+  GET_PAGINATED_WORKSHOPS,
   GET_WORKSHOP,
 } from '../constants/workshop';
 
@@ -18,6 +19,23 @@ export const getInitialWorkshops = () => (dispatch) => {
           payload: {
             workshops: data.workshops,
             categories: data.categories,
+          }
+        })
+      }
+    })
+    .catch(err => console.log(err))
+}
+
+export const getPaginatedWorkshops = ({ start, category }) => (dispatch) => {
+  api.getPaginatedWorkshops({ start, category })
+    .then(({ data }) => {
+      console.log(data);
+      if (data.workshops) {
+        dispatch({
+          type: GET_PAGINATED_WORKSHOPS,
+          payload: {
+            workshops: data.workshops,
+            category,
           }
         })
       }

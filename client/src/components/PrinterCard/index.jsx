@@ -1,22 +1,27 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Image, ScrollView, Button, Text, Picker } from '@tarojs/components';
+import { View, Image, ScrollView, Text, Picker } from '@tarojs/components';
+import { AtIcon } from 'taro-ui'
 import { ROOT_URL } from '../../config'
 
 import './index.scss';
+
+const intervalSet = ['09:00-10:00', '10:00-11:00', '11:00-12:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00'];
+const guideOptions = ['NEED', 'NO NEED'];
 
 class PrinterCard extends Component {
   state = {
     bookDate: null,
     bookPeriod: null,
+    guidance: 'NEED',
   }
 
-  _handleTimePickerChange = (field, e) => this.setState({
-    [field]: e.detail.value
-  })
+  _handleDatePickerChange = (e) => this.setState({ bookDate: e.detail.value })
+  _handlePeriodPickerChange = (e) => this.setState({ bookPeriod: intervalSet[e.detail.value] })
+  _handleGuidePickerChange = (e) => this.setState({ guidance: guideOptions[e.detail.value] })
 
   render() {
     const { printer, index } = this.props;
-    const { bookDate, bookPeriod } = this.state;
+    const { bookDate, bookPeriod, guidance } = this.state;
 
     return (
       <ScrollView className='printer-swiper-item-content' scrollY>
@@ -36,7 +41,7 @@ class PrinterCard extends Component {
               <View><Text className='detail-title'>实际应用：</Text>{printer.application}</View>
             </View>
           </View>
-          <Image src={`${ROOT_URL}${printer.albumPicPath}`} mode='widthFix' className='printer-img' />
+          <Image src={`${ROOT_URL}${printer.albumPicPath}`} mode='aspectFit' className='printer-img' />
         </View>
         <View className='printer-booking'>
           <View className='printer-booking-info'>
@@ -44,16 +49,37 @@ class PrinterCard extends Component {
             <View className='printer-location'>Location: South Campus IR 2F</View>
           </View>
           <View className='printer-booking-timeslot'>
-            <View className='time-picker-group'>
-                <Picker mode='date' onChange={this._handleTimePickerChange.bind(this, 'bookDate')}>
-                  <View className='picker-value'>{bookDate ? bookDate : 'Select'}</View>
-                </Picker>
-                <Picker mode='time' onChange={this._handleTimePickerChange.bind(this, 'bookPeriod')}>
-                  <View className='picker-value'>{bookPeriod ? bookPeriod : 'Select'}</View>
-                </Picker>
-              </View>
+            <View className='picker-group'>
+              <Text className='picker-title'>TIME</Text>
+              <Picker mode='date' onChange={this._handleDatePickerChange}>
+                <View className='picker-value'>
+                  {bookDate ? bookDate : 'Select'}
+                  <AtIcon value='chevron-down' color='grey' />
+                </View>
+              </Picker>
+              <Picker mode='selector' range={intervalSet} onChange={this._handlePeriodPickerChange}>
+                <View className='picker-value'>
+                  {bookPeriod ? bookPeriod : 'Select'}
+                  <AtIcon value='chevron-down' color='grey' />
+                </View>
+              </Picker>
+            </View>
+            <View className='picker-group'>
+              <Text className='picker-title'>GUIDANCE</Text>
+              <Picker mode='selector' range={guideOptions} onChange={this._handleGuidePickerChange}>
+                <View className='picker-value'>
+                  {guidance}
+                  <AtIcon value='chevron-down' color='grey' />
+                </View>
+              </Picker>
+            </View>
           </View>
-          <Button className='printer-booking-btn'>(Book) Under construction</Button>
+          <View className='printer-booking-btn-section'>
+            <View className='printer-booking-btn'>
+              <AtIcon value='shopping-cart' color='black' size={30} />
+              <Text>FREE</Text>
+            </View>
+          </View>
         </View>
       </ScrollView>
     )

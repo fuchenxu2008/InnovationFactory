@@ -3,6 +3,7 @@ import {
   DELETE_EVENT,
   EDIT_EVENT,
   GET_INITIAL_EVENTS,
+  GET_PAGINATED_EVENTS,
   GET_EVENT,
 } from '../constants/event';
 
@@ -18,6 +19,23 @@ export const getInitialEvents = () => (dispatch) => {
           payload: {
             events: data.events,
             categories: data.categories,
+          }
+        })
+      }
+    })
+    .catch(err => console.log(err))
+}
+
+export const getPaginatedEvents = ({ start, category }) => (dispatch) => {
+  api.getPaginatedEvents({ start, category })
+    .then(({ data }) => {
+      console.log(data);
+      if (data.events) {
+        dispatch({
+          type: GET_PAGINATED_EVENTS,
+          payload: {
+            events: data.events,
+            category,
           }
         })
       }

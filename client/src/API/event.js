@@ -8,7 +8,7 @@ export const getInitialEvents = () => {
   })
 }
 
-export const getPaginatedEvents = ({ start, count, category }) => {
+export const getPaginatedEvents = ({ start, count = 3, category }) => {
   return request({
     url: `${ROOT_URL}/api/event?start=${start}&count=${count}&category=${category}`,
     method: 'GET',

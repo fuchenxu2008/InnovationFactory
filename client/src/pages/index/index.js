@@ -26,7 +26,7 @@ class Index extends Component {
     return (
       <View className='index'>
         <SearchBar fixed />
-        <View className='entrycards-section'>
+        <View className='entrycards-section'>          
           <EntryCard
             img={require('../../assets/images/latestEvent.png')}
             titleZH='最新活动'
