@@ -10,7 +10,7 @@ import {
 import * as api from '../API/event'
 
 export const getInitialEvents = () => (dispatch) => {
-  api.getInitialEvents()
+  return api.getInitialEvents()
     .then(({ data }) => {
       console.log(data);
       if (data.events && data.categories) {
@@ -27,7 +27,7 @@ export const getInitialEvents = () => (dispatch) => {
 }
 
 export const getPaginatedEvents = ({ start, category }) => (dispatch) => {
-  api.getPaginatedEvents({ start, category })
+  return api.getPaginatedEvents({ start, category })
     .then(({ data }) => {
       console.log(data);
       if (data.events) {
@@ -44,7 +44,7 @@ export const getPaginatedEvents = ({ start, category }) => (dispatch) => {
 }
 
 export const getEvent = (eventid) => (dispatch) => {
-  api.getEvent(eventid)
+  return api.getEvent(eventid)
     .then(({ data }) => {
       console.log(data);
       if (data.event) {

@@ -10,7 +10,7 @@ import {
 import * as api from '../API/workshop'
 
 export const getInitialWorkshops = () => (dispatch) => {
-  api.getInitialWorkshops()
+  return api.getInitialWorkshops()
     .then(({ data }) => {
       console.log(data);
       if (data.workshops && data.categories) {
@@ -27,7 +27,7 @@ export const getInitialWorkshops = () => (dispatch) => {
 }
 
 export const getPaginatedWorkshops = ({ start, category }) => (dispatch) => {
-  api.getPaginatedWorkshops({ start, category })
+  return api.getPaginatedWorkshops({ start, category })
     .then(({ data }) => {
       console.log(data);
       if (data.workshops) {
@@ -44,7 +44,7 @@ export const getPaginatedWorkshops = ({ start, category }) => (dispatch) => {
 }
 
 export const getWorkshop = (workshopid) => (dispatch) => {
-  api.getWorkshop(workshopid)
+  return api.getWorkshop(workshopid)
     .then(({ data }) => {
       console.log(data);
       if (data.workshop) {

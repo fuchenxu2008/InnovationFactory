@@ -3,6 +3,7 @@ import { View, Image, Picker, Text } from '@tarojs/components';
 import { AtInput, AtForm, AtButton, AtSwitch, AtTextarea, AtIcon, AtFloatLayout } from 'taro-ui'
 import dayjs from 'dayjs'
 import preset from './preset'
+import WxValidate from '../../utils/wxValidate'
 import { ROOT_URL } from '../../config'
 
 import './index.scss';
@@ -36,7 +37,8 @@ class AdminActivityForm extends Component {
   }
 
   componentDidMount() {
-    if (this.props.activity) this._readActivityToUpdate(this.props.activity);    
+    if (this.props.activity) this._readActivityToUpdate(this.props.activity);
+    this._initValidate();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,6 +71,56 @@ class AdminActivityForm extends Component {
     }))
   }
 
+  _initValidate = () => {
+    const rules = {
+      albumPicPath: {
+        required: true,
+      },
+      title: {
+        required: true,
+      },
+      subtitle: {
+        required: true,
+      },
+      category: {
+        required: true,
+      },
+      desc: {
+        required: true,
+      },
+      address: {
+        required: true,
+      },
+      linkToArticle: {
+        url: true,
+      }
+    };
+    const messages = {
+      albumPicPath: {
+        required: 'Please upload a cover image',
+      },
+      title: {
+        required: 'Please input title',
+      },
+      subtitle: {
+        required: 'Please input subtitle',
+      },
+      category: {
+        required: 'Please select category',
+      },
+      desc: {
+        required: 'Please input description',
+      },
+      address: {
+        required: 'Please input address',
+      },
+      linkToArticle: {
+        url: 'Please enter a valid URL',
+      }
+    };
+    this.WxValidate = new WxValidate(rules, messages);
+  }
+
   _handleFormSubmit = () => {
     const {
       albumPicPath,
@@ -92,16 +144,12 @@ class AdminActivityForm extends Component {
       formFields,
     } = this.state;
 
-    if (!albumPicPath) return Taro.atMessage({
-      'message': 'Must upload a cover image!',
-      'type': 'error',
-    })
     const activity = {
       albumPicPath,
       title,
       subtitle,
       desc,
-      category: category._id,
+      category: (category || {})._id,
       startTime: `${startDate} ${startTime}`,
       endTime: `${endDate} ${endTime}`,
       signupFrom: `${signupFromDate} ${signupFromTime}`,
@@ -113,7 +161,14 @@ class AdminActivityForm extends Component {
       tickets,
       formFields,
     }
-    console.log('activity:', activity);
+
+    if (!this.WxValidate.checkForm(activity)) {
+      const error = this.WxValidate.errorList[0];
+      return Taro.atMessage({
+        message: error.msg,
+        type: 'error',
+      })
+    }
     this.props.onSubmitActivity(activity);
   }
 
@@ -151,17 +206,16 @@ class AdminActivityForm extends Component {
     return { tickets }
   })
 
-  _handleOpenSelectModel = () => this.setState({ modalOpened: true })
-  _handleCloseSelectModel = () => this.setState({ modalOpened: false })
+  _handleToggleSelectmodal = () => this.setState((prevState) => ({ modalOpened: !prevState.modalOpened }))
 
   _handleAddPreset = (presetField, alreadyExist) => {
     if (alreadyExist) return;
-    this._handleCloseSelectModel();
+    this._handleToggleSelectmodal();
     this._handleAddFormField(presetField);
   }
 
   _handleClickNewField = () => {
-    this._handleCloseSelectModel();
+    this._handleToggleSelectmodal();
     this._handleAddFormField();
   }
 
@@ -385,7 +439,7 @@ class AdminActivityForm extends Component {
             <View className='formfield-section'>
               <View className='formfield'>
                 <View className='input-title'>Form Fields</View>
-                <AtIcon value='add-circle' onClick={this._handleOpenSelectModel} />
+                <AtIcon value='add-circle' onClick={this._handleToggleSelectmodal} />
               </View>
               {
                 formFields.map((formField, i) => (
@@ -418,7 +472,7 @@ class AdminActivityForm extends Component {
                   </View>
                 ))
               }
-              <AtFloatLayout isOpened={modalOpened} title='Select Preset Form Fields' onClose={this._handleCloseSelectModel} customStyle={{ display: 'flex' }}>
+              <AtFloatLayout isOpened={modalOpened} title='Select Preset Form Fields' onClose={this._handleToggleSelectmodal} customStyle={{ display: 'flex' }}>
                 <View className='preset-list'>
                   {
                     preset.map((presetFormField, i) => {

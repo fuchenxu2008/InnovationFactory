@@ -1,6 +1,6 @@
 const EventOrder = require('../models/EventOrder');
 const { sendOrderSuccessNotification } = require('./notificationController');
-const { sendScheduledReminder } = require('../middlewares/cronJobs/activityReminder');
+const { sendScheduledReminder } = require('../utils/cronJobs/activityReminder');
 
 const createEventOrder = (req, res) => {
   const { order } = req.body;

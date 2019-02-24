@@ -1,8 +1,7 @@
-const moment = require('moment-timezone');
 const PrinterOrder = require('../models/PrinterOrder');
-const Printer = require('../models/Printer');
+// const Printer = require('../models/Printer');
 // const { sendOrderSuccessNotification } = require('./notificationController');
-// const { sendScheduledReminder } = require('../middlewares/cronJobs/activityReminder');
+// const { sendScheduledReminder } = require('../utils/cronJobs/activityReminder');
 
 const createPrinterOrder = async (req, res) => {
   /**
@@ -16,39 +15,16 @@ const createPrinterOrder = async (req, res) => {
    *  guidance: string,
    * }
    */
-
-  /**
-   * Util functions
-   */
-  const hasConflict = (timeA, timeB) => {
-    const [dateA, intervalA] = timeA.split(' ');
-    const [dateB, intervalB] = timeB.split(' ');
-    if (!moment(dateA).isSame(dateB)) return false;
-    const [startA, endA] = intervalA.split('-');
-    const [startB, endB] = intervalB.split('-');
-    if (!moment(endA, 'HH:mm').isAfter(moment(startB, 'HH:mm')) || !moment(endB, 'HH:mm').isAfter(moment(startA, 'HH:mm'))) return false;
-    return true;
-  };
-
-  const isPrinterFree = (wantedPrinter, newOrder, existingOrders) => {
-    const occupiedNum = existingOrders
-      .filter(existingOrder => hasConflict(existingOrder.timeSlot, newOrder.timeSlot))
-      .length;
-    return (wantedPrinter.quantity || 0) - occupiedNum > 0;
-  };
-
   const { order } = req.body;
 
-  let printer;
-  let orders;
-  try {
-    printer = await Printer.findById(order.printer);
-    orders = await PrinterOrder.find({ printer: order.printer });
-  } catch (err) {
-    return res.status(400).json({ message: 'Error while finding printers and orders', err });
-  }
+  // let printer;
+  // try {
+  //   printer = await Printer.findById(order.printer);
+  // } catch (err) {
+  //   return res.status(400).json({ message: 'Error while finding printers and orders', err });
+  // }
 
-  if (!isPrinterFree(printer, order, orders)) return res.status(400).json({ message: 'Printer occupied at that time, please try other timeslots.' });
+  // if (!isPrinterFree(printer, order, orders)) return res.status(400).json({ message: 'Printer occupied at that time, please try other timeslots.' });
 
   return PrinterOrder.create(order, (err, newOrder) => {
     if (err) return res.status(400).json({ message: 'Error while creating printerOrder', err });

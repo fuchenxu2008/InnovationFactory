@@ -10,8 +10,8 @@ const server = require('http').Server(app);
 
 const { port, mongoURL } = require('./config');
 const setRouter = require('./routes');
-const { accessTokenManager } = require('./middlewares/cronJobs/getAccessToken');
-const { registerAllReminderTasks } = require('./middlewares/cronJobs/activityReminder');
+const { accessTokenManager } = require('./utils/cronJobs/getAccessToken');
+const { registerAllReminderTasks } = require('./utils/cronJobs/activityReminder');
 
 mongoose.connect(mongoURL, {
   useCreateIndex: true,

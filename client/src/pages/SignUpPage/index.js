@@ -1,10 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Picker, Button, Form } from '@tarojs/components'
-import { AtInput } from 'taro-ui'
+import { AtInput, AtMessage } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { getEvent } from '../../actions/event'
 import { getWorkshop } from '../../actions/workshop'
 import { submitOrder } from '../../actions/order'
+import WxValidate from '../../utils/wxValidate'
 
 import './index.scss'
 
@@ -25,19 +26,50 @@ class SignUpPage extends Component {
   }
 
   state = {
-    Name: '',
-    Gender: 'Please Select',
-    Age: '',
+    currentActivity: null,
+    form: {
+      name: '',
+      gender: '',
+      age: '',
+    }
   }
 
   formId = []
 
   componentDidMount() {
     const { id, type } = this.$router.params;
-    if (id) {
-      if (type === 'event') this.props.getEvent(id);
-      if (type === 'workshop') this.props.getWorkshop(id);
-    }
+    if (!id) return;
+    if (type === 'event')
+      this.props.getEvent(id).then(() => {
+        if (this.props.currentEvent) {
+          this.setState({ currentActivity: this.props.currentEvent });
+          this._initValidate(this.props.currentEvent.formFields);
+        }
+      })
+    if (type === 'workshop')
+      this.props.getWorkshop(id).then(() => {
+        if (this.props.currentWorkshop) {
+          this.setState({ currentActivity: this.props.currentWorkshop });
+          this._initValidate(this.props.currentWorkshop.formFields);
+        }
+      })
+  }
+
+  _initValidate = (customizedFields) => {
+    const formFields = Object.keys(this.state.form).map(field => ({ field, required: true })).concat(customizedFields);
+    const rules = formFields.reduce((acc, formfield) => ({
+      ...acc,
+      [formfield.field]: {
+        required: formfield.required
+      }
+    }), {});
+    const messages = formFields.reduce((acc, formfield) => ({
+      ...acc,
+      [formfield.field]: {
+        required: `Please input ${formfield.field}`
+      }
+    }), {});
+    this.WxValidate = new WxValidate(rules, messages);
   }
 
   /**
@@ -47,19 +79,21 @@ class SignUpPage extends Component {
     const newFormId = e.detail.formId;
     if (newFormId === 'the formId is a mock one') return console.log('Stop on test'); // Stop if run on simulator
     this.formId.push(newFormId);
-    const { Name, Gender, Age } = this.state;
+    const { currentActivity, form } = this.state;
     if (this.formId.length < 2) return; // Stop if not enough form_id
     // Type of order
     const { type } = this.$router.params;
-    let currentActivity;
-    if (type === 'event') currentActivity = this.props.currentEvent;
-    if (type === 'workshop') currentActivity = this.props.currentWorkshop;
-    const { formFields, _id } = currentActivity || {};
+    const { _id } = currentActivity || {};
     const currentUser = this.props.currentUser || {};
     // Initialize form and loop to add fields
-    const form = { Name, Gender, Age };
-    const customizedFields = formFields.map(formfield => formfield.field);
-    customizedFields.forEach(field => form[field] = this.state[field] || '');
+    if (!this.WxValidate.checkForm(form)) {
+      const error = this.WxValidate.errorList[0];
+      return Taro.atMessage({
+        message: error.msg,
+        type: 'error',
+      })
+    }
+    return console.log(form);
     // Create order object
     const order = {
       formId: this.formId,
@@ -71,26 +105,30 @@ class SignUpPage extends Component {
       .then(() => Taro.navigateBack())
   }
 
-  _handleInputChange = (field, val) => this.setState({
-    [field]: val
-  })
+  _handleInputChange = (field, val) => this.setState((prevState) => ({
+    form: {
+      ...prevState.form,
+      [field]: val
+    }
+  }))
 
-  _handleGenderChange = (e) => this.setState({
-    Gender: genderSet[e.detail.value]
-  })
+  _handleGenderChange = (e) => this.setState((prevState) => ({
+    form: {
+      ...prevState.form,
+      gender: genderSet[e.detail.value]
+    }
+  }))
 
   render () {
     const { type } = this.$router.params;
-    let currentActivity;
-    if (type === 'event') currentActivity = this.props.currentEvent;
-    if (type === 'workshop') currentActivity = this.props.currentWorkshop;
+    const { currentActivity, form } = this.state;
     if (!currentActivity) return null;
 
     const { formFields } = currentActivity;
-    const { Name, Gender, Age } = this.state;
 
     return (
       <View className='signUpPage'>
+        <AtMessage />
         <View className='page-title'>Sign Up {type}</View>
         <Form
           onSubmit={this._handleFormSubmit}
@@ -99,22 +137,22 @@ class SignUpPage extends Component {
           <AtInput
             title='Name'
             type='text'
-            value={Name}
-            onChange={this._handleInputChange.bind(this, 'Name')}
+            value={form.name}
+            onChange={this._handleInputChange.bind(this, 'name')}
           />
           <View className='picker-section'>
             <View className='picker-title'>Gender</View>
             <Picker mode='selector' range={genderSet} onChange={this._handleGenderChange}>
               <View className='picker'>
-                <View className='picker-value'>{Gender}</View>
+                <View className='picker-value'>{form.gender ? form.gender : 'Please Select'}</View>
               </View>
             </Picker>
           </View>
           <AtInput
             title='Age'
             type='number'
-            value={Age}
-            onChange={this._handleInputChange.bind(this, 'Age')}
+            value={form.age}
+            onChange={this._handleInputChange.bind(this, 'age')}
           />
           {
             formFields.map((formfield, i) => (

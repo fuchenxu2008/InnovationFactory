@@ -4,7 +4,7 @@ const moment = require('moment-timezone');
 const fs = require('fs');
 const path = require('path');
 const { APPID, APPSECRET } = require('../../config');
-const readJSON = require('../readJSON');
+const readJSON = require('../../utils/readJSON');
 
 const getAccessToken = async () => {
   const { data } = await axios.get(`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${APPID}&secret=${APPSECRET}`);

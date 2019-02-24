@@ -1,6 +1,6 @@
 export default [
     {
-      field: 'Phone',
+      field: 'phone',
       fieldType: 'phone',
       required: false
     },
@@ -10,32 +10,32 @@ export default [
       required: false
     },
     {
-      field: 'Email',
+      field: 'email',
       fieldType: 'text',
       required: false
     },
     {
-      field: 'Major',
+      field: 'major',
       fieldType: 'text',
       required: false
     },
     {
-      field: 'School',
+      field: 'school',
       fieldType: 'text',
       required: false
     },
     {
-      field: 'Company',
+      field: 'company',
       fieldType: 'text',
       required: false
     },
     {
-      field: 'Grade',
+      field: 'grade',
       fieldType: 'text',
       required: false
     },
     {
-      field: 'StudentID',
+      field: 'studentId',
       fieldType: 'number',
       required: false
     },

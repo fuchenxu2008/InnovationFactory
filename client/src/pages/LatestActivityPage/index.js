@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 import Carousel from '../../components/Carousel'
 import ActivityCard from '../../components/ActivityCard'
 import GradientHeader from '../../components/GradientHeader'
-// import PopUpModal from '../../components/PopUpModal'
+import PopUpModal from '../../components/PopUpModal'
 import { getInitialEvents, getPaginatedEvents } from "../../actions/event";
 import { getInitialWorkshops, getPaginatedWorkshops } from "../../actions/workshop";
 import { setCurrentCategory } from '../../actions/category';
@@ -24,7 +24,7 @@ import './index.scss'
   getInitialEvents: () => dispatch(getInitialEvents()),
   getPaginatedEvents: (options) => dispatch(getPaginatedEvents(options)),
   getInitialWorkshops: () => dispatch(getInitialWorkshops()),
-  getInitialWorkshops: (options) => dispatch(getPaginatedWorkshops(options)),
+  getPaginatedWorkshops: (options) => dispatch(getPaginatedWorkshops(options)),
   setCurrentCategory: (category) => dispatch(setCurrentCategory(category))
 }))
 class LatestActivityPage extends Component {
@@ -34,6 +34,7 @@ class LatestActivityPage extends Component {
 
   state = {
     startIndex: 3,
+    showModal: true,
   }
 
   componentDidMount() { 
@@ -69,6 +70,8 @@ class LatestActivityPage extends Component {
     })
   }
 
+  _handleCloseModal = () => this.setState({ showModal: false })
+
   render () {
     const { type } = this.$router.params;
     let allActivities = [];
@@ -85,7 +88,8 @@ class LatestActivityPage extends Component {
     return (
       <View className='latestActivityPage'>
         {
-          // <PopUpModal />
+          this.state.showModal &&
+          <PopUpModal onClose={this._handleCloseModal} />
         }
         <GradientHeader pageTitle={`The latest ${type}`} />
         <View className='latestActivityPage-carousel'>

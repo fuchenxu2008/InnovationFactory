@@ -1,6 +1,6 @@
 const WorkshopOrder = require('../models/WorkshopOrder');
 const { sendOrderSuccessNotification } = require('./notificationController');
-const { sendScheduledReminder } = require('../middlewares/cronJobs/activityReminder');
+const { sendScheduledReminder } = require('../utils/cronJobs/activityReminder');
 
 const createWorkshopOrder = (req, res) => {
   const { order } = req.body;

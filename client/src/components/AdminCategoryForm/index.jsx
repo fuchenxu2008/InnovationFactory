@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components';
 import { AtInput, AtForm, AtButton, AtTextarea, AtIcon } from 'taro-ui'
+import WxValidate from '../../utils/wxValidate'
 import { ROOT_URL } from '../../config'
 
 import './index.scss';
@@ -13,7 +14,8 @@ class AdminCategoryForm extends Component {
   }
 
   componentDidMount() {
-    if (this.props.category) this._readActivityToUpdate(this.props.category);    
+    if (this.props.category) this._readActivityToUpdate(this.props.category);
+    this._initValidate();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -29,24 +31,48 @@ class AdminCategoryForm extends Component {
     }))
   }
 
+  _initValidate = () => {
+    const rules = {
+      albumPicPath: {
+        required: true,
+      },
+      name: {
+        required: true,
+      },
+      desc: {
+        required: true,
+      },
+    };
+    const messages = {
+      albumPicPath: {
+        required: 'Please upload a cover image',
+      },
+      name: {
+        required: 'Please input category name',
+      },
+      desc: {
+        required: 'Please input category description',
+      },
+    };
+    this.WxValidate = new WxValidate(rules, messages);
+  }
+
   _handleFormSubmit = () => {
     const { name, desc, albumPicPath } = this.state;
-
-    if (!albumPicPath) return Taro.atMessage({
-      'message': 'Must upload a cover image!',
-      'type': 'error',
-    })
     const category = { name, desc, albumPicPath };
-    console.log('category:', category);
+    if (!this.WxValidate.checkForm(category)) {
+      const error = this.WxValidate.errorList[0];
+      return Taro.atMessage({
+        message: error.msg,
+        type: 'error',
+      })
+    }
     this.props.onSubmitCategory(category);
   }
 
   _handleUploadImage = () => {
     Taro.chooseImage()
-      .then(res => {
-        console.log(res);
-        this.setState({ albumPicPath: res.tempFilePaths[0] })
-      })
+      .then(res => this.setState({ albumPicPath: res.tempFilePaths[0] }))
       .catch((err) => console.log(err))
   }
 

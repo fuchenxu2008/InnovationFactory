@@ -1,6 +1,6 @@
 const axios = require('axios');
-const readJSON = require('../middlewares/readJSON');
-const { getAccessToken } = require('../middlewares/cronJobs/getAccessToken');
+const readJSON = require('../utils/readJSON');
+const { getAccessToken } = require('../utils/cronJobs/getAccessToken');
 
 // eslint-disable-next-line
 const sendTemplateMessage = async ({ touser, template_id, form_id, page, data }) => {
