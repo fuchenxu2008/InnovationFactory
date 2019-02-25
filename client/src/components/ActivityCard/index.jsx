@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components';
+import 'animate.css';
 import { ROOT_URL } from '../../config/index';
 import './index.scss';
 
@@ -9,7 +10,7 @@ class ActivityCard extends Component {
     const { _id, albumPicPath, title, subtitle, startTime } = this.props.activity;
     return (
       <View
-        className='activitycard'
+        className='activitycard animated fadeInDown'
         onClick={this.props.onClick.bind(this, _id)}
       >
         {

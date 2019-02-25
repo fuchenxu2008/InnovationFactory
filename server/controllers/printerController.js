@@ -1,10 +1,24 @@
+const moment = require('moment-timezone');
 const Printer = require('../models/Printer');
+const PrinterOrder = require('../models/PrinterOrder');
+const { generateTimeSlots } = require('../utils/printerDetect');
 
 const getAllPrinters = (req, res) => {
   const searchTerm = req.query;
-  Printer.find(searchTerm, (err, printers) => {
-    if (err) return res.status(400).json({ message: 'Error while getting all printers.', err });
-    return res.json({ printers, searchTerm });
+  PrinterOrder.find({
+    timeSlot: { $gte: moment().format('YYYY-MM-DD') },
+  }, (err, printerOrders) => {
+    Printer.find(searchTerm, (err2, docs) => {
+      if (err2) return res.status(400).json({ message: 'Error while getting all printers.', err: err2 });
+      const printers = docs.map(printer => ({
+        ...printer.toObject(),
+        timeSlot: generateTimeSlots(
+          printer,
+          printerOrders.filter(order => order.printer.equals(printer._id)),
+        ), // eslint-disable-line
+      }));
+      return res.json({ printers, searchTerm });
+    });
   });
 };
 

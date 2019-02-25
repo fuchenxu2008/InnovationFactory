@@ -5,7 +5,6 @@ import { ROOT_URL } from '../../config'
 
 import './index.scss';
 
-const intervalSet = ['09:00-10:00', '10:00-11:00', '11:00-12:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00'];
 const guideOptions = ['NEED', 'NO NEED'];
 
 class PrinterCard extends Component {
@@ -15,12 +14,26 @@ class PrinterCard extends Component {
     guidance: 'NEED',
   }
 
-  _handleDatePickerChange = (e) => this.setState({ bookDate: e.detail.value })
-  _handlePeriodPickerChange = (e) => this.setState({ bookPeriod: intervalSet[e.detail.value] })
+  _handleDatePickerChange = (e) => {
+    const { timeSlot } = this.props.printer || {};
+    this.setState({
+      bookDate: Object.keys(timeSlot || {})[e.detail.value]
+    })
+  }
+
+  _handlePeriodPickerChange = (e) => {
+    const { timeSlot } = this.props.printer || {};
+    const { bookDate } = this.state;
+    this.setState({
+      bookPeriod: (timeSlot[bookDate] || [])[e.detail.value]
+    });
+  }
+
   _handleGuidePickerChange = (e) => this.setState({ guidance: guideOptions[e.detail.value] })
 
   render() {
     const { printer, index } = this.props;
+    if (!printer) return null;
     const { bookDate, bookPeriod, guidance } = this.state;
 
     return (
@@ -51,13 +64,13 @@ class PrinterCard extends Component {
           <View className='printer-booking-timeslot'>
             <View className='picker-group'>
               <Text className='picker-title'>TIME</Text>
-              <Picker mode='date' onChange={this._handleDatePickerChange}>
+              <Picker mode='selector' range={Object.keys(printer.timeSlot)} onChange={this._handleDatePickerChange}>
                 <View className='picker-value'>
                   {bookDate ? bookDate : 'Select'}
                   <AtIcon value='chevron-down' color='grey' />
                 </View>
               </Picker>
-              <Picker mode='selector' range={intervalSet} onChange={this._handlePeriodPickerChange}>
+              <Picker mode='selector' range={(printer.timeSlot|| {})[bookDate]} onChange={this._handlePeriodPickerChange}>
                 <View className='picker-value'>
                   {bookPeriod ? bookPeriod : 'Select'}
                   <AtIcon value='chevron-down' color='grey' />

@@ -88,8 +88,8 @@ class LatestActivityPage extends Component {
     return (
       <View className='latestActivityPage'>
         {
-          this.state.showModal &&
-          <PopUpModal onClose={this._handleCloseModal} />
+          // this.state.showModal &&
+          // <PopUpModal onClose={this._handleCloseModal} />
         }
         <GradientHeader pageTitle={`The latest ${type}`} />
         <View className='latestActivityPage-carousel'>
