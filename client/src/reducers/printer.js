@@ -1,7 +1,7 @@
 import {
-  GET_ALL_PRINTERS,
+  GET_ALL_PRINTERS_SUCCESS,
   GET_CACHED_PRINTER,
-  GET_PRINTER,
+  GET_PRINTER_SUCCESS,
 } from '../constants/printer';
 
 const INITIAL_STATE = {
@@ -11,12 +11,12 @@ const INITIAL_STATE = {
 
 export default function printer (state = INITIAL_STATE, action) {
   switch (action.type) {
-    case GET_ALL_PRINTERS:
+    case GET_ALL_PRINTERS_SUCCESS:
       return {
         ...state,
         allPrinters: action.payload,
       }
-    case GET_PRINTER:
+    case GET_PRINTER_SUCCESS:
       return {
         ...state,
         currentPrinter: action.payload,

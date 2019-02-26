@@ -1,5 +1,5 @@
 import {
-  GET_MY_ORDERS,
+  GET_MY_ORDERS_SUCCESS,
 } from '../constants/order';
 
 const INITIAL_STATE = {
@@ -13,7 +13,7 @@ const INITIAL_STATE = {
 
 export default function event(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case GET_MY_ORDERS:
+    case GET_MY_ORDERS_SUCCESS:
       return {
         ...state,
         myOrders: {

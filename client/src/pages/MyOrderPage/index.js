@@ -4,21 +4,21 @@ import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { getMyOrders } from '../../actions/order'
 import OrderCard from '../../components/OrderCard'
+import LoadingIndicator from '../../components/LoadingIndicator'
+import createLoadingSelector from '../../selectors/loadingSelector'
+
 import './index.scss'
 
-@connect(({ global, order }) => ({
+@connect(({ global, order, loading }) => ({
   currentUser: global.currentUser,
   myOrders: order.myOrders,
+  isFetching: createLoadingSelector(['GET_MY_ORDERS'])(loading),
 }), (dispatch) => ({
   getMyOrders: (type) => dispatch(getMyOrders(type))
 }))
 class MyOrderPage extends Component {
   config = {
     navigationBarTitleText: '我的订单'
-  }
-
-  state = {
-    
   }
 
   componentDidMount() {
@@ -35,6 +35,10 @@ class MyOrderPage extends Component {
 
     return (
       <View className='myOrderPage'>
+        {
+          this.props.isFetching &&
+          <LoadingIndicator />
+        }
         <View className='myOrderPage-title'>{`My ${type} Orders`}</View>
         <View className='myOrderList'>
           {

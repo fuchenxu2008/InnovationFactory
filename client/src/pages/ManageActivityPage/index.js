@@ -4,21 +4,24 @@ import { AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import ActivityCard from '../../components/ActivityCard'
 import Carousel from '../../components/Carousel';
+import LoadingIndicator from '../../components/LoadingIndicator'
 import { getInitialEvents, getPaginatedEvents, deleteEvent } from "../../actions/event";
 import { getInitialWorkshops, getPaginatedWorkshops, deleteWorkshop } from "../../actions/workshop";
 import { setCurrentCategory } from '../../actions/category';
 import getEventsUnderCategory from '../../selectors/events_under_category';
 import getWorkshopsUnderCategory from '../../selectors/workshops_under_category';
+import createLoadingSelector from '../../selectors/loadingSelector'
 
 import './index.scss'
 
-@connect(({ event, workshop }) => ({
+@connect(({ event, workshop, loading }) => ({
   allEvents: getEventsUnderCategory(event),
   eventCategories: event.eventCategories,
   currentEventCategory: event.currentEventCategory,
   allWorkshops: getWorkshopsUnderCategory(workshop),
   workshopCategories: workshop.workshopCategories,
   currentWorkshopCategory: workshop.currentWorkshopCategory,
+  isFetching: createLoadingSelector(['GET_INITIAL_EVENTS', 'GET_PAGINATED_EVENTS', 'GET_INITIAL_WORKSHOPS', 'GET_PAGINATED_WORKSHOPS', 'EDIT_WORKSHOP_CATEGORY', 'DELETE_EVENT', 'DELETE_WORKSHOP'])(loading),
 }), (dispatch) => ({
   getInitialEvents: () => dispatch(getInitialEvents()),
   getPaginatedEvents: (options) => dispatch(getPaginatedEvents(options)),
@@ -53,6 +56,7 @@ class ManageActivityPage extends Component {
   }
 
   onReachBottom = async() => {
+    if (this.props.isFetching) return;
     const { type } = this.$router.params;
     if (type === 'event') await this.props.getPaginatedEvents({
       start: this.state.startIndex,
@@ -108,6 +112,7 @@ class ManageActivityPage extends Component {
   }
 
   _deleteActivity = (activityid) => {
+    if (this.props.isFetching) return;
     const { type } = this.$router.params;
     if (type === 'event') this.props.deleteEvent(activityid);
     if (type === 'workshop') this.props.deleteWorkshop(activityid);
@@ -116,21 +121,26 @@ class ManageActivityPage extends Component {
   render () {
     const { type } = this.$router.params;
     if (!type) return null;
+    const { allEvents, eventCategories, currentEventCategory, allWorkshops, workshopCategories, currentWorkshopCategory, isFetching } = this.props;
     const { editing } = this.state;
     let activities, categories, currentCategory;
     if (type === 'event') {
-      activities = this.props.allEvents;
-      categories = this.props.eventCategories;
-      currentCategory = this.props.currentEventCategory;
+      activities = allEvents;
+      categories = eventCategories;
+      currentCategory = currentEventCategory;
     }
     if (type === 'workshop') {
-      activities = this.props.allWorkshops;
-      categories = this.props.workshopCategories;
-      currentCategory = this.props.currentWorkshopCategory;
+      activities = allWorkshops;
+      categories = workshopCategories;
+      currentCategory = currentWorkshopCategory;
     }
 
     return (
       <View className='manageActivityPage'>
+        {
+          isFetching &&
+          <LoadingIndicator />
+        }
         <View className='manageActivityPage-btnGroup'>
           <AtButton onClick={this._manageActivity} type='primary'>
             {editing ? 'Done' : `Manage ${type}`}

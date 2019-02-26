@@ -1,16 +1,20 @@
 import {
-  LOGIN,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
   SET_USER_INFO,
   PERMIT_ADMIN_ACCESS,
 } from '../constants/global';
 import * as api from '../API/auth';
 
 export const login = () => (dispatch) => {
-  api.login()
+  dispatch({
+    type: LOGIN_REQUEST
+  });
+  return api.login()
     .then(({ data }) => {
       if (data._id && data.token) {
         dispatch({
-          type: LOGIN,
+          type: LOGIN_SUCCESS,
           payload: {
             _id: data._id,
             token: data.token,
@@ -24,7 +28,7 @@ export const login = () => (dispatch) => {
 export const setUserInfo = (userInfo) => (dispatch, getState) => {
   const { token } = getState().global.currentUser || {};
   if (!token) return console.log('Requires user login token');
-  api.updateUserInfo(userInfo, token)
+  return api.updateUserInfo(userInfo, token)
     .then(() => {
       dispatch({
         type: SET_USER_INFO,

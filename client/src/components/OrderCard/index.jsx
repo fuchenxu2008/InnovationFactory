@@ -16,7 +16,7 @@ class OrderCard extends Component {
             activity.albumPicPath &&
             <Image
               src={`${ROOT_URL}${activity.albumPicPath}`}
-              mode='aspectFill'
+              mode='aspectFit'
               className='ordercard-img'
             />
           }

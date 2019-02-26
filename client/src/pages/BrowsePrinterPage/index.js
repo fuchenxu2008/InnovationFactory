@@ -3,12 +3,15 @@ import { View, Swiper, SwiperItem } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { getAllPrinters } from '../../actions/printer'
 import PrinterCard from '../../components/PrinterCard'
+import LoadingIndicator from '../../components/LoadingIndicator'
+import createLoadingSelector from '../../selectors/loadingSelector'
 
 import './index.scss'
 
-@connect(({ printer }) => ({
+@connect(({ printer, loading }) => ({
   allPrinters: printer.allPrinters,
   currentPrinter: printer.currentPrinter,
+  isFetching: createLoadingSelector(['GET_ALL_PRINTERS'])(loading),
 }), (dispatch) => ({
   getAllPrinters: () => dispatch(getAllPrinters()),
 }))
@@ -22,9 +25,13 @@ class BrowsePrinterPage extends Component {
   }
 
   render () {
-    const { allPrinters } = this.props;
+    const { allPrinters, isFetching } = this.props;
     return (
       <View className='browsePrinterPage'>
+        {
+          isFetching &&
+          <LoadingIndicator />
+        }
         <Swiper
           className='printer-swiper'
           indicatorColor='rgb(235, 235, 235)'

@@ -1,17 +1,17 @@
 import {
-  ADD_WORKSHOP,
-  EDIT_WORKSHOP,
-  DELETE_WORKSHOP,
-  GET_INITIAL_WORKSHOPS,
-  GET_PAGINATED_WORKSHOPS,
-  GET_WORKSHOP,
+  ADD_WORKSHOP_SUCCESS,
+  EDIT_WORKSHOP_SUCCESS,
+  DELETE_WORKSHOP_SUCCESS,
+  GET_INITIAL_WORKSHOPS_SUCCESS,
+  GET_PAGINATED_WORKSHOPS_SUCCESS,
+  GET_WORKSHOP_SUCCESS,
 } from '../constants/workshop';
 import {
-  GET_WORKSHOP_CATEGORY,
+  GET_WORKSHOP_CATEGORY_SUCCESS,
   GET_CACHED_WORKSHOP_CATEGORY,
-  ADD_WORKSHOP_CATEGORY,
-  EDIT_WORKSHOP_CATEGORY,
-  DELETE_WORKSHOP_CATEGORY,
+  ADD_WORKSHOP_CATEGORY_SUCCESS,
+  EDIT_WORKSHOP_CATEGORY_SUCCESS,
+  DELETE_WORKSHOP_CATEGORY_SUCCESS,
 } from '../constants/category';
 
 const INITIAL_STATE = {
@@ -23,14 +23,14 @@ const INITIAL_STATE = {
 
 export default function workshop (state = INITIAL_STATE, action) {
   switch (action.type) {
-    case GET_INITIAL_WORKSHOPS:
+    case GET_INITIAL_WORKSHOPS_SUCCESS:
       return {
         ...state,
         allWorkshops: action.payload.workshops,
         workshopCategories: action.payload.categories,
         currentWorkshopCategory: action.payload.categories[0],
       }
-    case GET_PAGINATED_WORKSHOPS:
+    case GET_PAGINATED_WORKSHOPS_SUCCESS:
       return {
         ...state,
         allWorkshops: {
@@ -38,13 +38,13 @@ export default function workshop (state = INITIAL_STATE, action) {
           [action.payload.category]: state.allWorkshops[action.payload.category].concat(action.payload.workshops),
         }
       }
-    case GET_WORKSHOP:
+    case GET_WORKSHOP_SUCCESS:
       return {
         ...state,
         currentWorkshop: action.payload,
       }
     // Admin functions
-    case ADD_WORKSHOP:
+    case ADD_WORKSHOP_SUCCESS:
       return {
         ...state,
         allWorkshops: {
@@ -52,7 +52,7 @@ export default function workshop (state = INITIAL_STATE, action) {
           [action.payload.category]: state.allWorkshops[action.payload.category].concat(action.payload.workshop)
         }
       }
-    case EDIT_WORKSHOP:
+    case EDIT_WORKSHOP_SUCCESS:
       return {
         ...state,
         allWorkshops: {
@@ -60,7 +60,7 @@ export default function workshop (state = INITIAL_STATE, action) {
           [action.payload.category]: state.allWorkshops[action.payload.category].map(w => w._id === action.payload.workshop._id ? action.payload.workshop : w)
         }
       }
-    case DELETE_WORKSHOP:
+    case DELETE_WORKSHOP_SUCCESS:
       return {
         ...state,
         allWorkshops: {
@@ -68,7 +68,7 @@ export default function workshop (state = INITIAL_STATE, action) {
           [action.payload.category]: state.allWorkshops[action.payload.category].filter(existingWorkshop => existingWorkshop._id !== action.payload.workshop._id)
         }
       }
-    case GET_WORKSHOP_CATEGORY:
+    case GET_WORKSHOP_CATEGORY_SUCCESS:
       return {
         ...state,
         currentWorkshopCategory: action.payload,
@@ -79,17 +79,17 @@ export default function workshop (state = INITIAL_STATE, action) {
         ...state,
         currentWorkshopCategory: action.payload,
       }
-    case ADD_WORKSHOP_CATEGORY:
+    case ADD_WORKSHOP_CATEGORY_SUCCESS:
       return {
         ...state,
         workshopCategories: state.workshopCategories.concat(action.payload)
       }
-    case EDIT_WORKSHOP_CATEGORY:
+    case EDIT_WORKSHOP_CATEGORY_SUCCESS:
       return {
         ...state,
         workshopCategories: state.workshopCategories.map(e => e._id === action.payload._id ? action.payload : e)
       }
-    case DELETE_WORKSHOP_CATEGORY:
+    case DELETE_WORKSHOP_CATEGORY_SUCCESS:
       return {
         ...state,
         workshopCategories: state.workshopCategories.filter(existingWorkshopCategory => existingWorkshopCategory._id !== action.payload._id)

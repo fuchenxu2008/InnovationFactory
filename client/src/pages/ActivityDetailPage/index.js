@@ -2,15 +2,18 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import GradientHeader from '../../components/GradientHeader'
+import LoadingIndicator from '../../components/LoadingIndicator'
 import { getEvent } from '../../actions/event'
 import { getWorkshop } from '../../actions/workshop'
+import createLoadingSelector from '../../selectors/loadingSelector'
 import { ROOT_URL } from '../../config'
 
 import './index.scss'
 
-@connect(({ event, workshop }) => ({
+@connect(({ event, workshop, loading }) => ({
   currentEvent: event.currentEvent,
-  currentWorkshop: workshop.currentWorkshop
+  currentWorkshop: workshop.currentWorkshop,
+  isFetching: createLoadingSelector(['GET_EVENT', 'GET_WORKSHOP'])(loading),
 }), (dispatch) => ({
   getEvent: (eventid) => dispatch(getEvent(eventid)),
   getWorkshop: (workshopid) => dispatch(getWorkshop(workshopid))
@@ -59,14 +62,20 @@ class ActivityDetailPage extends Component {
 
   render () {
     const { type } = this.$router.params;
+    const { currentEvent, currentWorkshop, isFetching } = this.props;
+
     let currentActivity;
-    if (type === 'event') currentActivity = this.props.currentEvent;
-    if (type === 'workshop') currentActivity = this.props.currentWorkshop;
+    if (type === 'event') currentActivity = currentEvent;
+    if (type === 'workshop') currentActivity = currentWorkshop;
     if (!currentActivity) return null;
     const { title, subtitle, albumPicPath, desc, startTime, address } = currentActivity;
     
     return (
       <View className='activityDetailPage'>
+        {
+          isFetching &&
+          <LoadingIndicator />
+        }
         <GradientHeader pageTitle='创新探索' />
         <View className='activityDetailPage-detailcard'>
           <Image src={`${ROOT_URL}${albumPicPath}`} className='activityDetailPage-detailcard-img' mode='aspectFill' />

@@ -6,17 +6,20 @@ import { getEvent } from '../../actions/event'
 import { getWorkshop } from '../../actions/workshop'
 import { getPrinter } from '../../actions/printer'
 import { submitOrder } from '../../actions/order'
+import createLoadingSelector from '../../selectors/loadingSelector'
+import LoadingIndicator from '../../components/LoadingIndicator'
 import WxValidate from '../../utils/wxValidate'
 
 import './index.scss'
 
 const genderSet = ['男', '女'];
 
-@connect(({ event, workshop, printer, global }) => ({
+@connect(({ event, workshop, printer, global, loading }) => ({
   currentEvent: event.currentEvent,
   currentWorkshop: workshop.currentWorkshop,
   currentPrinter: printer.currentPrinter,
   currentUser: global.currentUser,
+  isFetching: createLoadingSelector(['GET_EVENT', 'GET_WORKSHOP', 'GET_PRINTER', 'SUBMIT_ORDER'])(loading),
 }), (dispatch) => ({
   getEvent: (eventid) => dispatch(getEvent(eventid)),
   getWorkshop: (workshopid) => dispatch(getWorkshop(workshopid)),
@@ -91,6 +94,7 @@ class SignUpPage extends Component {
    * This function will run twice to get two form_id
    */
   _handleFormSubmit = (e) => {
+    if (this.props.isFetching) return;
     const newFormId = e.detail.formId;
     // if (newFormId === 'the formId is a mock one') return console.log('Stop on test'); // Stop if run on simulator
     this.formId.push(newFormId);
@@ -143,6 +147,10 @@ class SignUpPage extends Component {
 
     return (
       <View className='signUpPage'>
+        {
+          this.props.isFetching &&
+          <LoadingIndicator />
+        }
         <AtMessage />
         <View className='page-title'>Sign Up {type}</View>
         <View>{currentItem._id}</View>

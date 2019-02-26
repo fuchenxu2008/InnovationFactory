@@ -4,22 +4,25 @@ import { connect } from '@tarojs/redux'
 import Carousel from '../../components/Carousel'
 import ActivityCard from '../../components/ActivityCard'
 import GradientHeader from '../../components/GradientHeader'
-import PopUpModal from '../../components/PopUpModal'
+import LoadingIndicator from '../../components/LoadingIndicator'
+// import PopUpModal from '../../components/PopUpModal'
 import { getInitialEvents, getPaginatedEvents } from "../../actions/event";
 import { getInitialWorkshops, getPaginatedWorkshops } from "../../actions/workshop";
 import { setCurrentCategory } from '../../actions/category';
 import getEventsUnderCategory from '../../selectors/events_under_category';
 import getWorkshopsUnderCategory from '../../selectors/workshops_under_category';
+import createLoadingSelector from '../../selectors/loadingSelector'
 
 import './index.scss'
 
-@connect(({ event, workshop }) => ({
+@connect(({ event, workshop, loading }) => ({
   allEvents: getEventsUnderCategory(event),
   allWorkshops: getWorkshopsUnderCategory(workshop),
   eventCategories: event.eventCategories,
   currentEventCategory: event.currentEventCategory,
   workshopCategories: workshop.workshopCategories,
   currentWorkshopCategory: workshop.currentWorkshopCategory,
+  isFetching: createLoadingSelector(['GET_INITIAL_EVENTS', 'GET_PAGINATED_EVENTS', 'GET_INITIAL_WORKSHOPS', 'GET_PAGINATED_WORKSHOPS'])(loading),
 }), (dispatch) => ({
   getInitialEvents: () => dispatch(getInitialEvents()),
   getPaginatedEvents: (options) => dispatch(getPaginatedEvents(options)),
@@ -34,7 +37,7 @@ class LatestActivityPage extends Component {
 
   state = {
     startIndex: 3,
-    showModal: true,
+    // showModal: true,
   }
 
   componentDidMount() { 
@@ -52,6 +55,7 @@ class LatestActivityPage extends Component {
   }
 
   _handlePaginationLoad = async() => {
+    if (this.props.isFetching) return;
     const { type } = this.$router.params;
     if (type === 'event') await this.props.getPaginatedEvents({
       start: this.state.startIndex,
@@ -74,23 +78,29 @@ class LatestActivityPage extends Component {
     })
   }
 
-  _handleCloseModal = () => this.setState({ showModal: false })
+  // _handleCloseModal = () => this.setState({ showModal: false })
 
   render () {
     const { type } = this.$router.params;
+    const { allEvents, eventCategories, allWorkshops, workshopCategories, isFetching } = this.props;
+
     let allActivities = [];
     let allCategories = [];
     if (type === 'event') {
-      allActivities = this.props.allEvents;
-      allCategories = this.props.eventCategories;
+      allActivities = allEvents;
+      allCategories = eventCategories;
     }
     if (type === 'workshop') {
-      allActivities = this.props.allWorkshops;
-      allCategories = this.props.workshopCategories;
+      allActivities = allWorkshops;
+      allCategories = workshopCategories;
     }
 
     return (
       <View className='latestActivityPage'>
+        {
+          isFetching &&
+          <LoadingIndicator />
+        }
         {
           // this.state.showModal &&
           // <PopUpModal onClose={this._handleCloseModal} />

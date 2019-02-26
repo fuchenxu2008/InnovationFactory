@@ -1,4 +1,4 @@
-import { LOGIN, SET_USER_INFO, PERMIT_ADMIN_ACCESS } from '../constants/global'
+import { LOGIN_SUCCESS, SET_USER_INFO, PERMIT_ADMIN_ACCESS } from '../constants/global'
 
 const INITIAL_STATE = {
   currentUser: null,
@@ -7,7 +7,7 @@ const INITIAL_STATE = {
 
 export default function event(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case LOGIN:
+    case LOGIN_SUCCESS:
       return {
         ...state,
         currentUser: {

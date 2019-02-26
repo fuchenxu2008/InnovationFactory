@@ -1,18 +1,23 @@
 import {
-  GET_ALL_PRINTERS,
+  GET_ALL_PRINTERS_REQUEST,
+  GET_ALL_PRINTERS_SUCCESS,
   GET_CACHED_PRINTER,
-  GET_PRINTER,
+  GET_PRINTER_REQUEST,
+  GET_PRINTER_SUCCESS,
 } from '../constants/printer';
 
 import * as api from '../API/printer'
 
 export const getAllPrinters = () => (dispatch) => {
-  api.getAllPrinters()
+  dispatch({
+    type: GET_ALL_PRINTERS_REQUEST
+  });
+  return api.getAllPrinters()
     .then(({ data }) => {
       console.log(data);
       if (data.printers) {
         dispatch({
-          type: GET_ALL_PRINTERS,
+          type: GET_ALL_PRINTERS_SUCCESS,
           payload: data.printers,
         })
       }
@@ -31,12 +36,15 @@ export const getPrinter = (printerid) => (dispatch, getState) => {
       payload: cachedPrinter
     })
   } else {
+    dispatch({
+      type: GET_PRINTER_REQUEST
+    });
     return api.getPrinter(printerid)
       .then(({ data }) => {
         console.log(data);
         if (data.printer) {
           dispatch({
-            type: GET_PRINTER,
+            type: GET_PRINTER_SUCCESS,
             payload: data.printer,
           })
         }
