@@ -4,8 +4,8 @@ import { AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import ActivityCard from '../../components/ActivityCard'
 import Carousel from '../../components/Carousel';
-import { getInitialEvents, deleteEvent } from "../../actions/event";
-import { getInitialWorkshops, deleteWorkshop } from "../../actions/workshop";
+import { getInitialEvents, getPaginatedEvents, deleteEvent } from "../../actions/event";
+import { getInitialWorkshops, getPaginatedWorkshops, deleteWorkshop } from "../../actions/workshop";
 import { setCurrentCategory } from '../../actions/category';
 import getEventsUnderCategory from '../../selectors/events_under_category';
 import getWorkshopsUnderCategory from '../../selectors/workshops_under_category';
@@ -21,8 +21,10 @@ import './index.scss'
   currentWorkshopCategory: workshop.currentWorkshopCategory,
 }), (dispatch) => ({
   getInitialEvents: () => dispatch(getInitialEvents()),
+  getPaginatedEvents: (options) => dispatch(getPaginatedEvents(options)),
   deleteEvent: (eventid) => dispatch(deleteEvent(eventid)),
   getInitialWorkshops: () => dispatch(getInitialWorkshops()),
+  getPaginatedWorkshops: (options) => dispatch(getPaginatedWorkshops(options)),
   deleteWorkshop: (workshopid) => dispatch(deleteWorkshop(workshopid)),
   setCurrentCategory: (category) => dispatch(setCurrentCategory(category)),
 }))
@@ -32,6 +34,7 @@ class ManageActivityPage extends Component {
   }
 
   state = {
+    startIndex: 3,
     editing: false,
   }
 
@@ -39,6 +42,26 @@ class ManageActivityPage extends Component {
     const { type } = this.$router.params;
     if (type === 'event') this.props.getInitialEvents();
     if (type === 'workshop') this.props.getInitialWorkshops();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { type } = this.$router.params;
+    let startIndex;
+    if (type === 'event') startIndex = nextProps.allEvents.length;
+    if (type === 'workshop') startIndex = nextProps.allWorkshops.length;
+    this.setState({ startIndex });
+  }
+
+  onReachBottom = async() => {
+    const { type } = this.$router.params;
+    if (type === 'event') await this.props.getPaginatedEvents({
+      start: this.state.startIndex,
+      category: (this.props.currentEventCategory || {})._id,
+    });
+    if (type === 'workshop') await this.props.getPaginatedWorkshops({
+      start: this.state.startIndex,
+      category: (this.props.currentWorkshopCategory || {})._id,
+    });
   }
 
   _manageActivity = () => {

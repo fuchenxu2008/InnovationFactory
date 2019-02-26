@@ -32,6 +32,11 @@ const getPrinter = (req, res) => {
   });
 };
 
+// const getTimeSlots = (req, res) => {
+//   const { printerid } = req.params;
+//   const { date } = req.query;
+// };
+
 module.exports = {
   getAllPrinters,
   getPrinter,

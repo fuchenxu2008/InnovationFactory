@@ -31,7 +31,7 @@ export const getPrinter = (printerid) => (dispatch, getState) => {
       payload: cachedPrinter
     })
   } else {
-    api.getPrinter(printerid)
+    return api.getPrinter(printerid)
       .then(({ data }) => {
         console.log(data);
         if (data.printer) {

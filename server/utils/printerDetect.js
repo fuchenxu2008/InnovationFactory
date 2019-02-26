@@ -2,15 +2,6 @@ const moment = require('moment-timezone');
 const PrinterOrder = require('../models/PrinterOrder');
 const { preset } = require('../config/timeslots');
 
-// 2019-01-31 11:00-12:00
-const hasConflict = (timeA, timeB) => {
-  const [dateA, intervalA] = timeA.split(' ');
-  const [dateB, intervalB] = timeB.split(' ');
-  if (!dateA === dateB) return false;
-  if (!intervalA === intervalB) return false;
-  return true;
-};
-
 const isPrinterFree = (printer, timeSlot) => new Promise(async (resolve, reject) => {
   let existingOrders;
   try {
@@ -19,7 +10,7 @@ const isPrinterFree = (printer, timeSlot) => new Promise(async (resolve, reject)
     reject(error);
   }
   const occupiedNum = existingOrders
-    .filter(existingOrder => hasConflict(existingOrder.timeSlot, timeSlot))
+    .filter(existingOrder => existingOrder.timeSlot === timeSlot)
     .length;
   resolve((printer.quantity || 0) - occupiedNum > 0);
 });
@@ -56,8 +47,5 @@ const generateTimeSlots = (printer, existingOrders, skip = 1, days = 14) => {
 
 module.exports = {
   generateTimeSlots,
-  hasConflict,
   isPrinterFree,
 };
-
-// Find all printer orders => find out in what period are what printer unavailble

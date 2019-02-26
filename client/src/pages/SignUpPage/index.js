@@ -4,6 +4,7 @@ import { AtInput, AtMessage } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { getEvent } from '../../actions/event'
 import { getWorkshop } from '../../actions/workshop'
+import { getPrinter } from '../../actions/printer'
 import { submitOrder } from '../../actions/order'
 import WxValidate from '../../utils/wxValidate'
 
@@ -11,13 +12,15 @@ import './index.scss'
 
 const genderSet = ['男', '女'];
 
-@connect(({ event, workshop, global }) => ({
+@connect(({ event, workshop, printer, global }) => ({
   currentEvent: event.currentEvent,
   currentWorkshop: workshop.currentWorkshop,
+  currentPrinter: printer.currentPrinter,
   currentUser: global.currentUser,
 }), (dispatch) => ({
   getEvent: (eventid) => dispatch(getEvent(eventid)),
   getWorkshop: (workshopid) => dispatch(getWorkshop(workshopid)),
+  getPrinter: (printerId) => dispatch(getPrinter(printerId)),
   submitOrder: ({order, type}) => dispatch(submitOrder({order, type}))
 }))
 class SignUpPage extends Component {
@@ -26,7 +29,7 @@ class SignUpPage extends Component {
   }
 
   state = {
-    currentActivity: null,
+    currentItem: null,
     form: {
       name: '',
       gender: '',
@@ -36,23 +39,35 @@ class SignUpPage extends Component {
 
   formId = []
 
-  componentDidMount() {
-    const { id, type } = this.$router.params;
-    if (!id) return;
-    if (type === 'event')
-      this.props.getEvent(id).then(() => {
-        if (this.props.currentEvent) {
-          this.setState({ currentActivity: this.props.currentEvent });
-          this._initValidate(this.props.currentEvent.formFields);
-        }
-      })
-    if (type === 'workshop')
-      this.props.getWorkshop(id).then(() => {
-        if (this.props.currentWorkshop) {
-          this.setState({ currentActivity: this.props.currentWorkshop });
-          this._initValidate(this.props.currentWorkshop.formFields);
-        }
-      })
+  componentDidMount = () => {
+    this._updateCurrentItem(this.props, true);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this._updateCurrentItem(nextProps, false);
+  }
+
+  _updateCurrentItem = (props, isInitial) => {
+    const { type, id } = this.$router.params;
+    let currentItem;
+    const { currentEvent, currentWorkshop, currentPrinter } = props;
+    switch (type) {
+      case 'event':
+        if (isInitial) this.props.getEvent(id);
+        currentItem = currentEvent;
+        break;
+      case 'workshop':
+        if (isInitial) this.props.getWorkshop(id);
+        currentItem = currentWorkshop;
+        break;
+      case 'printer':
+        if (isInitial) this.props.getPrinter(id);
+        currentItem = currentPrinter;
+        break;
+    }
+    if (!currentItem) return;
+    this.setState({ currentItem });
+    this._initValidate(currentItem.formFields || []);
   }
 
   _initValidate = (customizedFields) => {
@@ -77,13 +92,12 @@ class SignUpPage extends Component {
    */
   _handleFormSubmit = (e) => {
     const newFormId = e.detail.formId;
-    if (newFormId === 'the formId is a mock one') return console.log('Stop on test'); // Stop if run on simulator
+    // if (newFormId === 'the formId is a mock one') return console.log('Stop on test'); // Stop if run on simulator
     this.formId.push(newFormId);
-    const { currentActivity, form } = this.state;
     if (this.formId.length < 2) return; // Stop if not enough form_id
     // Type of order
-    const { type } = this.$router.params;
-    const { _id } = currentActivity || {};
+    const { type, bookInfo } = this.$router.params;
+    const { currentItem, form } = this.state;
     const currentUser = this.props.currentUser || {};
     // Initialize form and loop to add fields
     if (!this.WxValidate.checkForm(form)) {
@@ -93,15 +107,16 @@ class SignUpPage extends Component {
         type: 'error',
       })
     }
-    return console.log(form);
     // Create order object
     const order = {
       formId: this.formId,
       user: currentUser._id,
-      [type]: _id, // event or workshop id
+      [type]: (currentItem || {})._id, // event or workshop id
       form,
+      ...JSON.parse(bookInfo || '{}'), // Add timeslot/guidance info
     }
-    this.props.submitOrder({order, type})
+    this.formId = [];
+    this.props.submitOrder({ order, type })
       .then(() => Taro.navigateBack())
   }
 
@@ -120,16 +135,17 @@ class SignUpPage extends Component {
   }))
 
   render () {
-    const { type } = this.$router.params;
-    const { currentActivity, form } = this.state;
-    if (!currentActivity) return null;
+    const { type, id } = this.$router.params;
+    const { currentItem, form } = this.state;
+    if (!id || !currentItem) return null;
 
-    const { formFields } = currentActivity;
+    const formFields = currentItem.formFields || [];
 
     return (
       <View className='signUpPage'>
         <AtMessage />
         <View className='page-title'>Sign Up {type}</View>
+        <View>{currentItem._id}</View>
         <Form
           onSubmit={this._handleFormSubmit}
           reportSubmit

@@ -9,32 +9,72 @@ const guideOptions = ['NEED', 'NO NEED'];
 
 class PrinterCard extends Component {
   state = {
-    bookDate: null,
-    bookPeriod: null,
+    multiArray: [[], []], // 2维数组数据
+    multiIndex: [0, 0], // 默认的下标
+    pickerStep: 0,
     guidance: 'NEED',
   }
 
-  _handleDatePickerChange = (e) => {
-    const { timeSlot } = this.props.printer || {};
+  componentDidMount() {
+    const { printer } = this.props;
+    if (!printer) return;
+    const { timeSlot } = printer; // assume only date
     this.setState({
-      bookDate: Object.keys(timeSlot || {})[e.detail.value]
+      multiArray: [Object.keys(timeSlot), []], // 更新三维数组
+      currentPickedDate: Object.keys(timeSlot)[0]
     })
+    this._getTime(Object.keys(timeSlot)[0]);
   }
 
-  _handlePeriodPickerChange = (e) => {
-    const { timeSlot } = this.props.printer || {};
-    const { bookDate } = this.state;
+  _getTime = (date) => {
+    const { printer } = this.props;
+    const { timeSlot } = printer; // assume only time
+    this.setState((prevState) => ({
+      multiArray: [prevState.multiArray[0], timeSlot[date]], // 更新三维数组
+      currentPickedDate: date,
+    }))
+  }
+
+  _handlePickerColumnChange = (e) => {
+    const { column, value } = e.detail;
+    if (column === 0) { // 第一列更改 就是date的更改
+      const currentPickedDate = this.state.multiArray[0][value];
+      if (currentPickedDate != this.state.currentPickedDate) { // 判断当前的key是不是真正的更新了
+        this._getTime(currentPickedDate) // 获取当前key下面的time数据
+      }
+    }
+    this.setState((prevState) => ({
+      multiIndex: Object.assign([], prevState.multiIndex, { [column]: value, 1: 0 }),
+    }));
+  }
+
+  _handleTimePickerChange = (e) => {
     this.setState({
-      bookPeriod: (timeSlot[bookDate] || [])[e.detail.value]
-    });
+      pickerStep: 1,
+      multiIndex: e.detail.value, // 直接更新即可
+    })
   }
 
   _handleGuidePickerChange = (e) => this.setState({ guidance: guideOptions[e.detail.value] })
 
+  _handleConfirmBooking = () => {
+    const { _id } = this.props.printer || {};
+    const { multiIndex, multiArray, guidance, pickerStep } = this.state;
+    if (!multiArray[1][multiIndex[1]] || pickerStep === 0) return;
+    const bookInfo = {
+      timeSlot: `${multiArray[0][multiIndex[0]]} ${multiArray[1][multiIndex[1]]}`,
+      guidance: guidance,
+    };
+    Taro.navigateTo({
+      url: `/pages/SignUpPage/index?type=printer&id=${_id}&bookInfo=${JSON.stringify(bookInfo)}`
+    })
+  }
+
   render() {
     const { printer, index } = this.props;
     if (!printer) return null;
-    const { bookDate, bookPeriod, guidance } = this.state;
+    const { multiArray, multiIndex, pickerStep, guidance } = this.state;
+    const timeSelected = (multiArray[1][multiIndex[1]] && pickerStep === 1);
 
     return (
       <ScrollView className='printer-swiper-item-content' scrollY>
@@ -54,7 +94,10 @@ class PrinterCard extends Component {
               <View><Text className='detail-title'>实际应用：</Text>{printer.application}</View>
             </View>
           </View>
-          <Image src={`${ROOT_URL}${printer.albumPicPath}`} mode='aspectFit' className='printer-img' />
+          {
+            ROOT_URL && printer.albumPicPath &&
+            <Image src={`${ROOT_URL}${printer.albumPicPath}`} mode='aspectFit' className='printer-img' />
+          }
         </View>
         <View className='printer-booking'>
           <View className='printer-booking-info'>
@@ -64,15 +107,20 @@ class PrinterCard extends Component {
           <View className='printer-booking-timeslot'>
             <View className='picker-group'>
               <Text className='picker-title'>TIME</Text>
-              <Picker mode='selector' range={Object.keys(printer.timeSlot)} onChange={this._handleDatePickerChange}>
-                <View className='picker-value'>
-                  {bookDate ? bookDate : 'Select'}
-                  <AtIcon value='chevron-down' color='grey' />
-                </View>
-              </Picker>
-              <Picker mode='selector' range={(printer.timeSlot|| {})[bookDate]} onChange={this._handlePeriodPickerChange}>
-                <View className='picker-value'>
-                  {bookPeriod ? bookPeriod : 'Select'}
+              <Picker mode='multiSelector' range={multiArray} onColumnchange={this._handlePickerColumnChange} value={multiIndex} onChange={this._handleTimePickerChange}>
+                <View style={{ display: 'flex' }}>
+                  {
+                    !timeSelected
+                    ? (
+                      <Text>Please Select</Text>
+                    )
+                    : (
+                      <View className='picker-value-group'>
+                        <Text>{multiArray[0][multiIndex[0]]}</Text>
+                        <Text>{multiArray[1][multiIndex[1]]}</Text>
+                      </View>
+                    )
+                  }
                   <AtIcon value='chevron-down' color='grey' />
                 </View>
               </Picker>
@@ -80,19 +128,17 @@ class PrinterCard extends Component {
             <View className='picker-group'>
               <Text className='picker-title'>GUIDANCE</Text>
               <Picker mode='selector' range={guideOptions} onChange={this._handleGuidePickerChange}>
-                <View className='picker-value'>
+                <View>
                   {guidance}
                   <AtIcon value='chevron-down' color='grey' />
                 </View>
               </Picker>
             </View>
           </View>
-          <View className='printer-booking-btn-section'>
-            <View className='printer-booking-btn'>
-              <AtIcon value='shopping-cart' color='black' size={30} />
-              <Text>FREE</Text>
-            </View>
-          </View>
+          <View className={`printer-booking-btn ${!timeSelected && 'disabled'}`} onClick={this._handleConfirmBooking}>
+            <AtIcon value='shopping-cart' color={`${timeSelected ? 'black' : 'grey'}`} size={30} />
+            <Text>Confirm Booking Info</Text>
+          </View>       
         </View>
       </ScrollView>
     )

@@ -101,20 +101,28 @@
   }
 }
 
-.printer-booking-btn-section {
-    display: flex;
-    justify-content: center;
-    margin: 6% 0;
+.picker-value-group {
+    text:nth-child(2) {
+        margin-left: 35px;
+    }
 }
 
 .printer-booking-btn {
-    display: flex;
+    display:flex;
+    justify-content:center;
     align-items: center;
-    background-color: rgb(247, 198, 84);
-    padding: 2% 10%;
+    margin: 6% 0;
+    padding: 2.5% 10%;
     border-radius: 50px;
+    background-color: rgb(247, 198, 84);
     color: black;
     text {
         margin-left: 15px;
     }
+    box-shadow: 3px 5px 50px rgba(247, 198, 84, 0.7);
+}
+
+.printer-booking-btn.disabled {
+    background-color: rgb(247, 210, 125);
+    color: grey;
 }

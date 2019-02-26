@@ -44,7 +44,11 @@ class LatestActivityPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ startIndex: nextProps.allEvents.length })
+    const { type } = this.$router.params;
+    let startIndex;
+    if (type === 'event') startIndex = nextProps.allEvents.length;
+    if (type === 'workshop') startIndex = nextProps.allWorkshops.length;
+    this.setState({ startIndex });
   }
 
   _handlePaginationLoad = async() => {

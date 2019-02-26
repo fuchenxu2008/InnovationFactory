@@ -22,6 +22,7 @@ class App extends Component {
       'pages/SignUpPage/index',
       'pages/ProfilePage/index',
       'pages/MyOrderPage/index',
+      'pages/WebViewPage/index',
       // Admin pages
       'pages/AdminHomePage/index',
       'pages/ManageActivityPage/index',

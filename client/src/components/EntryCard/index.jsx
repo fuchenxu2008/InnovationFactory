@@ -8,7 +8,7 @@ class EntryCard extends Component {
     render() {
         const { img, titleZH, titleEN, onClick } = this.props;
         return (
-            <View className='entrycard animated flipInX' onClick={onClick}>
+            <View className='entrycard animated fadeInUp' onClick={onClick}>
                 <Image src={img} className='entrycard-img' mode='widthFix' />
                 <View className='entrycard-brand'>INNOVATION FACTORY</View>
                 <View className='entrycard-title'>

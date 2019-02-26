@@ -1,9 +1,10 @@
 const PrinterOrder = require('../models/PrinterOrder');
-// const Printer = require('../models/Printer');
+const Printer = require('../models/Printer');
+const { isPrinterFree } = require('../utils/printerDetect');
 // const { sendOrderSuccessNotification } = require('./notificationController');
 // const { sendScheduledReminder } = require('../utils/cronJobs/activityReminder');
 
-const createPrinterOrder = async (req, res) => {
+const createPrinterOrder = (req, res) => {
   /**
    * order = {
    *  user: id,
@@ -16,27 +17,25 @@ const createPrinterOrder = async (req, res) => {
    * }
    */
   const { order } = req.body;
-
-  // let printer;
-  // try {
-  //   printer = await Printer.findById(order.printer);
-  // } catch (err) {
-  //   return res.status(400).json({ message: 'Error while finding printers and orders', err });
-  // }
-
-  // if (!isPrinterFree(printer, order, orders)) return res.status(400).json({ message: 'Printer occupied at that time, please try other timeslots.' });
-
-  return PrinterOrder.create(order, (err, newOrder) => {
-    if (err) return res.status(400).json({ message: 'Error while creating printerOrder', err });
-    return res.json({ message: 'Successfully created printerOrder!', order: newOrder });
-    // return PrinterOrder.findById(newOrder._id)
-    //   .populate('printer')
-    //   .populate('user', 'openid')
-    //   .exec((err2, doc) => {
-    //     if (err2) return console.log('Error while populating printerOrder', err2);
-    //     sendOrderSuccessNotification({ order: doc, activity: doc.printer });
-    //     return sendScheduledReminder({ order: doc, activity: doc.printer });
-    //   });
+  Printer.findById(order.printer, (err, printer) => {
+    if (err) return res.status(400).json({ message: 'Error while getting my printerOrders.', err });
+    return isPrinterFree(printer, order.timeSlot)
+      .then((isFree) => {
+        if (!isFree) return res.status(400).json({ message: 'Printer occupied at that time, please try other timeslots.' });
+        return PrinterOrder.create(order, (err2, newOrder) => {
+          if (err) return res.status(400).json({ message: 'Error while creating printerOrder', err: err2 });
+          return res.json({ message: 'Successfully created printerOrder!', order: newOrder });
+          // return PrinterOrder.findById(newOrder._id)
+          //   .populate('printer')
+          //   .populate('user', 'openid')
+          //   .exec((err2, doc) => {
+          //     if (err2) return console.log('Error while populating printerOrder', err2);
+          //     sendOrderSuccessNotification({ order: doc, activity: doc.printer });
+          //     return sendScheduledReminder({ order: doc, activity: doc.printer });
+          //   });
+        });
+      })
+      .catch(err2 => res.status(400).json({ message: 'Error while getting my printerOrders.', err: err2 }));
   });
 };
 

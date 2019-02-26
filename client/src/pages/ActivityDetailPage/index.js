@@ -44,6 +44,12 @@ class ActivityDetailPage extends Component {
     }
   }
 
+  _handleEnterWeb = (link) => {
+    Taro.navigateTo({
+      url: `/pages/WebViewPage/index?link=${link}`
+    })
+  }
+
   _handleEnterSignUp = () => {
     const { id, type } = this.$router.params;
     Taro.navigateTo({
@@ -90,7 +96,7 @@ class ActivityDetailPage extends Component {
             </View>
             <View className='activityDetailPage-detailcard-desc'>{desc}</View>
             <View className='activityDetailPage-detailcard-btnGroup'>
-              <View className='at-icon at-icon-link' />
+              <View className='at-icon at-icon-link' onClick={this._handleEnterWeb.bind(this, 'https://mp.weixin.qq.com/s/f697tAD_GP1cZqSClOhdsg')} />
               <View className='signup-btn' onClick={this._handleEnterSignUp}>报名</View>
               <Button openType='share' plain='true'>
                 <View className='at-icon at-icon-share' />
