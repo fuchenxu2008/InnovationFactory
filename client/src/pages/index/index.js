@@ -2,7 +2,6 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import EntryCard from '../../components/EntryCard';
 import SearchBar from '../../components/SearchBar';
-// import { ROOT_URL } from '../../config'
 
 import './index.scss'
 
@@ -10,18 +9,6 @@ class Index extends Component {
   config = {
     navigationBarTitleText: '创新工场',
   }
-
-  // componentDidMount() {
-  //   console.log('index mount');
-  //   Taro.downloadFile({
-  //     url: `${ROOT_URL}/test/download.xlsx`
-  //   }).then(res => {
-  //     console.log(res);
-  //     return Taro.openDocument({
-  //       filePath: res.tempFilePath,
-  //     })
-  //   }).then(res => console.log(res))
-  // }
 
   _handleEnterActivityPage = (type) => {
     Taro.navigateTo({

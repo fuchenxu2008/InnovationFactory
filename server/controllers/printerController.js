@@ -6,7 +6,7 @@ const { generateTimeSlots } = require('../utils/printerDetect');
 const getAllPrinters = (req, res) => {
   const searchTerm = req.query;
   PrinterOrder.find({
-    timeSlot: { $gte: moment().format('YYYY-MM-DD') },
+    timeSlot: { $gte: moment().add(2, 'days').format('YYYY-MM-DD') },
   }, (err, printerOrders) => {
     Printer.find(searchTerm, (err2, docs) => {
       if (err2) return res.status(400).json({ message: 'Error while getting all printers.', err: err2 });

@@ -1,6 +1,5 @@
 import '@tarojs/async-await'
 import Taro, { Component } from '@tarojs/taro'
-import _ from 'lodash'
 import { Provider } from '@tarojs/redux'
 import { login, setUserInfo } from './actions/global'
 
@@ -65,7 +64,7 @@ class App extends Component {
           if (authSetting['scope.userInfo']) {
             Taro.getUserInfo()
               .then(res => {
-                if (!_.isEqual(res.userInfo, currentUser.userInfo))
+                if (JSON.stringify(res.userInfo) !== JSON.stringify(currentUser.userInfo))
                   store.dispatch(setUserInfo(res.userInfo));
               })
           }

@@ -1,0 +1,15 @@
+.loading-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    width: 170px;
+    height: 170px;
+}
+
+.loading-indicator {
+    width:100%;
+    height:100%;
+    filter: drop-shadow(10px 10px 10px rgba(0, 0, 0, 0.3))
+}
