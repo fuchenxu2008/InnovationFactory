@@ -5,6 +5,7 @@ import { searchDatabase } from '../../actions/search'
 import createLoadingSelector from '../../selectors/loadingSelector'
 import SearchBar from '../../components/SearchBar'
 import LoadingIndicator from '../../components/LoadingIndicator'
+import ActivityCard from '../../components/ActivityCard'
 
 import './index.scss'
 
@@ -32,6 +33,12 @@ class SearchPage extends Component {
     }
   }
 
+  _handleClickActivity = ({ id, type }) => {
+    Taro.navigateTo({
+      url: `/pages/ActivityDetailPage/index?type=${type}&id=${id}`
+    })
+  }
+
   render () {
     const { result } = this.state;
     const { isFetching } = this.props;
@@ -51,11 +58,11 @@ class SearchPage extends Component {
                 <View className='searchresult-type-heading'>{type}</View>
                 {
                   result[type].map(activity => (
-                    <View key={activity._id} className='searchresult-item'>
-                      <View>{activity.title}</View>
-                      <View>{activity.subtitle}</View>
-                      <View>{activity.desc}</View>
-                    </View>
+                    <ActivityCard
+                      key={activity._id}
+                      activity={activity}
+                      onClick={this._handleClickActivity}
+                    />
                   ))
                 }
               </View>

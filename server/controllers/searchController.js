@@ -17,7 +17,7 @@ const searchDatabase = async (req, res) => {
     if (!type || type === 'workshop') {
       const workshops = await Workshop.find()
         .or([{ title: searchTerm }, { subtitle: searchTerm }, { desc: searchTerm }])
-        .select(['_id', 'title', 'subtitle', 'albumPicPath', 'desc']);
+        .select(['_id', 'title', 'subtitle', 'albumPicPath', 'startTime']);
       result.workshops = workshops;
     }
     if (!type || type === 'printer') {
