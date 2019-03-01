@@ -81,6 +81,7 @@ class AdminCategoryForm extends Component {
 
   render() {
     const { name, desc, albumPicPath } = this.state;
+    const { category, onDeleteCategory } = this.props;
     
     return (
       <AtForm onSubmit={this._handleFormSubmit}>
@@ -114,6 +115,18 @@ class AdminCategoryForm extends Component {
             />
           </View>
           <AtButton type='primary' formType='submit'>Submit</AtButton>
+          {
+            category &&
+            <AtButton
+              type='secondary'
+              onClick={onDeleteCategory}
+              customStyle={{
+                margin: '4% 0',
+                borderColor: 'red',
+                color: 'red',
+              }}
+            >Delete</AtButton>
+          }
         </View>
       </AtForm>
     )

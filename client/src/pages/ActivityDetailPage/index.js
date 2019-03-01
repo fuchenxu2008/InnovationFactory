@@ -68,7 +68,15 @@ class ActivityDetailPage extends Component {
     if (type === 'event') currentActivity = currentEvent;
     if (type === 'workshop') currentActivity = currentWorkshop;
     if (!currentActivity) return null;
-    const { title, subtitle, albumPicPath, desc, startTime, address } = currentActivity;
+    const {
+      title,
+      subtitle,
+      albumPicPath,
+      desc,
+      startTime,
+      address,
+      linkToArticle,
+    } = currentActivity;
     
     return (
       <View className='activityDetailPage'>
@@ -105,7 +113,7 @@ class ActivityDetailPage extends Component {
             </View>
             <View className='activityDetailPage-detailcard-desc'>{desc}</View>
             <View className='activityDetailPage-detailcard-btnGroup'>
-              <View className='at-icon at-icon-link' onClick={this._handleEnterWeb.bind(this, 'https://mp.weixin.qq.com/s/f697tAD_GP1cZqSClOhdsg')} />
+              <View className='at-icon at-icon-link' onClick={this._handleEnterWeb.bind(this, linkToArticle)} />
               <View className='signup-btn' onClick={this._handleEnterSignUp}>报名</View>
               <Button openType='share' plain='true'>
                 <View className='at-icon at-icon-share' />

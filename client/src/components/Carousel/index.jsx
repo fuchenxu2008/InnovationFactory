@@ -5,10 +5,23 @@ import { ROOT_URL } from '../../config'
 import './index.scss';
 
 class Carousel extends Component {
+  state = {
+    currentIndex: 0,
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const categories = nextProps.categories || [];
+    if (categories.length <= this.state.currentIndex) {
+      this.setState({ currentIndex: categories.length - 1 });
+      this.props.onSwiperChange(categories[categories.length - 1]);
+    }
+  }
+
   _handleSwiperChange = (e) => {
     const { categories, onSwiperChange } = this.props;
     const { current } = e.detail;
     onSwiperChange(categories[current]);
+    this.setState({ currentIndex: current })
   }
 
   render() {
@@ -23,6 +36,7 @@ class Carousel extends Component {
           circular
           indicatorDots
           onChange={this._handleSwiperChange}
+          current={this.state.currentIndex}
           // autoplay
         >
           {

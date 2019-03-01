@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtMessage } from 'taro-ui'
 import { connect } from '@tarojs/redux'
-import { addCategory, updateCategory, getCategory } from '../../actions/category'
+import { addCategory, updateCategory, getCategory, deleteCategory } from '../../actions/category'
 import AdminCategoryForm from '../../components/AdminCategoryForm'
 import LoadingIndicator from '../../components/LoadingIndicator'
 import createLoadingSelector from '../../selectors/loadingSelector'
@@ -12,10 +12,11 @@ import './index.scss'
 @connect(({ event, workshop, loading }) => ({
   currentEventCategory: event.currentEventCategory,
   currentWorkshopCategory: workshop.currentWorkshopCategory,
-  isFetching: createLoadingSelector(['ADD_EVENT_CATEGORY', 'EDIT_EVENT_CATEGORY', 'GET_EVENT_CATEGORY', 'ADD_WORKSHOP_CATEGORY', 'EDIT_WORKSHOP_CATEGORY', 'GET_WORKSHOP_CATEGORY'])(loading),
+  isFetching: createLoadingSelector(['ADD_EVENT_CATEGORY', 'EDIT_EVENT_CATEGORY', 'GET_EVENT_CATEGORY', 'ADD_WORKSHOP_CATEGORY', 'EDIT_WORKSHOP_CATEGORY', 'GET_WORKSHOP_CATEGORY', 'DELETE_EVENT_CATEGORY', 'DELETE_WORKSHOP_CATEGORY'])(loading),
 }), (dispatch) => ({
   addCategory: (category) => dispatch(addCategory(category)),
   updateCategory: (edition) => dispatch(updateCategory(edition)),
+  deleteCategory: ({ id, type }) => dispatch(deleteCategory({ id, type })),
   getCategory: ({ id, type }) => dispatch(getCategory({ id, type })),
 }))
 class CreateUpdateCategoryPage extends Component {
@@ -34,6 +35,12 @@ class CreateUpdateCategoryPage extends Component {
     category.type = type;
     id ? await this.props.updateCategory({ id, category })
       : await this.props.addCategory(category)
+    Taro.navigateBack();
+  }
+
+  _handleDeleteCategory = async () => {
+    const { id, type } = this.$router.params;
+    await this.props.deleteCategory({ id, type });
     Taro.navigateBack();
   }
 
@@ -57,6 +64,7 @@ class CreateUpdateCategoryPage extends Component {
         <AdminCategoryForm
           category={id ? currentCategory : null}
           onSubmitCategory={this._handleReceiveCategory}
+          onDeleteCategory={this._handleDeleteCategory}
         />
       </View>
     )

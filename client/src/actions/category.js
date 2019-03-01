@@ -125,12 +125,12 @@ export const updateCategory = ({ id, category }) => (dispatch, getState) => {
     .catch(err => console.log(err))
 }
 
-export const deleteCategory = (categoryid, type) => (dispatch, getState) => {
+export const deleteCategory = ({ id, type }) => (dispatch, getState) => {
   const { token } = getState().global.currentUser || {};
   if (!token) return console.log('Requires user login token');
   if (type === 'event') dispatch({ type: DELETE_EVENT_CATEGORY_REQUEST });
   if (type === 'workshop') dispatch({ type: DELETE_WORKSHOP_CATEGORY_REQUEST });
-  return api.deleteCategory(categoryid, token)
+  return api.deleteCategory(id, token)
     .then(({ data }) => {
       console.log(data);
       if (data.category) {
