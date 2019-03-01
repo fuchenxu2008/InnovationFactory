@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunkMiddleware from 'redux-thunk'
-// import throttle from 'lodash/throttle';
+import throttle from '../utils/throttle';
 import rootReducer from '../reducers'
 import { loadState, saveState } from './localStorage'
 
@@ -30,8 +30,15 @@ export default function configStore () {
   // const store = createStore(rootReducer, enhancer)
   const store = createStore(rootReducer, persistedState, enhancer)
   // Intermittedly save state to cache
-  store.subscribe(() => {
-    saveState(store.getState());
-  }, 1000);
+  store.subscribe(throttle(() => {
+    const { global, event, workshop, printer, order } = store.getState();
+    saveState({
+      global,
+      event,
+      workshop,
+      printer,
+      order
+    });
+  }, 1000));
   return store
 }
