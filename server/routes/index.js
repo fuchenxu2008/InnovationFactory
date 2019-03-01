@@ -5,8 +5,9 @@ const workshopRouter = require('./workshopRoutes');
 const categoryRouter = require('./categoryRoutes');
 const printerRouter = require('./printerRoutes');
 const orderRouter = require('./orderRoutes');
-const { authenticateAdmin, authenticateUser } = require('../middlewares/authentication');
+const searchRouter = require('./searchRoutes');
 const { getImage } = require('../controllers/assetController');
+const { authenticateAdmin, authenticateUser } = require('../middlewares/authentication');
 
 module.exports = (app) => {
   // admin
@@ -18,5 +19,6 @@ module.exports = (app) => {
   app.use('/api/category', categoryRouter);
   app.use('/api/printer', printerRouter);
   app.use('/api/myorder', authenticateUser, orderRouter);
+  app.use('/api/search', searchRouter);
   app.get('/api/image/:img', getImage);
 };

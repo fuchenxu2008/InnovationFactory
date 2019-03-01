@@ -15,6 +15,7 @@
 13. [x] Implement printer section and figure out time dimentional reservation
 14. [ ] Separate API request to get available timeslots (date/time)
 15. [ ] Server side design to prevent oversale in printer reservation
+16. [ ] Search section
 
 ## Future Functionalities
 

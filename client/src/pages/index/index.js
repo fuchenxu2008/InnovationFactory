@@ -22,10 +22,16 @@ class Index extends Component {
     })
   }
 
+  _handleEnterSearchPage = () => {
+    Taro.navigateTo({
+      url: '/pages/SearchPage/index'
+    })
+  }
+
   render () {
     return (
       <View className='index'>
-        <SearchBar fixed />
+        <SearchBar fixed onClick={this._handleEnterSearchPage} />
         <View className='entrycards-section'>          
           <EntryCard
             img={require('../../assets/images/latestEvent.png')}

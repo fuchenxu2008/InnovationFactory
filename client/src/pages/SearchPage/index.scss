@@ -1,0 +1,37 @@
+.searchPage {
+    flex: 1;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    background-color: rgb(236, 240, 243);
+}
+
+.searchresult-section {
+    padding: 14% 4% 3% 4%;
+}
+
+.searchresult-type {
+    margin-bottom: 20px;
+}
+
+.searchresult-type-heading {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.searchresult-item {
+    padding: 3% 5%;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    box-shadow: 5px 5px 25px rgba(31, 31, 31, 0.336);
+    margin-bottom: 3%;
+    color: rgb(40, 40, 40);
+    background-color: white;
+}

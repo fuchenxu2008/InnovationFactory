@@ -14,12 +14,17 @@ class SearchBar extends Component {
   }
 
   render() {
+    const { fixed, onClick, onConfirm } = this.props;
+    const { value } = this.state;
+
     return (
-      <View className='searchbar'>
+      <View className='searchbar' onClick={onClick}>
         <AtSearchBar
-          fixed={this.props.fixed}
-          value={this.state.value}
+          fixed={fixed}
+          value={value}
           onChange={this._handleSearchBarChange}
+          onConfirm={onConfirm.bind(this, value)}
+          onActionClick={onConfirm.bind(this, value)}
         />
       </View>
     )
