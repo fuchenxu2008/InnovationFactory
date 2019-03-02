@@ -137,7 +137,7 @@ export const deleteWorkshop = (workshopid) => (dispatch, getState) => {
     .then(({ data }) => {
       console.log(data);
       if (data.workshop) {
-        const category = (data.workshop.category || {})._id;
+        const { category } = data.workshop;
         if (!category) throw Error('No category supplied!');
         dispatch({
           type: DELETE_WORKSHOP_SUCCESS,

@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
+import dayjs from 'dayjs'
 import GradientHeader from '../../components/GradientHeader'
 import LoadingIndicator from '../../components/LoadingIndicator'
 import { getEvent } from '../../actions/event'
@@ -74,6 +75,7 @@ class ActivityDetailPage extends Component {
       albumPicPath,
       desc,
       startTime,
+      signupTo,
       address,
       linkToArticle,
     } = currentActivity;
@@ -113,8 +115,14 @@ class ActivityDetailPage extends Component {
             </View>
             <View className='activityDetailPage-detailcard-desc'>{desc}</View>
             <View className='activityDetailPage-detailcard-btnGroup'>
-              <View className='at-icon at-icon-link' onClick={this._handleEnterWeb.bind(this, linkToArticle)} />
-              <View className='signup-btn' onClick={this._handleEnterSignUp}>报名</View>
+              {
+                linkToArticle &&
+                <View className='at-icon at-icon-link' onClick={this._handleEnterWeb.bind(this, linkToArticle)} />
+              }
+              {
+                !(dayjs().isAfter(dayjs(signupTo)) || dayjs().isAfter(dayjs(startTime))) &&
+                <View className='signup-btn' onClick={this._handleEnterSignUp}>报名</View>
+              }
               <Button openType='share' plain='true'>
                 <View className='at-icon at-icon-share' />
               </Button>

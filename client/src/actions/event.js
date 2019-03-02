@@ -137,7 +137,7 @@ export const deleteEvent = (eventid) => (dispatch, getState) => {
     .then(({ data }) => {
       console.log(data);
       if (data.event) {
-        const category = (data.event.category || {})._id;
+        const { category } = data.event;
         if (!category) throw Error('No category supplied!');
         dispatch({
           type: DELETE_EVENT_SUCCESS,

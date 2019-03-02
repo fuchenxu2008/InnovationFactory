@@ -33,7 +33,7 @@ class SearchPage extends Component {
     }
   }
 
-  _handleClickActivity = ({ id, type }) => {
+  _handleClickActivity = (id, type) => {
     Taro.navigateTo({
       url: `/pages/ActivityDetailPage/index?type=${type}&id=${id}`
     })
@@ -53,20 +53,36 @@ class SearchPage extends Component {
         }
         <View className='searchresult-section'>
           {
-            Object.keys(result).map((type, i) => (
-              <View key={i} className='searchresult-type'>
-                <View className='searchresult-type-heading'>{type}</View>
+            result.events &&
+            <View className='searchresult-type'>
+              <View className='searchresult-type-heading'>Events</View>
                 {
-                  result[type].map(activity => (
-                    <ActivityCard
-                      key={activity._id}
-                      activity={activity}
-                      onClick={this._handleClickActivity}
-                    />
+                  result.events.map(activity => (
+                    <View className='searchresult-item' key={activity._id}>
+                      <ActivityCard
+                        activity={activity}
+                        onClick={this._handleClickActivity.bind(this, activity._id, 'event')}
+                      />
+                    </View>
                   ))
                 }
-              </View>
-            ))
+            </View>
+          }
+          {
+            result.workshops &&
+            <View className='searchresult-type'>
+              <View className='searchresult-type-heading'>Workshops</View>
+                {
+                  result.workshops.map(activity => (
+                    <View className='searchresult-item' key={activity._id}>
+                      <ActivityCard
+                        activity={activity}
+                        onClick={this._handleClickActivity.bind(this, activity._id, 'workshop')}
+                      />
+                    </View>
+                  ))
+                }
+            </View>
           }
         </View>
       </View>

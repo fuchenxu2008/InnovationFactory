@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
-import { AtButton, AtAvatar } from 'taro-ui'
+import { View, Button } from '@tarojs/components'
+import { AtAvatar } from 'taro-ui'
 import dayjs from 'dayjs'
 import { connect } from '@tarojs/redux'
-import { setUserInfo, authenticateAdmin } from '../../actions/global'
+import { setUserInfo, authenticateAdmin, logout, cleanCache } from '../../actions/global'
 import { VERSION_CODE } from '../../config';
 
 import './index.scss'
@@ -13,7 +13,9 @@ import './index.scss'
   adminAccessBefore: global.adminAccessBefore,
 }), (dispatch) => ({
   setUserInfo: (info) => dispatch(setUserInfo(info)),
+  logout: () => dispatch(logout()),
   authenticateAdmin: () => dispatch(authenticateAdmin()),
+  cleanCache: () => dispatch(cleanCache()),
 }))
 class ProfilePage extends Component {
   config = {
@@ -41,6 +43,22 @@ class ProfilePage extends Component {
     Taro.navigateTo({
       url: `/pages/MyOrderPage/index?type=${type}`
     })
+  }
+
+  _handleLogout = () => {
+    this.props.logout();
+    Taro.showToast({
+      title: 'Logged out',
+      icon: 'success'
+    });
+  }
+
+  _handleCleanCache = () => {
+    this.props.cleanCache();
+    Taro.showToast({
+      title: 'Cache cleaned',
+      icon: 'success'
+    });
   }
 
   _handleSecretTap = () => {
@@ -84,45 +102,76 @@ class ProfilePage extends Component {
     return (
       <View className='profilePage'>
         <View className='background' />
-        {
-          userInfo
-            ? (
-              <View>
-                <View className='gradient-header'>
-                  <View className='userinfo-section'>
-                    <AtAvatar circle image={userInfo.avatarUrl} size='large'></AtAvatar>
-                    <View className='userinfo-nickname'>{userInfo.nickName}</View>
-                  </View>
-                  <View className='at-icon at-icon-settings settings-icon' />
-                </View>
-                <View className='user-data-section'>
-                  <View className='user-data-entry' onClick={this._goOrderPage.bind(this, 'event')}>
-                    <View className='iconfont icon-balloon entry-icon'>{' '}我的活动</View>
-                    <View className='at-icon at-icon-chevron-right' />
-                  </View>
-                  <View className='user-data-entry' onClick={this._goOrderPage.bind(this, 'workshop')}>
-                    <View className='iconfont icon-platform entry-icon'>{' '}我的课程</View>
-                    <View className='at-icon at-icon-chevron-right' />
-                  </View>
-                  <View className='user-data-entry' onClick={this._goOrderPage.bind(this, 'printer')}>
-                    <View className='iconfont icon-yiqiguanlidanweishu entry-icon'>{' '}我的仪器</View>
-                    <View className='at-icon at-icon-chevron-right' />
-                  </View>
-                </View>
+        <View>
+          <View className='gradient-header'>
+            <View className='userinfo-section'>
+              <View className='userinfo-avatar-nickname'>
+                <AtAvatar
+                  circle
+                  image={userInfo ? userInfo.avatarUrl : require('../../assets/images/default_avatar.png')}
+                  size='large'
+                  className='userinfo-avatar'
+                ></AtAvatar>
+                <View className='userinfo-nickname'>{userInfo ? userInfo.nickName : '未登录'}</View>
               </View>
-            )
-            : (
-              <View>
-                <View>Profile Login</View>
-                <AtButton open-type='getUserInfo' onGetUserInfo={this._login}>Login</AtButton>
-              </View>
-            )
-        }
-        {
-          <View onClick={this._handleSecretTap} className='secretAdminEntrance'>
-            v{VERSION_CODE}
+              {
+                !userInfo &&
+                <Button
+                  className='login-btn'
+                  open-type='getUserInfo'
+                  onGetUserInfo={this._login}
+                  plain='true'
+                >Login</Button>
+              }
+            </View>
+            {
+              // <View className='at-icon at-icon-settings settings-icon' />
+            }
           </View>
-        }
+          <View style={{ transform: 'translateY(-30px)' }}>
+            {
+              userInfo &&
+              <View className='user-data-section'>
+                <View className='user-data-entry' onClick={this._goOrderPage.bind(this, 'event')}>
+                  <View className='iconfont icon-balloon entry-icon'>{' '}我的活动</View>
+                  <View className='at-icon at-icon-chevron-right' />
+                </View>
+                <View className='user-data-entry' onClick={this._goOrderPage.bind(this, 'workshop')}>
+                  <View className='iconfont icon-platform entry-icon'>{' '}我的课程</View>
+                  <View className='at-icon at-icon-chevron-right' />
+                </View>
+                <View className='user-data-entry' onClick={this._goOrderPage.bind(this, 'printer')}>
+                  <View className='iconfont icon-yiqiguanlidanweishu entry-icon'>{' '}我的仪器</View>
+                  <View className='at-icon at-icon-chevron-right' />
+                </View>
+              </View>
+            }
+            <View className='user-data-section'>
+              <View className='user-data-entry' onClick={() => {}}>
+                <View className='iconfont icon-support entry-icon'>{' '}帮助与支持</View>
+                <View className='at-icon at-icon-chevron-right' />
+              </View>
+              <View className='user-data-entry' onClick={() => {}}>
+                <View className='iconfont icon-about entry-icon'>{' '}关于我们</View>
+                <View className='at-icon at-icon-chevron-right' />
+              </View>
+              <View className='user-data-entry' onClick={this._handleCleanCache}>
+                <View className='iconfont icon-shenqingzuofei entry-icon'>{' '}清除缓存</View>
+                <View className='at-icon at-icon-chevron-right' />
+              </View>
+              {
+                userInfo &&
+                <View className='user-data-entry' onClick={this._handleLogout}>
+                  <View className='iconfont icon-Group entry-icon'>{' '}注销登录</View>
+                  <View className='at-icon at-icon-chevron-right' />
+                </View>
+              }
+            </View>
+            <View onClick={this._handleSecretTap} className='secretAdminEntrance'>
+              v{VERSION_CODE}
+            </View>
+          </View>
+        </View>
       </View>
     )
   }

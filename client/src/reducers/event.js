@@ -13,6 +13,7 @@ import {
   EDIT_EVENT_CATEGORY_SUCCESS,
   DELETE_EVENT_CATEGORY_SUCCESS,
 } from '../constants/category';
+import { CLEAN_CACHE } from '../constants/global';
 
 const INITIAL_STATE = {
   allEvents: {},
@@ -48,7 +49,7 @@ export default function event (state = INITIAL_STATE, action) {
         ...state,
         allEvents: {
           ...state.allEvents,
-          [action.payload.category]: state.allEvents[action.payload.category].concat(action.payload.event)
+          [action.payload.category]: state.allEvents[action.payload.category].unshift(action.payload.event)
         }
       }
     case EDIT_EVENT_SUCCESS:
@@ -94,6 +95,8 @@ export default function event (state = INITIAL_STATE, action) {
         ...state,
         eventCategories: state.eventCategories.filter(existingEventCategory => existingEventCategory._id !== action.payload._id)
       }
+    case CLEAN_CACHE:
+      return INITIAL_STATE;
     default:
       return state
   }

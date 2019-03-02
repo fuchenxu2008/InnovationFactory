@@ -13,6 +13,7 @@ import {
   EDIT_WORKSHOP_CATEGORY_SUCCESS,
   DELETE_WORKSHOP_CATEGORY_SUCCESS,
 } from '../constants/category';
+import { CLEAN_CACHE } from '../constants/global';
 
 const INITIAL_STATE = {
   allWorkshops: {},
@@ -49,7 +50,7 @@ export default function workshop (state = INITIAL_STATE, action) {
         ...state,
         allWorkshops: {
           ...state.allWorkshops,
-          [action.payload.category]: state.allWorkshops[action.payload.category].concat(action.payload.workshop)
+          [action.payload.category]: state.allWorkshops[action.payload.category].unshift(action.payload.workshop)
         }
       }
     case EDIT_WORKSHOP_SUCCESS:
@@ -94,6 +95,8 @@ export default function workshop (state = INITIAL_STATE, action) {
         ...state,
         workshopCategories: state.workshopCategories.filter(existingWorkshopCategory => existingWorkshopCategory._id !== action.payload._id)
       }
+    case CLEAN_CACHE:
+      return INITIAL_STATE;
     default:
       return state
   }

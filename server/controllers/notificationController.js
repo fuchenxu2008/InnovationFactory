@@ -35,7 +35,7 @@ const sendOrderSuccessNotification = ({ order, activity }) => {
     template_id: 'PhaC1oBnNp7U-Tf8cE-C3SSPX0QVgWlnwhYno7cZTBA',
     touser: order.user.openid,
     form_id: order.formId[0],
-    page: `/pages/EventDetailPage/index?id=${activity._id}`,
+    page: `/pages/ActivityDetailPage/index?id=${activity._id}`,
     data: {
       keyword1: {
         value: activity.title,
@@ -64,7 +64,7 @@ const sendReminder = ({ order, activity }) => {
     touser: order.user.openid,
     template_id: 'YUwJMeOH6uzDpJEIWDKlW47LJrvADsvVQI_tLOtXHl4',
     form_id: order.formId[1],
-    page: `/pages/EventDetailPage/index?id=${activity._id}`,
+    page: `/pages/ActivityDetailPage/index?id=${activity._id}`,
     data: {
       keyword1: {
         value: activity.title, // 服务项目

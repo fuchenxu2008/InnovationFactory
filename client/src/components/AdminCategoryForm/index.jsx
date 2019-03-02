@@ -33,9 +33,9 @@ class AdminCategoryForm extends Component {
 
   _initValidate = () => {
     const rules = {
-      albumPicPath: {
-        required: true,
-      },
+      // albumPicPath: {
+      //   required: true,
+      // },
       name: {
         required: true,
       },
@@ -44,9 +44,9 @@ class AdminCategoryForm extends Component {
       },
     };
     const messages = {
-      albumPicPath: {
-        required: 'Please upload a cover image',
-      },
+      // albumPicPath: {
+      //   required: 'Please upload a cover image',
+      // },
       name: {
         required: 'Please input category name',
       },

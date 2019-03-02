@@ -2,7 +2,9 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   SET_USER_INFO,
+  LOGOUT,
   PERMIT_ADMIN_ACCESS,
+  CLEAN_CACHE,
 } from '../constants/global';
 import * as api from '../API/auth';
 
@@ -38,6 +40,10 @@ export const setUserInfo = (userInfo) => (dispatch, getState) => {
     .catch(err => console.log(err))
 };
 
+export const logout = () => ({
+  type: LOGOUT,
+});
+
 export const authenticateAdmin = () => (dispatch, getState) => {
   const { token } = getState().global.currentUser || {};
   if (!token) return console.log('Requires user login token');
@@ -53,3 +59,7 @@ export const authenticateAdmin = () => (dispatch, getState) => {
     })
     .catch(err => console.log(err))
 }
+
+export const cleanCache = () => ({
+  type: CLEAN_CACHE,
+})

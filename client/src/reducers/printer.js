@@ -3,6 +3,7 @@ import {
   GET_CACHED_PRINTER,
   GET_PRINTER_SUCCESS,
 } from '../constants/printer';
+import { CLEAN_CACHE } from '../constants/global';
 
 const INITIAL_STATE = {
   allPrinters: [],
@@ -27,6 +28,8 @@ export default function printer (state = INITIAL_STATE, action) {
         ...state,
         currentPrinter: action.payload,
       }
+    case CLEAN_CACHE:
+      return INITIAL_STATE;
     default:
       return state
   }

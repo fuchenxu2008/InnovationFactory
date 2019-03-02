@@ -11,7 +11,7 @@ const searchDatabase = async (req, res) => {
     if (!type || type === 'event') {
       const events = await Event.find()
         .or([{ title: searchTerm }, { subtitle: searchTerm }, { desc: searchTerm }])
-        .select(['_id', 'title', 'subtitle', 'albumPicPath', 'desc']);
+        .select(['_id', 'title', 'subtitle', 'albumPicPath', 'startTime']);
       result.events = events;
     }
     if (!type || type === 'workshop') {
