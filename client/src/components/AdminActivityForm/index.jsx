@@ -291,6 +291,7 @@ class AdminActivityForm extends Component {
               type='text'
               placeholder='Enter a title'
               onChange={this._handleInputChange.bind(this, 'title')}
+              onBlur={this._handleInputChange.bind(this, 'title')}
               value={title}
             />
             <AtInput
@@ -298,6 +299,7 @@ class AdminActivityForm extends Component {
               type='text'
               placeholder='Enter a subtitle'
               onChange={this._handleInputChange.bind(this, 'subtitle')}
+              onBlur={this._handleInputChange.bind(this, 'subtitle')}
               value={subtitle}
             />
             <View className='picker-section'>
@@ -317,6 +319,7 @@ class AdminActivityForm extends Component {
               name='description'
               placeholder='Enter a description'
               onChange={this._handleTextareaChange.bind(this, 'desc')}
+              onBlur={this._handleTextareaChange.bind(this, 'desc')}
               value={desc}
               maxLength={1000}
             />
@@ -354,6 +357,7 @@ class AdminActivityForm extends Component {
                 type='text'
                 placeholder='Enter an address'
                 onChange={this._handleInputChange.bind(this, 'address')}
+                onBlur={this._handleInputChange.bind(this, 'address')}
                 value={address}
               />
             </View>
@@ -386,6 +390,7 @@ class AdminActivityForm extends Component {
               type='text'
               placeholder='Enter the link to article'
               onChange={this._handleInputChange.bind(this, 'linkToArticle')}
+              onBlur={this._handleInputChange.bind(this, 'linkToArticle')}
               value={linkToArticle}
             />
           </View>
@@ -415,18 +420,21 @@ class AdminActivityForm extends Component {
                         type='text'
                         placeholder='Type'
                         onChange={this._handleTicketChange.bind(this, i, 'ticketType')}
+                        onBlur={this._handleTicketChange.bind(this, i, 'ticketType')}
                         value={ticket.ticketType}
                       />
                       <AtInput
                         type='number'
                         placeholder='Fee'
                         onChange={this._handleTicketChange.bind(this, i, 'fee')}
+                        onBlur={this._handleTicketChange.bind(this, i, 'fee')}
                         value={ticket.fee}
                       />
                       <AtInput
                         type='number'
                         placeholder='Quota'
                         onChange={this._handleTicketChange.bind(this, i, 'quota')}
+                        onBlur={this._handleTicketChange.bind(this, i, 'quota')}
                         value={ticket.quota}
                       />
                       <AtIcon value='subtract-circle' onClick={this._handleDeleteTicket.bind(this, i)} color='red' />
@@ -449,6 +457,7 @@ class AdminActivityForm extends Component {
                         type='text'
                         title='Field'
                         onChange={this._handleFormFieldChange.bind(this, i, 'field')}
+                        onBlur={this._handleFormFieldChange.bind(this, i, 'field')}
                         value={formField.field}
                       />
                       <View className='picker-section'>

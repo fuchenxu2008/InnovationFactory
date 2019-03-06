@@ -23,6 +23,7 @@ class SearchBar extends Component {
           fixed={fixed}
           value={value}
           onChange={this._handleSearchBarChange}
+          // onBlur={this._handleSearchBarChange}
           onConfirm={onConfirm.bind(this, value)}
           onActionClick={onConfirm.bind(this, value)}
         />

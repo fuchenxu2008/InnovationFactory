@@ -33,9 +33,9 @@ class AdminCategoryForm extends Component {
 
   _initValidate = () => {
     const rules = {
-      // albumPicPath: {
-      //   required: true,
-      // },
+      albumPicPath: {
+        required: true,
+      },
       name: {
         required: true,
       },
@@ -44,9 +44,9 @@ class AdminCategoryForm extends Component {
       },
     };
     const messages = {
-      // albumPicPath: {
-      //   required: 'Please upload a cover image',
-      // },
+      albumPicPath: {
+        required: 'Please upload a cover image',
+      },
       name: {
         required: 'Please input category name',
       },
@@ -103,6 +103,7 @@ class AdminCategoryForm extends Component {
               type='text'
               placeholder='Enter a category name'
               onChange={this._handleInputChange.bind(this, 'name')}
+              onBlur={this._handleInputChange.bind(this, 'name')}
               value={name}
             />
             <View className='input-title'>Description</View>
@@ -110,6 +111,7 @@ class AdminCategoryForm extends Component {
               name='description'
               placeholder='Enter a description'
               onChange={this._handleTextareaChange.bind(this, 'desc')}
+              onBlur={this._handleTextareaChange.bind(this, 'desc')}              
               value={desc}
               maxLength={1000}
             />

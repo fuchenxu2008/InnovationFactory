@@ -163,6 +163,7 @@ class SignUpPage extends Component {
             type='text'
             value={form.name}
             onChange={this._handleInputChange.bind(this, 'name')}
+            onBlur={this._handleInputChange.bind(this, 'name')}
           />
           <View className='picker-section'>
             <View className='picker-title'>Gender</View>
@@ -177,6 +178,7 @@ class SignUpPage extends Component {
             type='number'
             value={form.age}
             onChange={this._handleInputChange.bind(this, 'age')}
+            onBlur={this._handleInputChange.bind(this, 'age')}
           />
           {
             formFields.map((formfield, i) => (
@@ -186,6 +188,7 @@ class SignUpPage extends Component {
                     type={formfield.fieldType}
                     value={this.state[formfield.field] || ''}
                     onChange={this._handleInputChange.bind(this, formfield.field)}
+                    onBlur={this._handleInputChange.bind(this, formfield.field)}
                   />
               </View>
             ))
