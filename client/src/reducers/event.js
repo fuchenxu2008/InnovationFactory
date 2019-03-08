@@ -49,7 +49,7 @@ export default function event (state = INITIAL_STATE, action) {
         ...state,
         allEvents: {
           ...state.allEvents,
-          [action.payload.category]: state.allEvents[action.payload.category].unshift(action.payload.event)
+          [action.payload.category]: [action.payload.event, ...state.allEvents[action.payload.category]]
         }
       }
     case EDIT_EVENT_SUCCESS:

@@ -15,7 +15,14 @@
 13. [x] Implement printer section and figure out time dimentional reservation
 14. [ ] Separate API request to get available timeslots (date/time)
 15. [ ] Server side design to prevent oversale in printer reservation
-16. [ ] Search section
+16. [x] Search section
+17. [ ] Overlay card & edit
+18. [ ] Consumables Statistics (edit orders)
+19. [ ] Categories ordered by latest events.
+20. [ ] Image sizes
+21. [ ] App name & logo & loading indicator
+22. [ ] Printer manually set time slots
+23. [ ] Share card
 
 ## Future Functionalities
 

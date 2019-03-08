@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Swiper, SwiperItem } from '@tarojs/components'
+import 'animate.css'
 import { connect } from '@tarojs/redux'
 import { getAllPrinters } from '../../actions/printer'
 import PrinterCard from '../../components/PrinterCard'
@@ -20,8 +21,18 @@ class BrowsePrinterPage extends Component {
     navigationBarTitleText: '3D打印机',
   }
 
+  state = {
+    animatedClass: 'hidden',
+  }
+
   componentDidMount() { 
     this.props.getAllPrinters();
+    setTimeout(() => {
+      this.setState({ animatedClass: 'fadeInRight' });
+      setTimeout(() => {
+        this.setState({ animatedClass: 'fadeOutLeft' });
+      }, 2000);
+    }, 1500);
   }
 
   render () {
@@ -32,6 +43,7 @@ class BrowsePrinterPage extends Component {
           isFetching &&
           <LoadingIndicator />
         }
+        <View className={`at-icon at-icon-chevron-left swipe-hint animated ${this.state.animatedClass}`} />
         <Swiper
           className='printer-swiper'
           indicatorColor='rgb(235, 235, 235)'

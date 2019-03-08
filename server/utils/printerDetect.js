@@ -2,7 +2,7 @@ const moment = require('moment-timezone');
 const PrinterOrder = require('../models/PrinterOrder');
 const { preset } = require('../config/timeslots');
 
-const isPrinterFree = (printer, timeSlot) => new Promise(async (resolve, reject) => {
+const isPrinterFree = (printer = {}, timeSlot) => new Promise(async (resolve, reject) => {
   let existingOrders;
   try {
     existingOrders = await PrinterOrder.find({ printer: printer._id });
@@ -15,7 +15,7 @@ const isPrinterFree = (printer, timeSlot) => new Promise(async (resolve, reject)
   resolve((printer.quantity || 0) - occupiedNum > 0);
 });
 
-const generateTimeSlots = (printer, existingOrders, skip = 2, days = 14) => {
+const generateTimeSlots = (printer = {}, existingOrders, skip = 2, days = 14) => {
   // Skip 2 days and future 14 days
   const slotDate = moment().add(skip - 1, 'days');
   const dates = [...new Array(days)].map(() => {

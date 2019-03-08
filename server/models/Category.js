@@ -10,6 +10,7 @@ const CategorySchema = mongoose.Schema({
     type: String,
     default: () => moment().format('YYYY-MM-DD HH:mm:ss'),
   },
+  updated_at: String, // Sort category by latest event
 });
 
 const Category = mongoose.model('Category', CategorySchema);

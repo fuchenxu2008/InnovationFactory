@@ -50,7 +50,7 @@ export default function workshop (state = INITIAL_STATE, action) {
         ...state,
         allWorkshops: {
           ...state.allWorkshops,
-          [action.payload.category]: state.allWorkshops[action.payload.category].unshift(action.payload.workshop)
+          [action.payload.category]: [action.payload.workshop, ...state.allWorkshops[action.payload.category]]
         }
       }
     case EDIT_WORKSHOP_SUCCESS:
