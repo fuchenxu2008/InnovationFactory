@@ -4,7 +4,7 @@ const Category = require('../models/Category');
 const getAllWorkshops = (req, res) => {
   // If no query variables => app initial load, return 3 from each category
   if (Object.keys(req.query).length === 0) {
-    return Category.find({ type: 'workshop' }, async (err, categories) => {
+    return Category.find({ type: 'workshop' }).sort({ updated_at: -1 }).exec(async (err, categories) => {
       if (err) return res.status(400).json({ message: 'Error while getting all categories.', err });
       const workshops = await categories.reduce(async (previousPromise, category) => {
         const obj = await previousPromise;

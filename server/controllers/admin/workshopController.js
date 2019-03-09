@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const Workshop = require('../../models/Workshop');
+const Category = require('../../models/Category');
 
 const addWorkshop = (req, res) => {
   let workshop;
@@ -20,7 +21,11 @@ const addWorkshop = (req, res) => {
     if (err) return res.status(400).json({ message: 'Error while creating workshop.', err });
     return Workshop.findById(doc._id).populate('category', ['name', '_id']).exec((err2, newWorkshop) => {
       if (err2) return res.status(400).json({ message: 'Error while populating workshop.', err: err2 });
-      return res.json({ message: 'Successfully created workshop!', workshop: newWorkshop });
+      res.json({ message: 'Successfully created workshop!', workshop: newWorkshop });
+      return Category.findById(workshop.category, (err3, category) => {
+        category.set({ updated_at: newWorkshop.created_at });
+        category.save();
+      });
     });
   });
 };

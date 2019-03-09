@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const Event = require('../../models/Event');
+const Category = require('../../models/Category');
 
 const addEvent = (req, res) => {
   let event;
@@ -20,7 +21,11 @@ const addEvent = (req, res) => {
     if (err) return res.status(400).json({ message: 'Error while creating event.', err });
     return Event.findById(doc._id).populate('category', ['name', '_id']).exec((err2, newEvent) => {
       if (err2) return res.status(400).json({ message: 'Error while populating event.', err: err2 });
-      return res.json({ message: 'Successfully created event!', event: newEvent });
+      res.json({ message: 'Successfully created event!', event: newEvent });
+      return Category.findById(event.category, (err3, category) => {
+        category.set({ updated_at: newEvent.created_at });
+        category.save();
+      });
     });
   });
 };

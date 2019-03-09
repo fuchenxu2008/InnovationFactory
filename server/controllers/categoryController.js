@@ -2,7 +2,7 @@ const Category = require('../models/Category');
 
 const getAllCategories = (req, res) => {
   const searchTerm = req.query;
-  Category.find(searchTerm, (err, categories) => {
+  Category.find(searchTerm).sort({ updated_at: -1 }).exec((err, categories) => {
     if (err) return res.status(400).json({ message: 'Error while getting all categories.', err });
     return res.json({ categories, searchTerm });
   });

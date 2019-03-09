@@ -13,12 +13,12 @@
 11. [x] Copycat to implement workshop section
 12. [x] Design and add printer database
 13. [x] Implement printer section and figure out time dimentional reservation
-14. [ ] Separate API request to get available timeslots (date/time)
-15. [ ] Server side design to prevent oversale in printer reservation
+14. [ ] ~~Separate API request to get available timeslots (date/time)~~
+15. [ ] ~~Server side design to prevent oversale in printer reservation~~
 16. [x] Search section
 17. [ ] Overlay card & edit
 18. [ ] Consumables Statistics (edit orders)
-19. [ ] Categories ordered by latest events.
+19. [x] Categories ordered by latest events.
 20. [ ] Image sizes
 21. [ ] App name & logo & loading indicator
 22. [ ] Printer manually set time slots
