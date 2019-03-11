@@ -9,9 +9,11 @@ const orderRouter = express.Router();
 orderRouter.get('/event', getEventOrders);
 orderRouter.get('/event/:orderid', getEventOrder);
 
+// Query: /workshop?workshop={workshopid}&user={id}
 orderRouter.get('/workshop', getWorkshopOrders);
 orderRouter.get('/workshop/:orderid', getWorkshopOrder);
 
+// Query: /printer?printer={printerid}&user={id}
 orderRouter.get('/printer', getPrinterOrders);
 orderRouter.get('/printer/:orderid', getPrinterOrder);
 

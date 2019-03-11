@@ -1,9 +1,14 @@
 const fs = require('fs');
+const path = require('path');
 
-const readJSON = path => new Promise((resolve, reject) => {
-  fs.readFile(require.resolve(path), (err, data) => {
+const readJSON = filePath => new Promise((resolve, reject) => {
+  fs.readFile(path.join(global.__root, filePath), (err, data) => {
     if (err) reject(err);
-    else resolve(JSON.parse(data));
+    try {
+      resolve(JSON.parse(data));
+    } catch (error) {
+      reject(error);
+    }
   });
 });
 

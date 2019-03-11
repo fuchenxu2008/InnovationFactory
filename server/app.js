@@ -29,6 +29,11 @@ app.use(bodyParser.json());
 
 // Set default timezone to Asia/Shanghai
 moment.tz.setDefault('Asia/Shanghai');
+moment.locale('zh-cn', {
+  week: {
+    dow: 1,
+  },
+});
 setRouter(app);
 accessTokenManager();
 registerAllReminderTasks(); // Send reminder to participants
@@ -36,3 +41,7 @@ registerAllReminderTasks(); // Send reminder to participants
 server.listen(port, () => {
   console.log(chalk.blue(`[√] 🛰  Server is running on http://localhost:${port}`));
 });
+
+// const updateTimeslots = require('./utils/cronJobs/updateTimeslots');
+
+// updateTimeslots();

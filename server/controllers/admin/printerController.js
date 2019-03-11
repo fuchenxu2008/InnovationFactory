@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+// const moment = require('moment-timezone');
 const Printer = require('../../models/Printer');
+const readJSON = require('../../utils/readJSON');
 
 const addPrinter = (req, res) => {
   let printer;
@@ -87,9 +89,36 @@ const updatePrinterWithoutImage = (req, res) => {
   });
 };
 
+const publishTimeSlots = async (req, res) => {
+  /**
+   * req: {
+   *  body: {
+   *    scheduled: [{
+   *      weekStart,
+   *      weekDays
+   *    }]
+   *  }
+   * }
+   */
+  const { scheduled } = req.body;
+  const { available, ...otherScheduleConfig } = await readJSON('config/timeslots.json');
+  const updatedTimeslotsConfig = {
+    ...otherScheduleConfig,
+    available: {
+      ...available,
+      scheduled,
+    },
+  };
+  fs.writeFile(path.join(global.__root, 'config/timeslots.json'), JSON.stringify(updatedTimeslotsConfig), (err) => {
+    if (err) return res.status(400).json({ message: 'Error while editing timeslots.', err });
+    return res.json({ message: 'Successfully edited timeslots!', timeslotsConfig: updatedTimeslotsConfig });
+  });
+};
+
 module.exports = {
   addPrinter,
   deletePrinter,
   updatePrinterWithImage,
   updatePrinterWithoutImage,
+  publishTimeSlots,
 };

@@ -5,10 +5,12 @@ const getEventOrders = (req, res) => {
   const { event, user } = req.query;
   if (event) searchTerm.event = event;
   if (user) searchTerm.user = user;
-  EventOrder.find(searchTerm, (err, docs) => {
-    if (err) return res.status(400).json({ message: 'Error while getting all eventOrders', err });
-    return res.json({ orders: docs, searchTerm });
-  });
+  EventOrder.find(searchTerm)
+    .sort({ created_at: -1 })
+    .exec((err, docs) => {
+      if (err) return res.status(400).json({ message: 'Error while getting all eventOrders', err });
+      return res.json({ orders: docs, searchTerm });
+    });
 };
 
 const getEventOrder = (req, res) => {

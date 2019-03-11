@@ -1,23 +1,20 @@
 {
-    "preset": [
-        "14:00-15:00",
-        "15:00-16:00",
-        "16:00-17:00"
-    ],
-    "unavailable": [
-        "2019-03-22",
-        "2019-03-27"
-    ],
-    "available": [
-        {
-            "weekStart": "2019-03-18",
-            "weekDay": ["Wednesday", "Friday"]
-        }, {
-            "weekStart": "2019-03-25",
-            "weekDay": ["Tuesday", "Thursday"]
-        }, {
-            "weekStart": "2019-04-01",
-            "weekDay": []
-        }
-    ]
+  "preset": ["14:00-15:00", "15:00-16:00", "16:00-17:00"],
+  "unavailable": [],
+  "available": {
+    "open": [{
+      "weekStart": "2019-03-05",
+      "weekDays": ["Tuesday"]
+    }, {
+      "weekStart": "2019-03-11",
+      "weekDays": ["Tuesday"]
+    }],
+    "scheduled": [{
+      "weekStart": "2019-03-18",
+      "weekDays": ["Tuesday"]
+    }, {
+      "weekStart": "2019-03-25",
+      "weekDays": ["Tuesday"]
+    }]
+  }
 }

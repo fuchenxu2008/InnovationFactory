@@ -34,7 +34,7 @@ const recurUpdateToken = () => {
 
 const accessTokenManager = async () => {
   // Manage the initial start time of updating
-  readJSON('../config/accessToken.json')
+  readJSON('config/accessToken.json')
     .then(({ validBefore }) => {
       const startTime = moment(validBefore).isBefore(moment())
         ? moment().add(1, 'second').format('YYYY-MM-DD HH:mm:ss')

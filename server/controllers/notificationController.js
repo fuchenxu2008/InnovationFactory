@@ -12,7 +12,7 @@ const sendTemplateMessage = async ({ touser, template_id, form_id, page, data })
       })
       .catch(err => console.log(err));
   };
-  readJSON('../config/accessToken.json')
+  readJSON('config/accessToken.json')
     .then(({ access_token }) => {
       axios.post(`https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=${access_token}`, {
         touser,
@@ -44,7 +44,7 @@ const sendOrderSuccessNotification = ({ order, activity }) => {
         value: order.created_at, // 支付时间
       },
       keyword3: {
-        value: '100万', // 订单金额
+        value: '¥ 0.00', // 订单金额
       },
       keyword4: {
         value: order._id, // 单号

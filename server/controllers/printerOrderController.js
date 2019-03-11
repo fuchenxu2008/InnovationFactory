@@ -43,7 +43,9 @@ const getMyPrinterOrder = (req, res) => {
   const { user } = req;
   if (!user) return res.status(400).json({ message: 'No user provided while getting my printerOrders' });
   return PrinterOrder.find({ user: user._id })
-    .populate('printer', ['type', 'class', 'albumPicPath']).exec((err, docs) => {
+    .populate('printer', ['type', 'class', 'albumPicPath'])
+    .sort({ created_at: -1 })
+    .exec((err, docs) => {
       if (err) return res.status(400).json({ message: 'Error while getting my printerOrders.', err });
       return res.json({ myOrders: docs });
     });

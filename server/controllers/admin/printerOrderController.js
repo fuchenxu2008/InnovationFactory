@@ -5,10 +5,12 @@ const getPrinterOrders = (req, res) => {
   const { printer, user } = req.query;
   if (printer) searchTerm.printer = printer;
   if (user) searchTerm.user = user;
-  PrinterOrder.find(searchTerm, (err, docs) => {
-    if (err) return res.status(400).json({ message: 'Error while getting all printerOrders', err });
-    return res.json({ orders: docs, searchTerm });
-  });
+  PrinterOrder.find(searchTerm)
+    .sort({ created_at: -1 })
+    .exec((err, docs) => {
+      if (err) return res.status(400).json({ message: 'Error while getting all printerOrders', err });
+      return res.json({ orders: docs, searchTerm });
+    });
 };
 
 const getPrinterOrder = (req, res) => {

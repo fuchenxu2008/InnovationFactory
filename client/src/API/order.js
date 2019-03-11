@@ -17,3 +17,12 @@ export const submitOrder = ({order, type}, token) => {
     token,
   })
 }
+
+// Admin section
+export const getAllUserOrders = (type, token) => {
+  return request({
+    url: `${ROOT_URL}/api/admin/order/${type}`,
+    method: 'GET',
+    token,
+  })
+}

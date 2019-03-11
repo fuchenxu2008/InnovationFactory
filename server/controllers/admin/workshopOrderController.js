@@ -5,10 +5,12 @@ const getWorkshopOrders = (req, res) => {
   const { workshop, user } = req.query;
   if (workshop) searchTerm.workshop = workshop;
   if (user) searchTerm.user = user;
-  WorkshopOrder.find(searchTerm, (err, docs) => {
-    if (err) return res.status(400).json({ message: 'Error while getting all workshopOrders', err });
-    return res.json({ orders: docs, searchTerm });
-  });
+  WorkshopOrder.find(searchTerm)
+    .sort({ created_at: -1 })
+    .exec((err, docs) => {
+      if (err) return res.status(400).json({ message: 'Error while getting all workshopOrders', err });
+      return res.json({ orders: docs, searchTerm });
+    });
 };
 
 const getWorkshopOrder = (req, res) => {

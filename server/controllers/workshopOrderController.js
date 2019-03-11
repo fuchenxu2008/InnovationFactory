@@ -22,7 +22,9 @@ const getMyWorkshopOrder = (req, res) => {
   const { user } = req;
   if (!user) return res.status(400).json({ message: 'No user provided while getting my workshopOrders' });
   return WorkshopOrder.find({ user: user._id })
-    .populate('workshop', ['title', 'albumPicPath']).exec((err, docs) => {
+    .populate('workshop', ['title', 'albumPicPath'])
+    .sort({ created_at: -1 })
+    .exec((err, docs) => {
       if (err) return res.status(400).json({ message: 'Error while getting my workshopOrders.', err });
       return res.json({ myOrders: docs });
     });

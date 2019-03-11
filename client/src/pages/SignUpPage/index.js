@@ -153,7 +153,6 @@ class SignUpPage extends Component {
         }
         <AtMessage />
         <View className='page-title'>Sign Up {type}</View>
-        <View>{currentItem._id}</View>
         <Form
           onSubmit={this._handleFormSubmit}
           reportSubmit

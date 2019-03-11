@@ -15,6 +15,12 @@ class AdminHomePage extends Component {
     })
   }
 
+  _goOrderManagePage = () => {
+    Taro.navigateTo({
+      url: `/pages/ManageOrderPage/index`
+    })
+  }
+
   render () {
     return (
       <View className='adminHomePage'>
@@ -22,7 +28,8 @@ class AdminHomePage extends Component {
         <View className='adminHomePage-btnGroup'>
           <AtButton onClick={this._goActivityManagePage.bind(this, 'event')}>Manage Event</AtButton>
           <AtButton onClick={this._goActivityManagePage.bind(this, 'workshop')}>Manage Workshop</AtButton>
-          <AtButton onClick={this._goActivityManagePage}>Manage Printer</AtButton>
+          <AtButton>Manage Printer</AtButton>
+          <AtButton onClick={this._goOrderManagePage}>View Orders</AtButton>
         </View>
       </View>
     )

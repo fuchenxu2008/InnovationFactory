@@ -1,5 +1,6 @@
 import {
   GET_MY_ORDERS_SUCCESS,
+  GET_ALL_USER_ORDERS_SUCCESS,
 } from '../constants/order';
 import { CLEAN_CACHE } from '../constants/global';
 
@@ -10,6 +11,7 @@ const INITIAL_STATE = {
     workshop: [],
     printer: [],
   },
+  allUserOrders: {},
 }
 
 export default function event(state = INITIAL_STATE, action) {
@@ -21,6 +23,14 @@ export default function event(state = INITIAL_STATE, action) {
           ...state.myOrders,
           [action.payload.orderType]: action.payload.orders,
         },
+      }
+    case GET_ALL_USER_ORDERS_SUCCESS:
+      return {
+        ...state,
+        allUserOrders: {
+          ...state.allUserOrders,
+          [action.payload.orderType]: action.payload.orders,
+        }
       }
     case CLEAN_CACHE:
       return INITIAL_STATE;
