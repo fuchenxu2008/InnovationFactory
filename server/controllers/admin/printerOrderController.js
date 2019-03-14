@@ -1,15 +1,31 @@
+const json2xls = require('json2xls');
 const PrinterOrder = require('../../models/PrinterOrder');
+const sendMail = require('../../middlewares/email');
 
 const getPrinterOrders = (req, res) => {
   const searchTerm = {};
-  const { printer, user } = req.query;
+  const { printer, user, toExcel } = req.query;
   if (printer) searchTerm.printer = printer;
   if (user) searchTerm.user = user;
   PrinterOrder.find(searchTerm)
     .sort({ created_at: -1 })
-    .exec((err, docs) => {
+    .select('-_id -__v -formId -user')
+    .populate('printer', '-_id type class')
+    .lean()
+    .exec((err, orders) => {
       if (err) return res.status(400).json({ message: 'Error while getting all printerOrders', err });
-      return res.json({ orders: docs, searchTerm });
+      if (toExcel === '1') {
+        const xls = json2xls(orders.map((order) => {
+          const { form, ...otherInfo } = order;
+          return {
+            ...form,
+            ...otherInfo,
+            printer: `${order.printer.type}${order.printer.class}`,
+          };
+        }));
+        sendMail('fuchenxu2008@163.com', xls);
+      }
+      return res.json({ orders, searchTerm });
     });
 };
 

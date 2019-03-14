@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const moment = require('moment-timezone');
+const json2xls = require('json2xls');
 // const io = require('socket.io')(server);
 const app = require('express')();
 const server = require('http').Server(app);
@@ -26,6 +27,7 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(json2xls.middleware);
 
 // Set default timezone to Asia/Shanghai
 moment.tz.setDefault('Asia/Shanghai');
