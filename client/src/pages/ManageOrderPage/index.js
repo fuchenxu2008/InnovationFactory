@@ -1,17 +1,22 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import { AtSegmentedControl, AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux'
-import { getAllUserOrders } from '../../actions/order'
+import { getAllUserOrders, exportOrderToEmail } from '../../actions/order'
+import AdminOrderTable from '../../components/AdminOrderTable'
 import LoadingIndicator from '../../components/LoadingIndicator'
 import createLoadingSelector from '../../selectors/loadingSelector'
 
 import './index.scss'
 
+const orderTypes = ['event', 'workshop', 'printer'];
+
 @connect(({ order, loading }) => ({
   allUserOrders: order.allUserOrders,
-  isFetching: createLoadingSelector(['GET_ALL_USER_ORDERS'])(loading),
+  isFetching: createLoadingSelector(['GET_ALL_USER_ORDERS', 'EXPORT_ORDERS_TO_EMAIL'])(loading),
 }), (dispatch) => ({
   getAllUserOrders: (type) => dispatch(getAllUserOrders(type)),
+  exportOrderToEmail: (type) => dispatch(exportOrderToEmail(type)),
 }))
 class ManageOrderPage extends Component {
   config = {
@@ -19,31 +24,50 @@ class ManageOrderPage extends Component {
   }
 
   state = {
-    orderType: 'workshop',
+    orderTypeIndex: 0,
   }
 
   componentDidMount() {
-    this.props.getAllUserOrders(this.state.orderType);
+    this._getOrders();
+  }
+
+  _getOrders = () => {
+    const { orderTypeIndex } = this.state;
+    const orderType = orderTypes[orderTypeIndex];
+    if (orderType) this.props.getAllUserOrders(orderType);
+  }
+
+  _handleChangeOrderType = (orderTypeIndex) => {
+    this.setState({ orderTypeIndex }, () => {
+      this._getOrders();
+    })
+  }
+
+  _exportToEmail = () => {
+    const { orderTypeIndex } = this.state;
+    const orderType = orderTypes[orderTypeIndex];
+    if (orderType) this.props.exportOrderToEmail(orderType);
   }
 
   render () {
-    const { orderType } = this.state;
+    const { orderTypeIndex } = this.state;
+    const orderType = orderTypes[orderTypeIndex] || '';
     const orders = this.props.allUserOrders[orderType] || [];
     return (
-      <View className='myOrderPage'>
+      <View className='manageOrderPage'>
         {
           this.props.isFetching &&
           <LoadingIndicator />
         }
-        <View className='myOrderPage-title'>收到的订单</View>
+        <View className='manageOrderPage-title'>收到的订单</View>
+        <AtButton onClick={this._exportToEmail}>Export to Email</AtButton>
+        <AtSegmentedControl
+          values={['Event', 'Workshop', 'Printer']}
+          onClick={this._handleChangeOrderType}
+          current={orderTypeIndex}
+        />
         <View className='myOrderList'>
-          {
-            orders.map(order => (
-              <View key={order._id}>
-                <View>{order[orderType]}</View>
-              </View>
-            ))
-          }
+          <AdminOrderTable orders={orders} />
         </View>
       </View>
     )

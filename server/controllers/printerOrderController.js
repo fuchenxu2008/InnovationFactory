@@ -20,7 +20,7 @@ const createPrinterOrder = (req, res) => {
    */
   const { order } = req.body;
   Printer.findById(order.printer, (err, printer) => {
-    if (err) return res.status(400).json({ message: 'Error while getting my printerOrders.', err });
+    if (err) return res.status(400).json({ message: 'Error while getting printer info.', err });
     return isPrinterFree(printer, order.timeSlot)
       .then((isFree) => {
         if (!isFree) return res.status(400).json({ message: 'Printer occupied at that time, please try other timeslots.' });
@@ -74,23 +74,24 @@ const getPrinterOrders = (req, res) => {
   if (user) searchTerm.user = user;
   PrinterOrder.find(searchTerm)
     .sort({ created_at: -1 })
-    .select('-_id -__v -formId -user')
+    .select('-__v -formId -user -_id')
     .populate('printer', '-_id type class')
     .lean()
     .exec((err, orders) => {
       if (err) return res.status(400).json({ message: 'Error while getting all printerOrders', err });
+      const formattedOrders = orders.map((order) => {
+        const { form, ...otherInfo } = order;
+        const relatedPrinter = order.printer;
+        return {
+          ...form,
+          ...otherInfo,
+          printer: `${relatedPrinter.type} ${relatedPrinter.class}`,
+        };
+      });
       if (toExcel === '1') {
-        const xls = json2xls(orders.map((order) => {
-          const { form, ...otherInfo } = order;
-          return {
-            ...form,
-            ...otherInfo,
-            printer: `${order.printer.type}${order.printer.class}`,
-          };
-        }));
-        sendMail('fuchenxu2008@163.com', xls);
+        sendMail('fuchenxu2008@163.com', json2xls(formattedOrders));
       }
-      return res.json({ orders, searchTerm });
+      return res.json({ orders: formattedOrders, searchTerm });
     });
 };
 

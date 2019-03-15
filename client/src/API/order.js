@@ -26,3 +26,11 @@ export const getAllUserOrders = (type, token) => {
     token,
   })
 }
+
+export const exportOrderToEmail = (type, token) => {
+  return request({
+    url: `${ROOT_URL}/api/admin/order/${type}?toExcel=1`,
+    method: 'GET',
+    token,
+  })
+}

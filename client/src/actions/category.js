@@ -20,10 +20,11 @@ import {
 } from '../constants/category';
 import * as api from '../API/category';
 
-export const setCurrentCategory = (category) => (dispatch) => {
+export const setCurrentCategory = (category = {}) => (dispatch) => {
   let type;
   if (category.type === 'event') type = GET_CACHED_EVENT_CATEGORY;
   if (category.type === 'workshop') type = GET_CACHED_WORKSHOP_CATEGORY;
+  if (!type) return;
   dispatch({
     type,
     payload: category,

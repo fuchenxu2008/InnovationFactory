@@ -115,7 +115,7 @@ class SignUpPage extends Component {
     const order = {
       formId: this.formId,
       user: currentUser._id,
-      activity: (currentItem || {})._id, // event or workshop id
+      [type === 'printer' ? 'printer' : 'activity']: (currentItem || {})._id, // event or workshop pr printer id
       form,
       ...JSON.parse(bookInfo || '{}'), // Add timeslot/guidance info
     }

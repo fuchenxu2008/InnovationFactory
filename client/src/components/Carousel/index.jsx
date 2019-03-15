@@ -12,8 +12,9 @@ class Carousel extends Component {
   componentWillReceiveProps(nextProps) {
     const categories = nextProps.categories || [];
     if (categories.length <= this.state.currentIndex) {
-      this.setState({ currentIndex: categories.length - 1 });
-      this.props.onSwiperChange(categories[categories.length - 1]);
+      const updatedIndex = categories.length > 1 ? categories.length - 1 : 0;
+      this.setState({ currentIndex: updatedIndex });
+      this.props.onSwiperChange(categories[updatedIndex]);
     }
   }
 

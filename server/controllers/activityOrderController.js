@@ -1,3 +1,5 @@
+const json2xls = require('json2xls');
+const sendMail = require('../middlewares/email');
 const ActivityOrder = require('../models/ActivityOrder');
 const { sendOrderSuccessNotification } = require('./notificationController');
 const { sendScheduledReminder } = require('../utils/cronJobs/activityReminder');
@@ -58,14 +60,29 @@ const getMyActivityOrder = (req, res) => {
 const getActivityOrders = (req, res) => {
   const { type } = req.params;
   const searchTerm = { type };
-  const { activity, user } = req.query;
+  const { activity, user, toExcel } = req.query;
   if (activity) searchTerm.activity = activity;
   if (user) searchTerm.user = user;
   ActivityOrder.find(searchTerm)
     .sort({ created_at: -1 })
-    .exec((err, docs) => {
+    .select('-__v -formId -user -tickets -type -_id')
+    .populate('activity', '-_id title')
+    .lean()
+    .exec((err, orders) => {
       if (err) return res.status(400).json({ message: `Error while getting all ${type}Orders`, err });
-      return res.json({ orders: docs, searchTerm });
+      const formattedOrders = orders.map((order) => {
+        const { form, ...otherInfo } = order;
+        const relatedActivity = order.activity || {};
+        return {
+          ...form,
+          ...otherInfo,
+          activity: relatedActivity.title,
+        };
+      });
+      if (toExcel === '1') {
+        sendMail('fuchenxu2008@163.com', json2xls(formattedOrders));
+      }
+      return res.json({ orders: formattedOrders, searchTerm });
     });
 };
 
