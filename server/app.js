@@ -10,7 +10,7 @@ const app = require('express')();
 const server = require('http').Server(app);
 
 const { port, mongoURL } = require('./config');
-const setRouter = require('./routes');
+const routes = require('./routes');
 const { accessTokenManager } = require('./utils/cronJobs/getAccessToken');
 const { registerAllReminderTasks } = require('./utils/cronJobs/activityReminder');
 
@@ -36,7 +36,7 @@ moment.locale('zh-cn', {
     dow: 1,
   },
 });
-setRouter(app);
+app.use('/api', routes);
 accessTokenManager();
 registerAllReminderTasks(); // Send reminder to participants
 

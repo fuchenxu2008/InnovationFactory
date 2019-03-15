@@ -23,7 +23,7 @@ const sendTemplateMessage = async ({ touser, template_id, form_id, page, data })
       })
         .then((res) => {
           // If access_token is not valid, refetch and run again
-          if (res.data.errcode !== 0) retry();
+          if (res.data.errcode !== 0 && res.data.errcode !== 41028) retry();
           else console.log('Notification sent!');
         });
     })

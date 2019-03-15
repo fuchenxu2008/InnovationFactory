@@ -1,7 +1,7 @@
 const moment = require('moment-timezone');
 const schedule = require('node-schedule');
-const EventOrder = require('../../models/EventOrder');
-const Event = require('../../models/Event');
+const ActivityOrder = require('../../models/ActivityOrder');
+const Activity = require('../../models/Activity');
 const { sendReminder } = require('../../controllers/notificationController');
 
 /**
@@ -19,19 +19,19 @@ const sendScheduledReminder = ({ order, activity }) => {
  */
 const registerAllReminderTasks = () => {
   /**
-   * Find future events
+   * Find future activities
    */
-  Event.find({
+  Activity.find({
     startTime: {
       $gt: moment().add(1, 'day').format('YYYY-MM-DD HH:mm:ss'),
     },
-  }, (err, futureEvents) => {
-    if (err) console.log('Error while finding all future events', err);
-    futureEvents.forEach((futureEvent) => {
-      EventOrder.find({ event: futureEvent._id }).populate('user', 'openid').exec((err2, orders) => {
-        if (err2) console.log('Error while finding all orders for future event', err2);
+  }, (err, futureActivities) => {
+    if (err) console.log('Error while finding all future activities', err);
+    futureActivities.forEach((futureActivity) => {
+      ActivityOrder.find({ activity: futureActivity._id }).populate('user', 'openid').exec((err2, orders) => {
+        if (err2) console.log('Error while finding all orders for future activities', err2);
         orders.forEach((order) => {
-          sendScheduledReminder({ activity: futureEvent, order });
+          sendScheduledReminder({ activity: futureActivity, order });
         });
       });
     });

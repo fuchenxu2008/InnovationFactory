@@ -4,7 +4,7 @@ const {
   deleteCategory,
   updateCategoryWithImage,
   updateCategoryWithoutImage,
-} = require('../../controllers/admin/categoryController');
+} = require('../../controllers/categoryController');
 const { categoryUpload } = require('../../middlewares/multer');
 
 const categoryRouter = express.Router();

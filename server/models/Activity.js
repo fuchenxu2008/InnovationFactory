@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const moment = require('moment-timezone');
 
-const EventSchema = mongoose.Schema({
+const ActivitySchema = mongoose.Schema({
+  type: String, // 'event' or 'workshop'
   albumPicPath: String,
   title: String,
   subtitle: String,
@@ -36,6 +37,6 @@ const EventSchema = mongoose.Schema({
   },
 });
 
-const Event = mongoose.model('Event', EventSchema);
+const Activity = mongoose.model('Activity', ActivitySchema);
 
-module.exports = Event;
+module.exports = Activity;

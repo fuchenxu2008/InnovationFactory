@@ -1,7 +1,7 @@
+const express = require('express');
 const adminRouter = require('./admin');
 const authRouter = require('./authRoutes');
-const eventRouter = require('./eventRoutes');
-const workshopRouter = require('./workshopRoutes');
+const activityRouter = require('./activityRoutes');
 const categoryRouter = require('./categoryRoutes');
 const printerRouter = require('./printerRoutes');
 const orderRouter = require('./orderRoutes');
@@ -9,16 +9,17 @@ const searchRouter = require('./searchRoutes');
 const { getImage } = require('../controllers/assetController');
 const { authenticateAdmin, authenticateUser } = require('../middlewares/authentication');
 
-module.exports = (app) => {
-  // admin
-  app.use('/api/admin', authenticateAdmin, adminRouter);
-  // user
-  app.use('/api/auth', authRouter);
-  app.use('/api/event', eventRouter);
-  app.use('/api/workshop', workshopRouter);
-  app.use('/api/category', categoryRouter);
-  app.use('/api/printer', printerRouter);
-  app.use('/api/myorder', authenticateUser, orderRouter);
-  app.use('/api/search', searchRouter);
-  app.get('/api/image/:img', getImage);
-};
+const router = express.Router();
+
+// admin
+router.use('/admin', authenticateAdmin, adminRouter);
+// user
+router.use('/auth', authRouter);
+router.use('/activity', activityRouter);
+router.use('/category', categoryRouter);
+router.use('/printer', printerRouter);
+router.use('/myorder', authenticateUser, orderRouter);
+router.use('/search', searchRouter);
+router.get('/image/:img', getImage);
+
+module.exports = router;

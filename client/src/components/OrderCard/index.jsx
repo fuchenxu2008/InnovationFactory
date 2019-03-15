@@ -8,22 +8,23 @@ class OrderCard extends Component {
       const { type, order } = this.props;
       if (!order || !type) return null;
       const { _id, created_at } = order;
-      const activity = order[type];
+      const instance = type === 'printer' ? order.printer : order.activity;
+      const name = type === 'printer' ? `${instance.type}${instance.class}` : instance.title;
 
       return (
         <View className='ordercard'>
           {
-            activity.albumPicPath &&
+            instance.albumPicPath &&
             <Image
-              src={`${ROOT_URL}${activity.albumPicPath}`}
-              mode='aspectFit'
+              src={`${ROOT_URL}${instance.albumPicPath}`}
+              mode={type === 'printer' ? 'aspectFit' : 'aspectFill'}
               className='ordercard-img'
             />
           }
           <View className='ordercard-detail'>
             <View>订单编号： {_id}</View>
             <View>下单时间： {created_at}</View>
-            <View>活动名称： {activity.title}</View>
+            <View>活动名称： {name}</View>
           </View>
         </View>
       )

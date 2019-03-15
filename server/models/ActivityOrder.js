@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 const moment = require('moment-timezone');
 
-const WorkshopOrderSchema = mongoose.Schema({
+const ActivityOrderSchema = mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
   /**
-   * WorkshopOrder Form
+   * ActivityOrder Form
    */
   form: Object,
   /**
@@ -17,10 +17,11 @@ const WorkshopOrderSchema = mongoose.Schema({
   /**
    * Order Detail
    */
-  workshop: {
+  activity: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Workshop',
+    ref: 'Activity',
   },
+  type: String, // 'event' or 'workshop'
   tickets: [{
     type: String,
     quantity: Number,
@@ -32,6 +33,6 @@ const WorkshopOrderSchema = mongoose.Schema({
   },
 });
 
-const WorkshopOrder = mongoose.model('WorkshopOrder', WorkshopOrderSchema);
+const ActivityOrder = mongoose.model('ActivityOrder', ActivityOrderSchema);
 
-module.exports = WorkshopOrder;
+module.exports = ActivityOrder;

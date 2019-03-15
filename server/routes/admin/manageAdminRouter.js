@@ -1,5 +1,5 @@
 const express = require('express');
-const { permitAdminAcess } = require('../../controllers/admin/manageController');
+const { permitAdminAcess } = require('../../controllers/manageController');
 
 const manageRouter = express.Router();
 

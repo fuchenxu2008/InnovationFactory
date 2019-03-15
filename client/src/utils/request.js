@@ -13,7 +13,7 @@ export const request = ({ url, method, token, data }) => {
      return Taro.request({
        ...options,
        success: (res) => {
-         if (res.statusCode !== 200) return reject(res.data.message);
+         if (res.statusCode !== 200) return reject(res.data);
          resolve(res);
        },
        fail: (err) => reject(err),
@@ -36,7 +36,7 @@ export const multipartRequest = ({ url, filePath, name, formData, token, }) => {
       ...options,
       success: (res) => {
         const data = JSON.parse(res.data);
-        if (res.statusCode !== 200) return reject(data.message);
+        if (res.statusCode !== 200) return reject(data);
         resolve({ data });
       },
       fail: (err) => reject(err),

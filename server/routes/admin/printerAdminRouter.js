@@ -4,7 +4,7 @@ const {
   deletePrinter,
   updatePrinterWithImage,
   updatePrinterWithoutImage,
-} = require('../../controllers/admin/printerController');
+} = require('../../controllers/printerController');
 const { printerUpload } = require('../../middlewares/multer');
 
 const printerRouter = express.Router();

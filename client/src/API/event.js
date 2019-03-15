@@ -3,21 +3,21 @@ import { ROOT_URL } from '../config';
 
 export const getInitialEvents = () => {
   return request({
-    url: `${ROOT_URL}/api/event`,
+    url: `${ROOT_URL}/api/activity/event`,
     method: 'GET',
   })
 }
 
 export const getPaginatedEvents = ({ start, count = 3, category }) => {
   return request({
-    url: `${ROOT_URL}/api/event?start=${start}&count=${count}&category=${category}`,
+    url: `${ROOT_URL}/api/activity/event?start=${start}&count=${count}&category=${category}`,
     method: 'GET',
   })
 }
 
 export const getEvent = (eventid) => {
   return request({
-    url: `${ROOT_URL}/api/event/${eventid}`,
+    url: `${ROOT_URL}/api/activity/event/${eventid}`,
     method: 'GET',
   })
 }
@@ -28,7 +28,7 @@ export const getEvent = (eventid) => {
 
 export const addEvent = (event, token) => {
     return multipartRequest({
-      url: `${ROOT_URL}/api/admin/event`,
+      url: `${ROOT_URL}/api/admin/activity/event`,
       filePath: event.albumPicPath,
       name: 'file',
       formData: {
@@ -42,7 +42,7 @@ export const updateEvent = ({id, event}, token) => {
   if (event.albumPicPath.startsWith(ROOT_URL)) {
     // Update without changing cover photo
     return request({
-      url: `${ROOT_URL}/api/admin/event/${id}`,
+      url: `${ROOT_URL}/api/admin/activity/event/${id}`,
       method: 'PUT',
       data: { event },
       token,
@@ -50,7 +50,7 @@ export const updateEvent = ({id, event}, token) => {
   } else {
     // Re-upload photo
     return multipartRequest({
-      url: `${ROOT_URL}/api/admin/event/${id}`,
+      url: `${ROOT_URL}/api/admin/activity/event/${id}`,
       filePath: event.albumPicPath,
       name: 'file',
       formData: {
@@ -63,7 +63,7 @@ export const updateEvent = ({id, event}, token) => {
 
 export const deleteEvent = (eventid, token) => {
   return request({
-    url: `${ROOT_URL}/api/admin/event/${eventid}`,
+    url: `${ROOT_URL}/api/admin/activity/event/${eventid}`,
     method: 'DELETE',
     token,
   })
