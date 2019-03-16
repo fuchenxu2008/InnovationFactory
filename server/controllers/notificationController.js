@@ -3,29 +3,23 @@ const readJSON = require('../utils/readJSON');
 const { getAccessToken } = require('../utils/cronJobs/getAccessToken');
 
 // eslint-disable-next-line
-const sendTemplateMessage = async ({ touser, template_id, form_id, page, data }) => {
+const sendTemplateMessage = async (templateData, remainingAttempts = 2) => {
+  if (remainingAttempts <= 0) return;
   const retry = () => {
     getAccessToken()
       .then(() => {
         console.log('Retrying send notification...');
-        sendTemplateMessage({ touser, template_id, form_id, page, data }); // eslint-disable-line
+        sendTemplateMessage(templateData, --remainingAttempts); // eslint-disable-line
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log('Error while getting access token', err));
   };
   readJSON('config/accessToken.json')
-    .then(({ access_token }) => {
-      axios.post(`https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=${access_token}`, {
-        touser,
-        template_id,
-        form_id,
-        page,
-        data,
-      })
-        .then((res) => {
-          // If access_token is not valid, refetch and run again
-          if (res.data.errcode !== 0 && res.data.errcode !== 41028) retry();
-          else console.log('Notification sent!');
-        });
+    .then(({ access_token }) => axios.post(`https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=${access_token}`, templateData))
+    .then(({ data }) => {
+      if (data.errcode === 0) console.log('Notification sent!');
+      else if (data.errcode === 41028 || data.errcode === 41029) console.log('Invalid formId!');
+      // If access_token is not valid, refetch and run again
+      else if (data.errcode === 42001 || data.errcode === 40001) throw new Error('Invalid access_token');
     })
     .catch(() => retry());
 };

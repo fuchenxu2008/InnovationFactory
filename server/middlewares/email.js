@@ -2,16 +2,9 @@
 const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
 const moment = require('moment-timezone');
+const { emailConfig } = require('../config');
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.mailgun.org',
-  port: 587,
-  secure: false,
-  auth: {
-    user: 'postmaster@sandbox967d89a1ad1940dbacf4e96fff73dfdf.mailgun.org',
-    pass: '73edffaf634c05e0e946f91d514b6697-de7062c6-e3cfe1c8',
-  },
-});
+const transporter = nodemailer.createTransport(emailConfig);
 
 // Configure mailgen by setting a theme and your product info
 const mailGenerator = new Mailgen({

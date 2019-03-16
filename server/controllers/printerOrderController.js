@@ -68,14 +68,14 @@ const getMyPrinterOrder = (req, res) => {
  */
 
 const getPrinterOrders = (req, res) => {
-  const searchTerm = {};
-  const { printer, user, toExcel } = req.query;
-  if (printer) searchTerm.printer = printer;
-  if (user) searchTerm.user = user;
-  PrinterOrder.find(searchTerm)
+  const { toExcel, fromDate, ...searchTerm } = req.query;
+  PrinterOrder.find({
+    ...searchTerm,
+    created_at: { $gte: fromDate },
+  })
     .sort({ created_at: -1 })
     .select('-__v -formId -user -_id')
-    .populate('printer', '-_id type class')
+    .populate('printer', '_id type class')
     .lean()
     .exec((err, orders) => {
       if (err) return res.status(400).json({ message: 'Error while getting all printerOrders', err });

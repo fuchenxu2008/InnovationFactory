@@ -7,3 +7,32 @@
     margin: 10px 0;
     font-weight: bold;
 }
+
+$picker-font-size: 35px;
+
+.picker-section {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 30px;
+  margin: 10px 0;
+  border: 1PX #6190E8 solid;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #6190E8;
+}
+
+.picker-title {
+  font-size: $picker-font-size;
+}
+
+.picker-value {
+  font-size: $picker-font-size;
+}
+
+.export-btn {
+  margin: 10px 0;
+}
+
+.segmented-control {
+  margin: 10px 0;
+}

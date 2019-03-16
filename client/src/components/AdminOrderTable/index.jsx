@@ -7,6 +7,7 @@ class AdminOrderTable extends Component {
     render() {
       const { orders } = this.props;
       if (!orders) return null;
+      console.log('orders: ', orders);
 
       return (
         <View className='table'>
@@ -14,7 +15,7 @@ class AdminOrderTable extends Component {
             <View className='thead'>
               <View className='tr'>
                 {
-                  Object.keys(orders[0]).map((heading, i) => (
+                  Object.keys(orders[0] || {}).map((heading, i) => (
                     <View key={i} className='th'>{heading}</View>
                   ))
                 }

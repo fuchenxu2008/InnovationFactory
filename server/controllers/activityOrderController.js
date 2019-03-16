@@ -59,14 +59,15 @@ const getMyActivityOrder = (req, res) => {
 
 const getActivityOrders = (req, res) => {
   const { type } = req.params;
-  const searchTerm = { type };
-  const { activity, user, toExcel } = req.query;
-  if (activity) searchTerm.activity = activity;
-  if (user) searchTerm.user = user;
-  ActivityOrder.find(searchTerm)
+  const { toExcel, fromDate, ...searchTerm } = req.query;
+  ActivityOrder.find({
+    ...searchTerm,
+    type,
+    created_at: { $gte: fromDate },
+  })
     .sort({ created_at: -1 })
     .select('-__v -formId -user -tickets -type -_id')
-    .populate('activity', '-_id title')
+    .populate('activity', '_id title')
     .lean()
     .exec((err, orders) => {
       if (err) return res.status(400).json({ message: `Error while getting all ${type}Orders`, err });
