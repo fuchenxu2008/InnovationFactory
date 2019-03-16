@@ -8,10 +8,12 @@ import { getEvent } from '../../actions/event'
 import { getWorkshop } from '../../actions/workshop'
 import createLoadingSelector from '../../selectors/loadingSelector'
 import { ROOT_URL } from '../../config'
+import checkLogin from '../../utils/checkLogin'
 
 import './index.scss'
 
-@connect(({ event, workshop, loading }) => ({
+@connect(({ global, event, workshop, loading }) => ({
+  currentUser: global.currentUser,
   currentEvent: event.currentEvent,
   currentWorkshop: workshop.currentWorkshop,
   isFetching: createLoadingSelector(['GET_EVENT', 'GET_WORKSHOP'])(loading),
@@ -55,10 +57,11 @@ class ActivityDetailPage extends Component {
   }
 
   _handleEnterSignUp = () => {
+    if (!checkLogin(this.props.currentUser)) return;
     const { id, type } = this.$router.params;
     Taro.navigateTo({
       url: `/pages/SignUpPage/index?type=${type}&id=${id}`
-    })
+    });
   }
 
   render () {
@@ -79,7 +82,7 @@ class ActivityDetailPage extends Component {
       address,
       linkToArticle,
     } = currentActivity;
-    
+
     return (
       <View className='activityDetailPage'>
         {

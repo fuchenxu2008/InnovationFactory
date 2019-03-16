@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { APPSECRET } = require('../config');
 
-const getToken = ({ authorization }) => {
-  let token = authorization || ''; // Express headers are auto converted to lowercase
+const getToken = ({ headers, query }) => {
+  let token = headers.authorization || query.token || ''; // Express headers are auto converted to lowercase
   if (token.startsWith('Bearer ')) {
     token = token.slice(7, token.length);
   }
@@ -11,7 +11,7 @@ const getToken = ({ authorization }) => {
 };
 
 const authenticateUser = (req, res, next) => {
-  const token = getToken(req.headers);
+  const token = getToken(req);
   if (!token) return res.status(401).json({ message: 'Auth token is not supplied' });
   return jwt.verify(token, APPSECRET, (err, decoded) => {
     // decoded = { openid, session_key }
@@ -27,7 +27,7 @@ const authenticateUser = (req, res, next) => {
 };
 
 const authenticateAdmin = (req, res, next) => {
-  const token = getToken(req.headers);
+  const token = getToken(req);
   if (!token) return res.status(401).json({ message: 'Auth token is not supplied' });
   return jwt.verify(token, APPSECRET, (err, decoded) => {
     // decoded = { openid, session_key }

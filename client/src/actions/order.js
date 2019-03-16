@@ -5,8 +5,6 @@ import {
   GET_MY_ORDERS_SUCCESS,
   GET_ALL_USER_ORDERS_REQUEST,
   GET_ALL_USER_ORDERS_SUCCESS,
-  EXPORT_ORDERS_TO_EMAIL_REQUEST,
-  EXPORT_ORDERS_TO_EMAIL_SUCCESS,
 } from '../constants/order';
 import * as api from '../API/order';
 
@@ -80,22 +78,6 @@ export const getAllUserOrders = (type) => (dispatch, getState) => {
           }
         });
       }
-    })
-    .catch(err => console.log(err))
-}
-
-export const exportOrderToEmail = (type) => (dispatch, getState) => {
-  const { token } = getState().global.currentUser || {};
-  if (!token) return console.log('Requires user login token');
-  dispatch({
-    type: EXPORT_ORDERS_TO_EMAIL_REQUEST,
-  });
-  return api.exportOrderToEmail(type, token)
-    .then(({ data }) => {
-      console.log('data: ', data);
-      dispatch({
-        type: EXPORT_ORDERS_TO_EMAIL_SUCCESS,
-      });
     })
     .catch(err => console.log(err))
 }

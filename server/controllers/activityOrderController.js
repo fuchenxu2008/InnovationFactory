@@ -1,5 +1,3 @@
-const json2xls = require('json2xls');
-const sendMail = require('../middlewares/email');
 const ActivityOrder = require('../models/ActivityOrder');
 const { sendOrderSuccessNotification } = require('./notificationController');
 const { sendScheduledReminder } = require('../utils/cronJobs/activityReminder');
@@ -59,32 +57,30 @@ const getMyActivityOrder = (req, res) => {
 
 const getActivityOrders = (req, res) => {
   const { type } = req.params;
-  const { toExcel, fromDate, ...searchTerm } = req.query;
+  const { toExcel, token, fromDate, ...searchTerm } = req.query; // eslint-disable-line
+  if (fromDate) searchTerm.created_at = { $gte: fromDate };
   ActivityOrder.find({
     ...searchTerm,
     type,
-    created_at: { $gte: fromDate },
   })
     .sort({ created_at: -1 })
     .select('-__v -formId -user -tickets -type -_id')
-    .populate('activity', '_id title')
+    .populate('activity', 'title')
     .lean()
-    .exec((err, orders) => {
-      if (err) return res.status(400).json({ message: `Error while getting all ${type}Orders`, err });
+    .then((orders) => {
       const formattedOrders = orders.map((order) => {
-        const { form, ...otherInfo } = order;
-        const relatedActivity = order.activity || {};
+        const { form, activity, ...otherInfo } = order;
         return {
           ...form,
           ...otherInfo,
-          activity: relatedActivity.title,
+          activity: (activity || {}).title,
+          activityId: (activity || {})._id,
         };
       });
-      if (toExcel === '1') {
-        sendMail('fuchenxu2008@163.com', json2xls(formattedOrders));
-      }
+      if (toExcel === '1') return res.xls('data.xlsx', formattedOrders);
       return res.json({ orders: formattedOrders, searchTerm });
-    });
+    })
+    .catch(err => res.status(400).json({ message: `Error while getting all ${type}Orders`, err }));
 };
 
 const getActivityOrder = (req, res) => {

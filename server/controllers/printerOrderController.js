@@ -1,5 +1,3 @@
-const json2xls = require('json2xls');
-const sendMail = require('../middlewares/email');
 const PrinterOrder = require('../models/PrinterOrder');
 const Printer = require('../models/Printer');
 const { isPrinterFree } = require('../utils/printerDetect');
@@ -68,31 +66,28 @@ const getMyPrinterOrder = (req, res) => {
  */
 
 const getPrinterOrders = (req, res) => {
-  const { toExcel, fromDate, ...searchTerm } = req.query;
-  PrinterOrder.find({
-    ...searchTerm,
-    created_at: { $gte: fromDate },
-  })
+  const { toExcel, token, fromDate, ...searchTerm } = req.query; // eslint-disable-line
+  if (fromDate) searchTerm.created_at = { $gte: fromDate };
+  PrinterOrder.find(searchTerm)
     .sort({ created_at: -1 })
     .select('-__v -formId -user -_id')
-    .populate('printer', '_id type class')
+    .populate('printer', 'type class')
     .lean()
-    .exec((err, orders) => {
-      if (err) return res.status(400).json({ message: 'Error while getting all printerOrders', err });
+    .then((orders) => {
       const formattedOrders = orders.map((order) => {
         const { form, ...otherInfo } = order;
-        const relatedPrinter = order.printer;
+        const relatedPrinter = order.printer || {};
         return {
           ...form,
           ...otherInfo,
           printer: `${relatedPrinter.type} ${relatedPrinter.class}`,
+          printerId: relatedPrinter._id,
         };
       });
-      if (toExcel === '1') {
-        sendMail('fuchenxu2008@163.com', json2xls(formattedOrders));
-      }
+      if (toExcel === '1') return res.xls('data.xlsx', formattedOrders);
       return res.json({ orders: formattedOrders, searchTerm });
-    });
+    })
+    .catch(err => res.status(400).json({ message: 'Error while getting all printerOrders', err }));
 };
 
 const getPrinterOrder = (req, res) => {

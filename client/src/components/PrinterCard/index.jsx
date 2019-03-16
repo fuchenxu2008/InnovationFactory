@@ -1,12 +1,17 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Image, ScrollView, Text, Picker } from '@tarojs/components';
 import { AtIcon } from 'taro-ui'
+import { connect } from '@tarojs/redux'
 import { ROOT_URL } from '../../config'
+import checkLogin from '../../utils/checkLogin'
 
 import './index.scss';
 
 const guideOptions = ['NEED', 'NO NEED'];
 
+@connect(({ global }) => ({
+  currentUser: global.currentUser,
+}))
 class PrinterCard extends Component {
   state = {
     multiArray: [[], []], // 2维数组数据
@@ -58,6 +63,7 @@ class PrinterCard extends Component {
   _handleGuidePickerChange = (e) => this.setState({ guidance: guideOptions[e.detail.value] })
 
   _handleConfirmBooking = () => {
+    if (!checkLogin(this.props.currentUser)) return;
     const { _id } = this.props.printer || {};
     const { multiIndex, multiArray, guidance, pickerStep } = this.state;
     if (!multiArray[1][multiIndex[1]] || pickerStep === 0) return;
@@ -138,7 +144,7 @@ class PrinterCard extends Component {
           <View className={`printer-booking-btn ${!timeSelected && 'disabled'}`} onClick={this._handleConfirmBooking}>
             <AtIcon value='shopping-cart' color={`${timeSelected ? 'black' : 'grey'}`} size={30} />
             <Text>Confirm Booking Info</Text>
-          </View>       
+          </View>
         </View>
       </ScrollView>
     )
