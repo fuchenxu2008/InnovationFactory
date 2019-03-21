@@ -1,9 +1,11 @@
 import {
   GET_ALL_PRINTERS_REQUEST,
   GET_ALL_PRINTERS_SUCCESS,
+  GET_ALL_PRINTERS_FAILURE,
   GET_CACHED_PRINTER,
   GET_PRINTER_REQUEST,
   GET_PRINTER_SUCCESS,
+  GET_PRINTER_FAILURE,
 } from '../constants/printer';
 
 import * as api from '../API/printer'
@@ -22,7 +24,12 @@ export const getAllPrinters = () => (dispatch) => {
         })
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      dispatch({
+        type: GET_ALL_PRINTERS_FAILURE,
+        payload: err,
+      })
+    })
 }
 
 export const getPrinter = (printerid) => (dispatch, getState) => {
@@ -49,6 +56,11 @@ export const getPrinter = (printerid) => (dispatch, getState) => {
           })
         }
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        dispatch({
+          type: GET_PRINTER_FAILURE,
+          payload: err,
+        })
+      })
   }
 }

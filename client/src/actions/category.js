@@ -3,20 +3,28 @@ import {
   GET_CACHED_WORKSHOP_CATEGORY,
   GET_EVENT_CATEGORY_REQUEST,
   GET_EVENT_CATEGORY_SUCCESS,
+  GET_EVENT_CATEGORY_FAILURE,
   GET_WORKSHOP_CATEGORY_REQUEST,
   GET_WORKSHOP_CATEGORY_SUCCESS,
+  GET_WORKSHOP_CATEGORY_FAILURE,
   ADD_EVENT_CATEGORY_REQUEST,
   ADD_EVENT_CATEGORY_SUCCESS,
+  ADD_EVENT_CATEGORY_FAILURE,
   EDIT_EVENT_CATEGORY_REQUEST,
   EDIT_EVENT_CATEGORY_SUCCESS,
+  EDIT_EVENT_CATEGORY_FAILURE,
   DELETE_EVENT_CATEGORY_REQUEST,
   DELETE_EVENT_CATEGORY_SUCCESS,
+  DELETE_EVENT_CATEGORY_FAILURE,
   ADD_WORKSHOP_CATEGORY_REQUEST,
   ADD_WORKSHOP_CATEGORY_SUCCESS,
+  ADD_WORKSHOP_CATEGORY_FAILURE,
   EDIT_WORKSHOP_CATEGORY_REQUEST,
   EDIT_WORKSHOP_CATEGORY_SUCCESS,
+  EDIT_WORKSHOP_CATEGORY_FAILURE,
   DELETE_WORKSHOP_CATEGORY_REQUEST,
   DELETE_WORKSHOP_CATEGORY_SUCCESS,
+  DELETE_WORKSHOP_CATEGORY_FAILURE,
 } from '../constants/category';
 import * as api from '../API/category';
 
@@ -68,12 +76,23 @@ export const getCategory = ({ id, type }) => (dispatch, getState) => {
             })
         }
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        if (type === 'event')
+          dispatch({
+            type: GET_EVENT_CATEGORY_FAILURE,
+            payload: err
+          })
+        if (type === 'workshop')
+          dispatch({
+            type: GET_WORKSHOP_CATEGORY_FAILURE,
+            payload: err
+          })
+      })
   }
 }
 
 /**
- * 
+ *
  * Admin actions
  *
  * Need token to authenticate
@@ -99,7 +118,18 @@ export const addCategory = (category) => (dispatch, getState) => {
           })
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      if (category.type === 'event')
+        dispatch({
+          type: ADD_EVENT_CATEGORY_FAILURE,
+          payload: err,
+        })
+      if (category.type === 'workshop')
+        dispatch({
+          type: ADD_WORKSHOP_CATEGORY_FAILURE,
+          payload: err,
+        })
+    })
 }
 
 export const updateCategory = ({ id, category }) => (dispatch, getState) => {
@@ -123,7 +153,18 @@ export const updateCategory = ({ id, category }) => (dispatch, getState) => {
           })
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      if (category.type === 'event')
+        dispatch({
+          type: EDIT_EVENT_CATEGORY_FAILURE,
+          payload: err,
+        })
+      if (category.type === 'workshop')
+        dispatch({
+          type: EDIT_WORKSHOP_CATEGORY_FAILURE,
+          payload: err,
+        })
+    })
 }
 
 export const deleteCategory = ({ id, type }) => (dispatch, getState) => {
@@ -147,5 +188,16 @@ export const deleteCategory = ({ id, type }) => (dispatch, getState) => {
           })
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      if (type === 'event')
+        dispatch({
+          type: DELETE_EVENT_CATEGORY_FAILURE,
+          payload: err,
+        })
+      if (type === 'workshop')
+        dispatch({
+          type: DELETE_WORKSHOP_CATEGORY_FAILURE,
+          payload: err,
+        })
+    })
 }

@@ -1,6 +1,7 @@
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
+  LOGIN_FAILURE,
   SET_USER_INFO,
   LOGOUT,
   PERMIT_ADMIN_ACCESS,
@@ -24,7 +25,12 @@ export const login = () => (dispatch) => {
         })
       }
     })
-    .catch((res) => console.log('err', res))
+    .catch(err => {
+      dispatch({
+        type: LOGIN_FAILURE,
+        payload: err
+      })
+    })
 };
 
 export const setUserInfo = (userInfo) => (dispatch, getState) => {

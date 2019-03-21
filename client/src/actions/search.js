@@ -1,6 +1,7 @@
 import {
     SEARCH_REQUEST,
     SEARCH_SUCCESS,
+    SEARCH_FAILURE,
 } from '../constants/search';
 import * as api from '../API/search';
 
@@ -22,7 +23,10 @@ export const searchDatabase = ({ q, type = '' }) => (dispatch) => {
       }
     })
     .catch(err => {
-        console.log(err);
+        dispatch({
+          type: SEARCH_FAILURE,
+          payload: err,
+        })
         reject(err);
     })
   });

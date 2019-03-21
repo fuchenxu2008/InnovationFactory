@@ -1,16 +1,22 @@
 import {
   ADD_EVENT_REQUEST,
   ADD_EVENT_SUCCESS,
+  ADD_EVENT_FAILURE,
   DELETE_EVENT_REQUEST,
   DELETE_EVENT_SUCCESS,
+  DELETE_EVENT_FAILURE,
   EDIT_EVENT_REQUEST,
   EDIT_EVENT_SUCCESS,
+  EDIT_EVENT_FAILURE,
   GET_INITIAL_EVENTS_REQUEST,
   GET_INITIAL_EVENTS_SUCCESS,
+  GET_INITIAL_EVENTS_FAILURE,
   GET_PAGINATED_EVENTS_REQUEST,
   GET_PAGINATED_EVENTS_SUCCESS,
+  GET_PAGINATED_EVENTS_FAILURE,
   GET_EVENT_REQUEST,
   GET_EVENT_SUCCESS,
+  GET_EVENT_FAILURE,
 } from '../constants/event';
 
 import * as api from '../API/event'
@@ -32,7 +38,12 @@ export const getInitialEvents = () => (dispatch) => {
         })
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      dispatch({
+        type: GET_INITIAL_EVENTS_FAILURE,
+        payload: err
+      })
+    })
 }
 
 export const getPaginatedEvents = ({ start, category }) => (dispatch) => {
@@ -52,7 +63,12 @@ export const getPaginatedEvents = ({ start, category }) => (dispatch) => {
         })
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      dispatch({
+        type: GET_PAGINATED_EVENTS_FAILURE,
+        payload: err
+      })
+    })
 }
 
 export const getEvent = (eventid) => (dispatch) => {
@@ -69,11 +85,16 @@ export const getEvent = (eventid) => (dispatch) => {
         })
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      dispatch({
+        type: GET_EVENT_FAILURE,
+        payload: err,
+      })
+    })
 }
 
 /**
- * 
+ *
  * Admin actions
  *
  * Need token to authenticate
@@ -100,7 +121,12 @@ export const addEvent = (event) => (dispatch, getState) => {
         })
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      dispatch({
+        type: ADD_EVENT_FAILURE,
+        payload: err,
+      })
+    })
 }
 
 export const updateEvent = (edition) => (dispatch, getState) => {
@@ -124,7 +150,12 @@ export const updateEvent = (edition) => (dispatch, getState) => {
         })
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      dispatch({
+        type: EDIT_EVENT_FAILURE,
+        payload: err,
+      })
+    })
 }
 
 export const deleteEvent = (eventid) => (dispatch, getState) => {
@@ -148,5 +179,10 @@ export const deleteEvent = (eventid) => (dispatch, getState) => {
         })
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      dispatch({
+        type: DELETE_EVENT_FAILURE,
+        payload: err,
+      })
+    })
 }

@@ -1,10 +1,13 @@
 import {
   SUBMIT_ORDER_REQUEST,
   SUBMIT_ORDER_SUCCESS,
+  SUBMIT_ORDER_FAILURE,
   GET_MY_ORDERS_REQUEST,
   GET_MY_ORDERS_SUCCESS,
+  GET_MY_ORDERS_FAILURE,
   GET_ALL_USER_ORDERS_REQUEST,
   GET_ALL_USER_ORDERS_SUCCESS,
+  GET_ALL_USER_ORDERS_FAILURE,
 } from '../constants/order';
 import * as api from '../API/order';
 
@@ -27,7 +30,12 @@ export const submitOrder = ({order, type}) => (dispatch, getState) => {
         })
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      dispatch({
+        type: SUBMIT_ORDER_FAILURE,
+        payload: err,
+      })
+    })
 }
 
 /**
@@ -52,7 +60,12 @@ export const getMyOrders = (type) => (dispatch, getState) => {
         })
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      dispatch({
+        type: GET_MY_ORDERS_FAILURE,
+        payload: err,
+      })
+    })
 }
 
 /**
@@ -79,5 +92,10 @@ export const getAllUserOrders = (type) => (dispatch, getState) => {
         });
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      dispatch({
+        type: GET_ALL_USER_ORDERS_FAILURE,
+        payload: err,
+      })
+    })
 }
