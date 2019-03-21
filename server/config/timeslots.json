@@ -1,10 +1,10 @@
 {
-  "preset": ["14:00-15:00", "15:00-16:00", "16:00-17:00"],
+  "hours": ["14:00-15:00", "15:00-16:00", "16:00-17:00"],
   "unavailable": [],
   "available": {
     "open": [{
       "weekStart": "2019-03-05",
-      "weekDays": ["Tuesday"]
+      "weekDays": ["Wednesday", "Friday"]
     }, {
       "weekStart": "2019-03-11",
       "weekDays": ["Tuesday"]

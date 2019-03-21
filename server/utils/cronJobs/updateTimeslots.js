@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment-timezone');
-// const schedule = require('node-schedule');
+const schedule = require('node-schedule');
 const readJSON = require('../readJSON');
 
 const updateTimeslots = async () => {
@@ -28,4 +28,13 @@ const updateTimeslots = async () => {
   });
 };
 
-module.exports = updateTimeslots;
+const recurUpdateTimeslots = () => {
+  console.log('[Start] Recur update timeslots');
+  // Monday
+  schedule.scheduleJob('0 0 0 * * 1', updateTimeslots);
+};
+
+module.exports = {
+  updateTimeslots,
+  recurUpdateTimeslots,
+};

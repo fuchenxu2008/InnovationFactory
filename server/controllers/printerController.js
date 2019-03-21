@@ -9,20 +9,21 @@ const { generateTimeSlots } = require('../utils/printerDetect');
 const getAllPrinters = (req, res) => {
   const searchTerm = req.query;
   PrinterOrder.find({
-    timeSlot: { $gte: moment().add(2, 'days').format('YYYY-MM-DD') },
-  }, (err, printerOrders) => {
-    Printer.find(searchTerm, (err2, docs) => {
-      if (err2) return res.status(400).json({ message: 'Error while getting all printers.', err: err2 });
-      const printers = docs.map(printer => ({
-        ...printer.toObject(),
-        timeSlot: generateTimeSlots(
-          printer,
-          printerOrders.filter(order => order.printer.equals(printer._id)),
-        ), // eslint-disable-line
-      }));
-      return res.json({ printers, searchTerm });
-    });
-  });
+    timeSlot: { $gte: moment().add(1, 'days').format('YYYY-MM-DD') },
+  }).select('printer timeSlot').then((printerOrders) => {
+    Printer.find(searchTerm).lean()
+      .then(async (allPrinters) => {
+        const printers = await Promise.all(allPrinters.map(async printer => ({
+          ...printer,
+          timeSlot: await generateTimeSlots(
+            printer,
+            printerOrders.filter(order => order.printer.equals(printer._id)),
+          ),
+        })));
+        res.json({ printers, searchTerm });
+      })
+  })
+  .catch(err => res.status(400).json({ message: 'Error while getting all printers.', err }))
 };
 
 const getPrinter = (req, res) => {

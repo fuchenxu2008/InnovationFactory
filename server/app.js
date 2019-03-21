@@ -44,6 +44,9 @@ server.listen(port, () => {
   console.log(chalk.blue(`[√] 🛰  Server is running on http://localhost:${port}`));
 });
 
-// const updateTimeslots = require('./utils/cronJobs/updateTimeslots');
+const { recurUpdateTimeslots } = require('./utils/cronJobs/updateTimeslots');
+// const { generateTimeSlots } = require('./utils/printerDetect');
 
-// updateTimeslots();
+recurUpdateTimeslots();
+
+// console.log('generateTimeSlots(): ', generateTimeSlots().then(res => console.log(res)));

@@ -1,6 +1,6 @@
 const moment = require('moment-timezone');
 const PrinterOrder = require('../models/PrinterOrder');
-const { preset } = require('../config/timeslots');
+const readJSON = require('./readJSON');
 
 const isPrinterFree = (printer = {}, timeSlot) => new Promise(async (resolve, reject) => {
   let existingOrders;
@@ -15,31 +15,33 @@ const isPrinterFree = (printer = {}, timeSlot) => new Promise(async (resolve, re
   resolve((printer.quantity || 0) - occupiedNum > 0);
 });
 
-const generateTimeSlots = (printer = {}, existingOrders, skip = 2, days = 14) => {
-  // Skip 2 days and future 14 days
-  const slotDate = moment().add(skip - 1, 'days');
-  const dates = [...new Array(days)].map(() => {
-    slotDate.add(1, 'day');
-    while (slotDate.isoWeekday() === 6 || slotDate.isoWeekday() === 7) {
-      slotDate.add(1, 'day');
-    }
-    return slotDate.format('YYYY-MM-DD');
-  });
-  // Generate all available time slots
+const generateTimeSlots = async (printer = {}, existingOrders = []) => {
+  const { available, hours } = await readJSON('config/timeslots.json');
+  const { open } = available;
+
+  const dates = [].concat(...open.map(({ weekStart, weekDays }) => {
+    return weekDays.map((weekDay) => {
+      return moment(weekStart).day(weekDay).format('YYYY-MM-DD');
+    })
+  }));
+
+  // // Generate all available time slots
   const timeSlots = dates.reduce((acc, date) => ({
     ...acc,
-    [date]: preset,
+    [date]: hours,
   }), {});
-  // Parse all relavant orders (given printer) => order status { datetime: num }
-  const orderStatus = existingOrders.reduce((acc, order) => ({
-    ...acc,
-    [order.timeSlot]: (acc[order.timeSlot] || 0) + 1,
-  }), {});
-  // filter out unavailable slots
-  Object.keys(orderStatus).forEach((occupiedTime) => {
-    if (orderStatus[occupiedTime] >= printer.quantity) {
-      const [date, interval] = occupiedTime.split(' ');
-      if (timeSlots[date]) timeSlots[date] = timeSlots[date].filter(time => interval !== time);
+  // // Parse all relavant orders (given printer) => order status { datetime: num }
+  const orderStatus = existingOrders.reduce((acc, order) => {
+    const orderDate = order.timeSlot.split(' ')[0];
+    return {
+      ...acc,
+      [orderDate]: (acc[orderDate] || 0) + 1,
+    }
+  }, {});
+  // // filter out unavailable slots
+  Object.keys(orderStatus).forEach((occupiedDate) => {
+    if (orderStatus[occupiedDate] >= printer.quantity) {
+      if (timeSlots[occupiedDate]) delete timeSlots[occupiedDate]
     }
   });
   return timeSlots;
