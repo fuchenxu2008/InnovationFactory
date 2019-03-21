@@ -39,17 +39,34 @@ const getMyActivityOrders = (req, res) => {
 
 const getMyActivityOrder = (req, res) => {
   const { type, orderid } = req.params;
-  ActivityOrder.findById(orderid).populate('user', '_id')
+  ActivityOrder.findById(orderid)
+    .select('-formId -__v')
+    .populate('activity', 'title albumPicPath cancellable')
     .then((doc) => {
       if (!doc) return res.status(404).json({ message: `No ${type}Order found with this ID.` });
-      if (doc.user._id !== req.user._id) return res.status(401).json({ message: 'Permission denied (ownership mismatch)' });
-      return res.json({ [`${type}Order`]: doc });
+      if (!doc.user._id.equals(req.user._id)) return res.status(401).json({ message: 'Permission denied (ownership mismatch)' });
+      return res.json({ order: doc });
     })
     .catch(err => res.status(400).json({
       message: `Error while getting ${type}Order.`,
       err,
     }));
 };
+
+const cancelMyActivityOrder = (req, res) => {
+  const { type, orderid } = req.params;
+  ActivityOrder.findById(orderid)
+    .then((doc) => {
+      if (!doc) return res.status(404).json({ message: `No ${type}Order found with this ID.` });
+      if (!doc.user._id.equals(req.user._id)) return res.status(401).json({ message: 'Permission denied (ownership mismatch)' });
+      return doc.delete();
+    })
+    .then((doc) => res.json({ order: doc, message: `${type} order deleted.` }))
+    .catch(err => res.status(400).json({
+      message: `Error while deleting ${type}Order.`,
+      err,
+    }));
+}
 
 /**
  * Admin Functions
@@ -96,6 +113,7 @@ module.exports = {
   createActivityOrder,
   getMyActivityOrders,
   getMyActivityOrder,
+  cancelMyActivityOrder,
   // admin
   getActivityOrders,
   getActivityOrder,

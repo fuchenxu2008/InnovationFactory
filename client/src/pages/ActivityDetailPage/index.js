@@ -81,6 +81,7 @@ class ActivityDetailPage extends Component {
       signupTo,
       address,
       linkToArticle,
+      acceptSignup,
     } = currentActivity;
 
     return (
@@ -123,7 +124,7 @@ class ActivityDetailPage extends Component {
                 <View className='at-icon at-icon-link' onClick={this._handleEnterWeb.bind(this, linkToArticle)} />
               }
               {
-                !(dayjs().isAfter(dayjs(signupTo)) || dayjs().isAfter(dayjs(startTime))) &&
+                acceptSignup && !(dayjs().isAfter(dayjs(signupTo)) || dayjs().isAfter(dayjs(startTime))) &&
                 <View className='signup-btn' onClick={this._handleEnterSignUp}>报名</View>
               }
               <Button openType='share' plain='true'>

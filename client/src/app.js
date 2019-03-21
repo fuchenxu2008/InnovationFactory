@@ -21,11 +21,13 @@ class App extends Component {
       'pages/SignUpPage/index',
       'pages/ProfilePage/index',
       'pages/MyOrderPage/index',
+      'pages/OrderDetailPage/index',
       'pages/WebViewPage/index',
       'pages/SearchPage/index',
       // Admin pages
       'pages/AdminHomePage/index',
       'pages/ManageActivityPage/index',
+      'pages/ManagePrinterPage/index',
       'pages/CreateUpdateActivityPage/index',
       'pages/CreateUpdateCategoryPage/index',
       'pages/ManageOrderPage/index',

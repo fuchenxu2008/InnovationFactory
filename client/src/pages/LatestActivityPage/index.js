@@ -40,7 +40,7 @@ class LatestActivityPage extends Component {
     // showModal: true,
   }
 
-  componentDidMount() { 
+  componentDidMount() {
     const { type } = this.$router.params;
     if (type === 'event') this.props.getInitialEvents();
     if (type === 'workshop') this.props.getInitialWorkshops();

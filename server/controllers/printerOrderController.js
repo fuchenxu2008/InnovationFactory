@@ -53,13 +53,34 @@ const getMyPrinterOrders = (req, res) => {
 
 const getMyPrinterOrder = (req, res) => {
   const { orderid } = req.params;
-  PrinterOrder.findById(orderid).populate('user', '_id').exec((err, doc) => {
-    if (err) return res.status(400).json({ message: 'Error while getting printerOrder.', err });
-    if (!doc) return res.status(404).json({ message: 'No printerOrder found with this ID.' });
-    if (doc.user._id !== req.user._id) return res.status(401).json({ message: 'Permission denied (ownership mismatch)' });
-    return res.json({ printerOrder: doc });
-  });
+  PrinterOrder.findById(orderid)
+    .select('-formId -__v')
+    .populate('printer', 'type class albumPicPath')
+    .then((doc) => {
+      if (!doc) return res.status(404).json({ message: `No printerOrder found with this ID.` });
+      if (!doc.user._id.equals(req.user._id)) return res.status(401).json({ message: 'Permission denied (ownership mismatch)' });
+      return res.json({ order: doc });
+    })
+    .catch(err => res.status(400).json({
+      message: `Error while getting printerOrder.`,
+      err,
+    }));
 };
+
+const cancelMyPrinterOrder = (req, res) => {
+  const { orderid } = req.params;
+  PrinterOrder.findById(orderid)
+    .then((doc) => {
+      if (!doc) return res.status(404).json({ message: 'No printerOrder found with this ID.' });
+      if (!doc.user._id.equals(req.user._id)) return res.status(401).json({ message: 'Permission denied (ownership mismatch)' });
+      return doc.delete();
+    })
+    .then((doc) => res.json({ order: doc, message: 'Printer order deleted.' }))
+    .catch(err => res.status(400).json({
+      message: `Error while deleting printerOrder.`,
+      err,
+    }));
+}
 
 /**
  * Admin Functions
@@ -103,6 +124,7 @@ module.exports = {
   createPrinterOrder,
   getMyPrinterOrders,
   getMyPrinterOrder,
+  cancelMyPrinterOrder,
   // Admin
   getPrinterOrders,
   getPrinterOrder,

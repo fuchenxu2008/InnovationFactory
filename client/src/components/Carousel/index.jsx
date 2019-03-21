@@ -38,7 +38,7 @@ class Carousel extends Component {
           indicatorDots
           onChange={this._handleSwiperChange}
           current={this.state.currentIndex}
-          autoplay
+          // autoplay
         >
           {
             (categories || []).map(category => (
