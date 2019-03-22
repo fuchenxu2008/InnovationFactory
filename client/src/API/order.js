@@ -35,9 +35,19 @@ export const cancelMyOrder = ({ type, id }, token) => {
 };
 
 // Admin section
-export const getAllUserOrders = (type, token) => {
+export const getAllUserOrders = ({ type, instanceId }, token) => {
+  const instanceType = type === 'printer' ? 'printer' : 'activity'; // In order to provide searchTerm for ActivityOrder or PrinterOrder
+  const instanceSelect = instanceId ? `${instanceType}=${instanceId}` : '';
   return request({
-    url: `${ROOT_URL}/api/admin/order/${type}`,
+    url: `${ROOT_URL}/api/admin/order/${type}?${instanceSelect}`,
+    method: 'GET',
+    token,
+  })
+}
+
+export const getDistinctInstances = (token) => {
+  return request({
+    url: `${ROOT_URL}/api/admin/order/distinct`,
     method: 'GET',
     token,
   })

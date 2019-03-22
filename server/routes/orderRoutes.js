@@ -1,6 +1,10 @@
 const express = require('express');
-const { createActivityOrder, getMyActivityOrders, getMyActivityOrder, cancelMyActivityOrder } = require('../controllers/activityOrderController');
-const { createPrinterOrder, getMyPrinterOrders, getMyPrinterOrder, cancelMyPrinterOrder } = require('../controllers/printerOrderController');
+const {
+  createActivityOrder, getMyActivityOrders, getMyActivityOrder, cancelMyActivityOrder,
+} = require('../controllers/activityOrderController');
+const {
+  createPrinterOrder, getMyPrinterOrders, getMyPrinterOrder, cancelMyPrinterOrder,
+} = require('../controllers/printerOrderController');
 
 const orderRouter = express.Router();
 

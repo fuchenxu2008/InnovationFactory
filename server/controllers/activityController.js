@@ -166,6 +166,29 @@ const updateActivityWithoutImage = (req, res) => {
   });
 };
 
+const getDistinctActivities = (req, res, next) => {
+  Activity.find()
+    .sort({ startTime: -1 })
+    .select('title type')
+    .then((activities) => {
+      const events = [];
+      const workshops = [];
+      activities.forEach((activity) => {
+        if (activity.type === 'event') events.push(activity);
+        if (activity.type === 'workshop') workshops.push(activity);
+      });
+      req.events = events;
+      req.workshops = workshops;
+      next();
+    })
+    .catch((err) => {
+      res.status(400).json({
+        message: 'Error while getting distinct activities',
+        err,
+      });
+    });
+};
+
 module.exports = {
   getActivities,
   getActivity,
@@ -174,4 +197,5 @@ module.exports = {
   deleteActivity,
   updateActivityWithImage,
   updateActivityWithoutImage,
+  getDistinctActivities,
 };

@@ -14,6 +14,9 @@ import {
   GET_ALL_USER_ORDERS_REQUEST,
   GET_ALL_USER_ORDERS_SUCCESS,
   GET_ALL_USER_ORDERS_FAILURE,
+  GET_DISTINCT_INSTANCES_REQUEST,
+  GET_DISTINCT_INSTANCES_SUCCESS,
+  GET_DISTINCT_INSTANCES_FAILURE,
 } from '../constants/order';
 import * as api from '../API/order';
 
@@ -136,21 +139,37 @@ export const cancelMyOrder = ({ type, id }) => (dispatch, getState) => {
  *
  * Need admin token
  */
-export const getAllUserOrders = (type) => (dispatch, getState) => {
+export const getAllUserOrders = ({ type, instanceId }) => (dispatch, getState) => {
   const { token } = getState().global.currentUser || {};
   if (!token) return console.log('Requires user login token');
   dispatch({
     type: GET_ALL_USER_ORDERS_REQUEST,
   });
-  return api.getAllUserOrders(type, token)
+  return api.getAllUserOrders({ type, instanceId }, token)
     .then(({ data }) => {
-      console.log('data: ', data);
+      let orders = {};
+
+      if (instanceId) {
+        orders = { [instanceId]: data.orders }
+      } else {
+        const instanceType = type === 'printer' ? 'printer' : 'activity';
+        // Extract unique orders by related activity or printer
+        const uniqueOrders = data.orders.filter((obj, pos, arr) => {
+          return arr.map(mapObj => mapObj[instanceType]).indexOf(obj[instanceType]) === pos;
+        });
+        const instanceIdField = [`${instanceType}Id`];
+        orders = uniqueOrders.reduce((acc, uniqueOrder) => ({
+          ...acc,
+          [uniqueOrder[instanceIdField]]: data.orders.filter(order => order[instanceIdField] === uniqueOrder[instanceIdField])
+        }), {});
+      }
+
       if (data.orders) {
         dispatch({
           type: GET_ALL_USER_ORDERS_SUCCESS,
           payload: {
             orderType: type,
-            orders: data.orders,
+            orders,
           }
         });
       }
@@ -158,6 +177,30 @@ export const getAllUserOrders = (type) => (dispatch, getState) => {
     .catch(err => {
       dispatch({
         type: GET_ALL_USER_ORDERS_FAILURE,
+        payload: err,
+      })
+    })
+}
+
+export const getDistinctInstances = () => (dispatch, getState) => {
+  const { token } = getState().global.currentUser || {};
+  if (!token) return console.log('Requires user login token');
+  dispatch({
+    type: GET_DISTINCT_INSTANCES_REQUEST,
+  });
+  return api.getDistinctInstances(token)
+    .then(({ data }) => {
+      console.log('data: ', data);
+      if (data.event && data.workshop && data.printer) {
+        dispatch({
+          type: GET_DISTINCT_INSTANCES_SUCCESS,
+          payload: data,
+        });
+      }
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_DISTINCT_INSTANCES_FAILURE,
         payload: err,
       })
     })

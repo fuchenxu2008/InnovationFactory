@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Picker } from '@tarojs/components'
 import { AtSegmentedControl, AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux'
-import { getAllUserOrders } from '../../actions/order'
+import { getAllUserOrders, getDistinctInstances } from '../../actions/order'
 import AdminOrderTable from '../../components/AdminOrderTable'
 import LoadingIndicator from '../../components/LoadingIndicator'
 import createLoadingSelector from '../../selectors/loadingSelector'
@@ -15,9 +15,11 @@ const orderTypes = ['event', 'workshop', 'printer'];
 @connect(({ global, order, loading }) => ({
   currentUser: global.currentUser,
   allUserOrders: order.allUserOrders,
+  distinctInstances: order.distinctInstances,
   isFetching: createLoadingSelector(['GET_ALL_USER_ORDERS'])(loading),
 }), (dispatch) => ({
-  getAllUserOrders: (type) => dispatch(getAllUserOrders(type)),
+  getAllUserOrders: ({ type, instanceId }) => dispatch(getAllUserOrders({ type, instanceId })),
+  getDistinctInstances: () => dispatch(getDistinctInstances()),
 }))
 class ManageOrderPage extends Component {
   config = {
@@ -25,35 +27,39 @@ class ManageOrderPage extends Component {
   }
 
   state = {
-    orderType: orderTypes[0],
-    filter: { text: 'All' },
+    orderType: orderTypes[2],
+    filter: { title: 'All' },
   }
 
   componentDidMount() {
-    this._getOrders();
+    this.props.getDistinctInstances();
   }
 
   _getOrders = () => {
-    const { orderType } = this.state;
-    if (orderType) this.props.getAllUserOrders(orderType);
+    const { orderType, filter } = this.state;
+    if (orderType) this.props.getAllUserOrders({
+      type: orderType,
+      instanceId: filter._id ? filter._id : '',
+    });
   }
 
   _handleChangeOrderType = (orderTypeIndex = 0) => {
     this.setState({
       orderType: orderTypes[orderTypeIndex],
-      filter: { text: 'All' },
-    }, () => this._getOrders());
+      filter: { title: 'All' }, // default to all
+    });
   }
 
+  // instance picker
   _handleFilterChange = (filterArr, e) => {
     this.setState({ filter: filterArr[e.detail.value] });
   }
 
   _copyDownloadLink = () => {
     const { orderType, filter } = this.state;
-    const instanceType = orderType === 'printer' ? 'printer' : 'activity';
     const token = (this.props.currentUser || {}).token;
-    const instanceSelect = filter.instanceId ? `&${instanceType}=${filter.instanceId}` : '';
+    const instanceType = orderType === 'printer' ? 'printer' : 'activity'; // In order to provide searchTerm for ActivityOrder or PrinterOrder
+    const instanceSelect = filter._id ? `&${instanceType}=${filter._id}` : '';
     Taro.setClipboardData({
       data: `${ROOT_URL}/api/admin/order/${orderType}?token=${token}&toExcel=1${instanceSelect}`,
     }).then(() => Taro.showToast({
@@ -64,27 +70,18 @@ class ManageOrderPage extends Component {
   }
 
   render () {
+    const { distinctInstances, allUserOrders } = this.props;
     const { orderType, filter } = this.state;
-    let orders = this.props.allUserOrders[orderType] || [];
-
-    const instanceType = orderType === 'printer' ? 'printer' : 'activity';
-    let filteredOrders = (filter.text === 'All')
-      ? orders
-      : orders.filter(order => order[instanceType] === filter.text)
-    // Extract unique orders by related activity or printer
-    const uniqueOrders = orders.filter((obj, pos, arr) => {
-      return arr.map(mapObj => mapObj[instanceType]).indexOf(obj[instanceType]) === pos;
-    });
 
     const filterArr = [
-      { text: 'All' },
-      ...uniqueOrders.map(order => ({
-        text: order[instanceType],
-        instanceId: order[`${instanceType}Id`],
-      }))
+      { title: 'All' },
+      ...(distinctInstances[orderType] || []),
     ];
+    const filterTextArr = filterArr.map(filterObj => filterObj.title);
 
-    const filterTextArr = filterArr.map(filterObj => filterObj.text);
+    let orders = allUserOrders[orderType] || {};
+    if (filter._id) orders = orders[filter._id] || [];
+    else orders = [].concat.apply([], (Object.values(orders)));
 
     return (
       <View className='manageOrderPage'>
@@ -104,12 +101,15 @@ class ManageOrderPage extends Component {
           <View className='picker-section'>
             <View className='picker-title'>Filter</View>
             <View className='picker'>
-              <View className='picker-value'>{filter.text}</View>
+              <View className='picker-value'>{filter.title}</View>
             </View>
           </View>
         </Picker>
+        <AtButton onClick={this._getOrders} className='query-btn'>查询</AtButton>
         <View className='myOrderList'>
-          <AdminOrderTable orders={filter.text === 'All' ? orders : filteredOrders} />
+          {
+            <AdminOrderTable orders={orders} />
+          }
         </View>
       </View>
     )

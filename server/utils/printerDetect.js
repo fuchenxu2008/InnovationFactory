@@ -19,11 +19,7 @@ const generateTimeSlots = async (printer = {}, existingOrders = []) => {
   const { available, hours } = await readJSON('config/timeslots.json');
   const { open } = available;
 
-  const dates = [].concat(...open.map(({ weekStart, weekDays }) => {
-    return weekDays.map((weekDay) => {
-      return moment(weekStart).day(weekDay).format('YYYY-MM-DD');
-    })
-  }));
+  const dates = [].concat(...open.map(({ weekStart, weekDays }) => weekDays.map(weekDay => moment(weekStart).day(weekDay).format('YYYY-MM-DD'))));
 
   // // Generate all available time slots
   const timeSlots = dates.reduce((acc, date) => ({
@@ -36,12 +32,12 @@ const generateTimeSlots = async (printer = {}, existingOrders = []) => {
     return {
       ...acc,
       [orderDate]: (acc[orderDate] || 0) + 1,
-    }
+    };
   }, {});
   // // filter out unavailable slots
   Object.keys(orderStatus).forEach((occupiedDate) => {
     if (orderStatus[occupiedDate] >= printer.quantity) {
-      if (timeSlots[occupiedDate]) delete timeSlots[occupiedDate]
+      if (timeSlots[occupiedDate]) delete timeSlots[occupiedDate];
     }
   });
   return timeSlots;

@@ -3,6 +3,7 @@ import {
   GET_MY_ORDER_SUCCESS,
   GET_ALL_USER_ORDERS_SUCCESS,
   CANCEL_MY_ORDER_SUCCESS,
+  GET_DISTINCT_INSTANCES_SUCCESS,
 } from '../constants/order';
 import { CLEAN_CACHE } from '../constants/global';
 
@@ -15,6 +16,11 @@ const INITIAL_STATE = {
   },
   currentOrder: null,
   allUserOrders: {},
+  distinctInstances: {
+    event: [],
+    workshop: [],
+    printer: [],
+  },
 }
 
 export default function event(state = INITIAL_STATE, action) {
@@ -46,8 +52,16 @@ export default function event(state = INITIAL_STATE, action) {
         ...state,
         allUserOrders: {
           ...state.allUserOrders,
-          [action.payload.orderType]: action.payload.orders,
+          [action.payload.orderType]: {
+            ...state.allUserOrders[action.payload.orderType],
+            ...action.payload.orders,
+          },
         }
+      }
+    case GET_DISTINCT_INSTANCES_SUCCESS:
+      return {
+        ...state,
+        distinctInstances: action.payload,
       }
     case CLEAN_CACHE:
       return INITIAL_STATE;

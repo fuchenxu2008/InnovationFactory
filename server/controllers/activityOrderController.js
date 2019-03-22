@@ -61,12 +61,12 @@ const cancelMyActivityOrder = (req, res) => {
       if (!doc.user._id.equals(req.user._id)) return res.status(401).json({ message: 'Permission denied (ownership mismatch)' });
       return doc.delete();
     })
-    .then((doc) => res.json({ order: doc, message: `${type} order deleted.` }))
+    .then(doc => res.json({ order: doc, message: `${type} order deleted.` }))
     .catch(err => res.status(400).json({
       message: `Error while deleting ${type}Order.`,
       err,
     }));
-}
+};
 
 /**
  * Admin Functions

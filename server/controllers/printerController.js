@@ -21,9 +21,9 @@ const getAllPrinters = (req, res) => {
           ),
         })));
         res.json({ printers, searchTerm });
-      })
+      });
   })
-  .catch(err => res.status(400).json({ message: 'Error while getting all printers.', err }))
+    .catch(err => res.status(400).json({ message: 'Error while getting all printers.', err }));
 };
 
 const getPrinter = (req, res) => {
@@ -130,6 +130,27 @@ const updatePrinterWithoutImage = (req, res) => {
   });
 };
 
+const getDistinctPrinters = (req, res) => {
+  Printer.find()
+    .select('type class')
+    .then((printers) => {
+      res.json({
+        event: req.events,
+        workshop: req.workshops,
+        printer: printers.map(printer => ({
+          title: `${printer.type} ${printer.class}`,
+          _id: printer._id,
+        })),
+      });
+    })
+    .catch((err) => {
+      res.status(400).json({
+        message: 'Error while getting distinct printers',
+        err,
+      });
+    });
+};
+
 const publishTimeSlots = async (req, res) => {
   /**
    * req: {
@@ -164,5 +185,6 @@ module.exports = {
   deletePrinter,
   updatePrinterWithImage,
   updatePrinterWithoutImage,
+  getDistinctPrinters,
   publishTimeSlots,
 };
