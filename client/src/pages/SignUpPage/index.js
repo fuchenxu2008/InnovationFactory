@@ -121,7 +121,13 @@ class SignUpPage extends Component {
     }
     this.formId = [];
     this.props.submitOrder({ order, type })
-      .then(() => Taro.navigateBack())
+      .then(({ _id }) => this._handleCompleteOrder({ type, orderId: _id }))
+  }
+
+  _handleCompleteOrder = ({ type, orderId }) => {
+    Taro.redirectTo({
+      url: `/pages/OrderDetailPage/index?type=${type}&id=${orderId}`
+    })
   }
 
   _handleInputChange = (field, val) => this.setState((prevState) => ({

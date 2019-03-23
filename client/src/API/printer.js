@@ -14,3 +14,26 @@ export const getPrinter = (printerid) => {
     method: 'GET',
   })
 }
+
+/**
+ * admin
+ */
+export const getTimeSlots = (token) => {
+  return request({
+    url: `${ROOT_URL}/api/admin/printer/timeslots`,
+    method: 'GET',
+    token,
+  })
+}
+
+/**
+ * admin
+ */
+export const publishTimeSlots = (timeSlots, token) => {
+  return request({
+    url: `${ROOT_URL}/api/admin/printer/timeslots`,
+    method: 'PUT',
+    data: { timeSlots },
+    token,
+  })
+}

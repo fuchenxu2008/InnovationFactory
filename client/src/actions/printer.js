@@ -6,6 +6,12 @@ import {
   GET_PRINTER_REQUEST,
   GET_PRINTER_SUCCESS,
   GET_PRINTER_FAILURE,
+  GET_TIMESLOTS_REQUEST,
+  GET_TIMESLOTS_SUCCESS,
+  GET_TIMESLOTS_FAILURE,
+  PUBLISH_TIMESLOTS_REQUEST,
+  PUBLISH_TIMESLOTS_SUCCESS,
+  PUBLISH_TIMESLOTS_FAILURE,
 } from '../constants/printer';
 
 import * as api from '../API/printer'
@@ -22,6 +28,8 @@ export const getAllPrinters = () => (dispatch) => {
           type: GET_ALL_PRINTERS_SUCCESS,
           payload: data.printers,
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -54,6 +62,8 @@ export const getPrinter = (printerid) => (dispatch, getState) => {
             type: GET_PRINTER_SUCCESS,
             payload: data.printer,
           })
+        } else {
+          throw new Error('Something went wrong...');
         }
       })
       .catch(err => {
@@ -63,4 +73,61 @@ export const getPrinter = (printerid) => (dispatch, getState) => {
         })
       })
   }
+}
+
+export const getTimeSlots = () => (dispatch, getState) => {
+  return new Promise((resolve, reject) => {
+    const { token } = getState().global.currentUser || {};
+    if (!token) return console.log('Requires user login token');
+    dispatch({
+      type: GET_TIMESLOTS_REQUEST
+    });
+    return api.getTimeSlots(token)
+      .then(({ data }) => {
+        if (data) {
+          dispatch({
+            type: GET_TIMESLOTS_SUCCESS,
+            payload: data,
+          })
+          resolve(data);
+        } else {
+          throw new Error('Something went wrong...');
+        }
+      })
+      .catch(err => {
+        dispatch({
+          type: GET_TIMESLOTS_FAILURE,
+          payload: err,
+        })
+        reject(err);
+      })
+  })
+}
+
+export const publishTimeSlots = (updatedTimeSlots) => (dispatch, getState) => {
+  return new Promise((resolve, reject) => {
+    const { token } = getState().global.currentUser || {};
+    if (!token) return console.log('Requires user login token');
+    dispatch({
+      type: PUBLISH_TIMESLOTS_REQUEST
+    });
+    return api.publishTimeSlots(updatedTimeSlots, token)
+      .then(({ data }) => {
+        if (data.timeSlots) {
+          dispatch({
+            type: PUBLISH_TIMESLOTS_SUCCESS,
+          })
+          resolve(data);
+        } else {
+          throw new Error('Something went wrong...');
+        }
+      })
+      .catch(err => {
+        dispatch({
+          type: PUBLISH_TIMESLOTS_FAILURE,
+          payload: err,
+        })
+        reject(err);
+      })
+  })
 }

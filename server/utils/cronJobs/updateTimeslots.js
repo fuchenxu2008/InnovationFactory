@@ -29,9 +29,10 @@ const updateTimeslots = async () => {
 };
 
 const recurUpdateTimeslots = () => {
+  updateTimeslots();
   console.log('[Start] Recur update timeslots');
   // Monday
-  schedule.scheduleJob('0 0 0 * * 1', updateTimeslots);
+  schedule.scheduleJob('0 0 0 * * *', updateTimeslots);
 };
 
 module.exports = {

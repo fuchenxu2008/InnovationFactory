@@ -24,27 +24,32 @@ import * as api from '../API/order';
  * Need token to authenticate
  */
 export const submitOrder = ({order, type}) => (dispatch, getState) => {
-  const { token } = getState().global.currentUser || {};
-  if (!token) return console.log('Requires user login token');
-  dispatch({
-    type: SUBMIT_ORDER_REQUEST
-  });
-  return api.submitOrder({order, type}, token)
-    .then(({ data }) => {
-      console.log(data);
-      if (data.order) {
-        dispatch({
-          type: SUBMIT_ORDER_SUCCESS,
-          payload: data.order,
-        })
-      }
-    })
-    .catch(err => {
-      dispatch({
-        type: SUBMIT_ORDER_FAILURE,
-        payload: err,
+  return new Promise((resolve, reject) => {
+    const { token } = getState().global.currentUser || {};
+    if (!token) return console.log('Requires user login token');
+    dispatch({
+      type: SUBMIT_ORDER_REQUEST
+    });
+    return api.submitOrder({order, type}, token)
+      .then(({ data }) => {
+        console.log(data);
+        if (data.order) {
+          dispatch({
+            type: SUBMIT_ORDER_SUCCESS,
+          })
+          resolve(data.order)
+        } else {
+          throw new Error('Something went wrong...');
+        }
       })
-    })
+      .catch(err => {
+        dispatch({
+          type: SUBMIT_ORDER_FAILURE,
+          payload: err,
+        })
+        reject(err);
+      })
+  })
 }
 
 /**
@@ -64,6 +69,8 @@ export const getMyOrder = ({ type, id }) => (dispatch, getState) => {
           type: GET_MY_ORDER_SUCCESS,
           payload: data.order,
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -94,6 +101,8 @@ export const getMyOrders = (type) => (dispatch, getState) => {
             orders: data.myOrders,
           },
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -124,6 +133,8 @@ export const cancelMyOrder = ({ type, id }) => (dispatch, getState) => {
             order: data.order,
           },
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -172,6 +183,8 @@ export const getAllUserOrders = ({ type, instanceId }) => (dispatch, getState) =
             orders,
           }
         });
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -196,6 +209,8 @@ export const getDistinctInstances = () => (dispatch, getState) => {
           type: GET_DISTINCT_INSTANCES_SUCCESS,
           payload: data,
         });
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {

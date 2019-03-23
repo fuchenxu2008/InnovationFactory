@@ -36,6 +36,8 @@ export const getInitialEvents = () => (dispatch) => {
             categories: data.categories,
           }
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -61,6 +63,8 @@ export const getPaginatedEvents = ({ start, category }) => (dispatch) => {
             category,
           }
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -83,6 +87,8 @@ export const getEvent = (eventid) => (dispatch) => {
           type: GET_EVENT_SUCCESS,
           payload: data.event,
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -119,6 +125,8 @@ export const addEvent = (event) => (dispatch, getState) => {
             category,
           }
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -148,6 +156,8 @@ export const updateEvent = (edition) => (dispatch, getState) => {
             category,
           }
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -177,6 +187,8 @@ export const deleteEvent = (eventid) => (dispatch, getState) => {
             category,
           }
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {

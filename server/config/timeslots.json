@@ -3,18 +3,18 @@
   "unavailable": [],
   "available": {
     "open": [{
-      "weekStart": "2019-03-05",
-      "weekDays": ["Wednesday", "Friday"]
-    }, {
-      "weekStart": "2019-03-11",
-      "weekDays": ["Tuesday"]
-    }],
-    "scheduled": [{
       "weekStart": "2019-03-18",
       "weekDays": ["Tuesday"]
     }, {
       "weekStart": "2019-03-25",
       "weekDays": ["Tuesday"]
+    }],
+    "scheduled": [{
+      "weekStart": "2019-04-15",
+      "weekDays": ["Wednesday", "Friday", "Monday", "Thursday"]
+    }, {
+      "weekStart": "2019-04-08",
+      "weekDays": ["Wednesday", "Saturday"]
     }]
   }
 }

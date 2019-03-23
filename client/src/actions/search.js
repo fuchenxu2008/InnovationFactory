@@ -20,6 +20,8 @@ export const searchDatabase = ({ q, type = '' }) => (dispatch) => {
           payload: data,
         })
         resolve(data);
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {

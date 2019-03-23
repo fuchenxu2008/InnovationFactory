@@ -36,11 +36,6 @@ const getPrinter = (req, res) => {
   });
 };
 
-// const getTimeSlots = (req, res) => {
-//   const { printerid } = req.params;
-//   const { date } = req.query;
-// };
-
 /**
  * Admin Functions
  */
@@ -151,29 +146,16 @@ const getDistinctPrinters = (req, res) => {
     });
 };
 
+const getTimeSlots = async (req, res) => {
+  const timeslots = await readJSON('config/timeslots.json');
+  res.json(timeslots);
+};
+
 const publishTimeSlots = async (req, res) => {
-  /**
-   * req: {
-   *  body: {
-   *    scheduled: [{
-   *      weekStart,
-   *      weekDays
-   *    }]
-   *  }
-   * }
-   */
-  const { scheduled } = req.body;
-  const { available, ...otherScheduleConfig } = await readJSON('config/timeslots.json');
-  const updatedTimeslotsConfig = {
-    ...otherScheduleConfig,
-    available: {
-      ...available,
-      scheduled,
-    },
-  };
-  fs.writeFile(path.join(global.__root, 'config/timeslots.json'), JSON.stringify(updatedTimeslotsConfig), (err) => {
+  const { timeSlots } = req.body;
+  fs.writeFile(path.join(global.__root, 'config/timeslots.json'), JSON.stringify(timeSlots), (err) => {
     if (err) return res.status(400).json({ message: 'Error while editing timeslots.', err });
-    return res.json({ message: 'Successfully edited timeslots!', timeslotsConfig: updatedTimeslotsConfig });
+    return res.json({ message: 'Successfully edited timeslots!', timeSlots });
   });
 };
 
@@ -186,5 +168,6 @@ module.exports = {
   updatePrinterWithImage,
   updatePrinterWithoutImage,
   getDistinctPrinters,
+  getTimeSlots,
   publishTimeSlots,
 };

@@ -74,6 +74,8 @@ export const getCategory = ({ id, type }) => (dispatch, getState) => {
               type: GET_WORKSHOP_CATEGORY_SUCCESS,
               payload: data.category,
             })
+        } else {
+          throw new Error('Something went wrong...');
         }
       })
       .catch(err => {
@@ -116,6 +118,8 @@ export const addCategory = (category) => (dispatch, getState) => {
             type: ADD_WORKSHOP_CATEGORY_SUCCESS,
             payload: data.category,
           })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -151,6 +155,8 @@ export const updateCategory = ({ id, category }) => (dispatch, getState) => {
             type: EDIT_WORKSHOP_CATEGORY_SUCCESS,
             payload: data.category,
           })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -186,6 +192,8 @@ export const deleteCategory = ({ id, type }) => (dispatch, getState) => {
             type: DELETE_WORKSHOP_CATEGORY_SUCCESS,
             payload: data.category,
           })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {

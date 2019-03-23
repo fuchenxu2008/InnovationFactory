@@ -1,6 +1,8 @@
 import '@tarojs/async-await'
 import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
+import dayjs from 'dayjs'
+import en from 'dayjs/locale/en'
 import { login, setUserInfo } from './actions/global'
 
 import Index from './pages/index'
@@ -10,6 +12,11 @@ import './app.scss'
 import configStore from './store'
 
 const store = configStore()
+
+dayjs.locale({
+  ...en,
+  weekStart: 1,
+})
 
 class App extends Component {
   config = {

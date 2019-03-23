@@ -36,6 +36,8 @@ export const getInitialWorkshops = () => (dispatch) => {
             categories: data.categories,
           }
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -61,6 +63,8 @@ export const getPaginatedWorkshops = ({ start, category }) => (dispatch) => {
             category,
           }
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -83,6 +87,8 @@ export const getWorkshop = (workshopid) => (dispatch) => {
           type: GET_WORKSHOP_SUCCESS,
           payload: data.workshop,
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -119,6 +125,8 @@ export const addWorkshop = (workshop) => (dispatch, getState) => {
             category,
           }
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -148,6 +156,8 @@ export const updateWorkshop = (edition) => (dispatch, getState) => {
             category,
           }
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -177,6 +187,8 @@ export const deleteWorkshop = (workshopid) => (dispatch, getState) => {
             category,
           }
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {

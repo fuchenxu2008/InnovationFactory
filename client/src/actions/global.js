@@ -23,6 +23,8 @@ export const login = () => (dispatch) => {
             token: data.token,
           },
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => {
@@ -61,6 +63,8 @@ export const authenticateAdmin = () => (dispatch, getState) => {
           type: PERMIT_ADMIN_ACCESS,
           payload: data.adminAccessBefore,
         })
+      } else {
+        throw new Error('Something went wrong...');
       }
     })
     .catch(err => console.log(err))
