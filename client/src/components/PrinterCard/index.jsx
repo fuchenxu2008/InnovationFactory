@@ -22,6 +22,7 @@ class PrinterCard extends Component {
 
   componentDidMount() {
     const { timeSlot } = this.props.printer || {}; // assume only date
+    if (!timeSlot) return;
     this._initializeTimePicker(timeSlot);
   }
 
@@ -39,15 +40,13 @@ class PrinterCard extends Component {
       multiArray: [Object.keys(timeSlot), []], // 更新三维数组
       currentPickedDate: Object.keys(timeSlot)[0] || '',
     })
-    if (Object.keys(timeSlot).length) this._getTime(Object.keys(timeSlot)[0]);
+    if (Object.keys(timeSlot).length) this._getTime(timeSlot);
   }
 
-  _getTime = (date) => {
-    const { printer } = this.props;
-    const { timeSlot } = printer; // assume only time
+  _getTime = (timeSlot) => {
     this.setState((prevState) => ({
-      multiArray: [prevState.multiArray[0], timeSlot[date]], // 更新三维数组
-      currentPickedDate: date,
+      multiArray: [prevState.multiArray[0], timeSlot[Object.keys(timeSlot)[0]]], // 更新三维数组
+      currentPickedDate: Object.keys(timeSlot)[0],
     }))
   }
 
