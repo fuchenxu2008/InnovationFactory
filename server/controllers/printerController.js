@@ -5,6 +5,7 @@ const readJSON = require('../utils/readJSON');
 const Printer = require('../models/Printer');
 const PrinterOrder = require('../models/PrinterOrder');
 const { generateTimeSlots } = require('../utils/printerDetect');
+const { updateTimeslots } = require('../utils/cronJobs/updateTimeslots');
 
 const getAllPrinters = (req, res) => {
   const searchTerm = req.query;
@@ -155,6 +156,7 @@ const publishTimeSlots = async (req, res) => {
   const { timeSlots } = req.body;
   fs.writeFile(path.join(global.__root, 'config/timeslots.json'), JSON.stringify(timeSlots), (err) => {
     if (err) return res.status(400).json({ message: 'Error while editing timeslots.', err });
+    updateTimeslots();
     return res.json({ message: 'Successfully edited timeslots!', timeSlots });
   });
 };
