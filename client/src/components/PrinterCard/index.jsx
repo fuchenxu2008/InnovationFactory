@@ -26,9 +26,9 @@ class PrinterCard extends Component {
     const { timeSlot } = printer; // assume only date
     this.setState({
       multiArray: [Object.keys(timeSlot), []], // 更新三维数组
-      currentPickedDate: Object.keys(timeSlot)[0]
+      currentPickedDate: Object.keys(timeSlot)[0] || '',
     })
-    this._getTime(Object.keys(timeSlot)[0]);
+    if (Object.keys(timeSlot).length) this._getTime(Object.keys(timeSlot)[0]);
   }
 
   _getTime = (date) => {
