@@ -2,19 +2,7 @@
   "hours": ["14:00-15:00", "15:00-16:00", "16:00-17:00"],
   "unavailable": [],
   "available": {
-    "open": [{
-      "weekStart": "2019-03-18",
-      "weekDays": ["Tuesday"]
-    }, {
-      "weekStart": "2019-03-25",
-      "weekDays": ["Tuesday"]
-    }],
-    "scheduled": [{
-      "weekStart": "2019-04-15",
-      "weekDays": ["Wednesday", "Friday", "Monday", "Thursday"]
-    }, {
-      "weekStart": "2019-04-08",
-      "weekDays": ["Wednesday", "Saturday"]
-    }]
+    "open": [],
+    "scheduled": []
   }
 }

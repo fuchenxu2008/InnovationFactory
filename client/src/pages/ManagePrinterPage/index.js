@@ -102,10 +102,8 @@ class ManagePrinterPage extends Component {
 
     let editableStart = dayjs().format('YYYY-MM-DD');
     if (openDates.length) {
-      // const weekStartOfFirstOpenDate = dayjs(openDates[0]).startOf('week');
-      // const thisWeekStart = dayjs().startOf('week');
-      // const weekDiff = Math.abs(thisWeekStart.diff(weekStartOfFirstOpenDate, 'week'));
-      editableStart = dayjs().startOf('week').add(2, 'week').format('YYYY-MM-DD');
+      const weekStartOfLastOpenDate = dayjs(openDates[openDates.length - 1]).startOf('week');
+      editableStart = weekStartOfLastOpenDate.add(1, 'week').format('YYYY-MM-DD');
     }
 
     const alreadyScheduledThisDay = scheduledDates.some(scheduledDay => scheduledDay === currentSelectedDate);
