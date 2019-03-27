@@ -61,7 +61,6 @@ export const logout = () => ({
 export const authenticateAdmin = () => (dispatch, getState) => new Promise((resolve, reject) => {
   const { token } = getState().global.currentUser || {};
   if (!token) return console.log('Requires user login token');
-  console.log(token);
   return api.authenticateAdmin(token)
     .then(({ data }) => {
       console.log(data);

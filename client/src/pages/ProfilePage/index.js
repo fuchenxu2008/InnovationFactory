@@ -3,7 +3,7 @@ import { View, Button } from '@tarojs/components'
 import { AtAvatar } from 'taro-ui'
 import dayjs from 'dayjs'
 import { connect } from '@tarojs/redux'
-import { setUserInfo, authenticateAdmin, logout, cleanCache } from '../../actions/global'
+import { login, setUserInfo, authenticateAdmin, logout, cleanCache } from '../../actions/global'
 import { VERSION_CODE } from '../../config';
 
 import './index.scss'
@@ -12,6 +12,7 @@ import './index.scss'
   currentUser: global.currentUser,
   adminAccessBefore: global.adminAccessBefore,
 }), (dispatch) => ({
+  login: () => dispatch(login()),
   setUserInfo: (info) => dispatch(setUserInfo(info)),
   logout: () => dispatch(logout()),
   authenticateAdmin: () => dispatch(authenticateAdmin()),
@@ -26,7 +27,9 @@ class ProfilePage extends Component {
     secretTap: -1,
   }
 
-  _login = () => {
+  _login = async () => {
+    const { token } = this.props.currentUser || {};
+    if (!token) await this.props.login();
     Taro.getSetting()
       .then(res => res.authSetting)
       .then(authSetting => {
@@ -97,8 +100,9 @@ class ProfilePage extends Component {
   }
 
   render () {
-    const { userInfo } = this.props.currentUser || {};
-    console.log('userInfo: ', userInfo ? 'true' : 'false');
+    const { currentUser } = this.props;
+    const { userInfo } = currentUser || {};
+    const logined = currentUser && userInfo;
 
     return (
       <View className='profilePage'>
@@ -109,14 +113,14 @@ class ProfilePage extends Component {
               <View className='userinfo-avatar-nickname'>
                 <AtAvatar
                   circle
-                  image={userInfo ? userInfo.avatarUrl : require('../../assets/images/default_avatar.png')}
+                  image={logined ? userInfo.avatarUrl : require('../../assets/images/default_avatar.png')}
                   size='large'
                   className='userinfo-avatar'
                 ></AtAvatar>
-                <View className='userinfo-nickname'>{userInfo ? userInfo.nickName : '未登录'}</View>
+                <View className='userinfo-nickname'>{logined ? userInfo.nickName : '未登录'}</View>
               </View>
               {
-                !userInfo &&
+                !logined &&
                 <Button
                   className='login-btn'
                   open-type='getUserInfo'
@@ -125,13 +129,10 @@ class ProfilePage extends Component {
                 >Login</Button>
               }
             </View>
-            {
-              // <View className='at-icon at-icon-settings settings-icon' />
-            }
           </View>
           <View style={{ transform: 'translateY(-30px)' }}>
             {
-              userInfo &&
+              logined &&
               <View className='user-data-section'>
                 <View className='user-data-entry' onClick={this._goOrderPage.bind(this, 'event')}>
                   <View className='iconfont icon-balloon entry-icon'>{' '}我的活动</View>
@@ -161,7 +162,7 @@ class ProfilePage extends Component {
                 <View className='at-icon at-icon-chevron-right' />
               </View>
               {
-                userInfo &&
+                logined &&
                 <View className='user-data-entry' onClick={this._handleLogout}>
                   <View className='iconfont icon-Group entry-icon'>{' '}注销登录</View>
                   <View className='at-icon at-icon-chevron-right' />

@@ -14,6 +14,7 @@ const guideOptions = ['NEED', 'NO NEED'];
 }))
 class PrinterCard extends Component {
   state = {
+    timeSlot: [],
     multiArray: [[], []], // 2维数组数据
     multiIndex: [0, 0], // 默认的下标
     pickerStep: 0,
@@ -22,31 +23,32 @@ class PrinterCard extends Component {
 
   componentDidMount() {
     const { timeSlot } = this.props.printer || {}; // assume only date
-    if (!timeSlot) return;
-    this._initializeTimePicker(timeSlot);
+    if (timeSlot) this._getDate(timeSlot);
   }
 
   componentWillReceiveProps(nextProps) {
     const { timeSlot } = this.props.printer || {}; // assume only date
-    const newTimeSlot = (nextProps.printer || {}).timeSlot;
-    if (newTimeSlot !== timeSlot) {
-      console.log('not equal');
-      this._initializeTimePicker(newTimeSlot);
-    }
+    const { timeSlot: newTimeSlot } = nextProps.printer || {};
+    if (newTimeSlot !== timeSlot) this._getDate(newTimeSlot);
   }
 
-  _initializeTimePicker = (timeSlot) => {
+  _getDate = (timeSlot) => {
+    const dateArr = (timeSlot.map(({ date }) => date)).sort((a, b) => new Date(a) - new Date(b));
     this.setState({
-      multiArray: [Object.keys(timeSlot), []], // 更新三维数组
-      currentPickedDate: Object.keys(timeSlot)[0] || '',
+      timeSlot,
+      multiArray: [dateArr, []], // 更新三维数组
+      currentPickedDate: dateArr[0] || '',
+    }, () => {
+      if (dateArr.length) this._getTime(dateArr[0]);
     })
-    if (Object.keys(timeSlot).length) this._getTime(timeSlot);
   }
 
-  _getTime = (timeSlot) => {
+  _getTime = (currentDate) => {
+    const { timeSlot } = this.state;
+    const { hours } = timeSlot.find(({ date }) => date === currentDate) || {};
     this.setState((prevState) => ({
-      multiArray: [prevState.multiArray[0], timeSlot[Object.keys(timeSlot)[0]]], // 更新三维数组
-      currentPickedDate: Object.keys(timeSlot)[0],
+      multiArray: [prevState.multiArray[0], hours || []], // 更新三维数组
+      currentPickedDate: currentDate,
     }))
   }
 
@@ -90,7 +92,9 @@ class PrinterCard extends Component {
     const { printer, index } = this.props;
     if (!printer) return null;
     const { multiArray, multiIndex, pickerStep, guidance } = this.state;
-    const timeSelected = (multiArray[1][multiIndex[1]] && pickerStep === 1);
+    const dateSelected = multiArray[0][multiIndex[0]];
+    const hourSelected = multiArray[1][multiIndex[1]];
+    const isTimeSelected = (hourSelected && pickerStep === 1);
 
     return (
       <ScrollView className='printer-swiper-item-content' scrollY>
@@ -126,14 +130,14 @@ class PrinterCard extends Component {
               <Picker mode='multiSelector' range={multiArray} onColumnchange={this._handlePickerColumnChange} value={multiIndex} onChange={this._handleTimePickerChange}>
                 <View style={{ display: 'flex' }}>
                   {
-                    !timeSelected
+                    !isTimeSelected
                     ? (
                       <Text>Please Select</Text>
                     )
                     : (
                       <View className='picker-value-group'>
-                        <Text>{multiArray[0][multiIndex[0]]}</Text>
-                        <Text>{multiArray[1][multiIndex[1]]}</Text>
+                        <Text>{dateSelected}</Text>
+                        <Text>{hourSelected}</Text>
                       </View>
                     )
                   }
@@ -151,8 +155,8 @@ class PrinterCard extends Component {
               </Picker>
             </View>
           </View>
-          <View className={`printer-booking-btn ${!timeSelected && 'disabled'}`} onClick={this._handleConfirmBooking}>
-            <AtIcon value='shopping-cart' color={`${timeSelected ? 'black' : 'grey'}`} size={30} />
+          <View className={`printer-booking-btn ${!isTimeSelected && 'disabled'}`} onClick={this._handleConfirmBooking}>
+            <AtIcon value='shopping-cart' color={`${isTimeSelected ? 'black' : 'grey'}`} size={30} />
             <Text>Confirm Booking Info</Text>
           </View>
         </View>
