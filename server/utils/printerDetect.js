@@ -23,6 +23,7 @@ const generateTimeSlots = async (printer = {}, existingOrders = []) => {
 
   // // Generate all available time slots
   let timeSlots = dates.map(date => ({ date, hours }));
+  console.log('timeSlots: ', timeSlots);
   // // Parse all relavant orders (given printer) => order status { datetime: num }
   const orderStatus = existingOrders.reduce((acc, order) => {
     const orderDate = order.timeSlot.split(' ')[0];

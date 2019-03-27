@@ -1,8 +1,1 @@
-{
-  "hours": ["14:00-15:00", "15:00-16:00", "16:00-17:00"],
-  "unavailable": [],
-  "available": {
-    "open": [],
-    "scheduled": []
-  }
-}
+{"hours":["14:00-15:00","15:00-16:00","16:00-17:00"],"unavailable":[],"available":{"open":[{"weekStart":"2019-03-25","weekDays":["Thursday","Saturday"]},{"weekStart":"2019-04-01","weekDays":["Tuesday","Wednesday"]}],"scheduled":[]}}
