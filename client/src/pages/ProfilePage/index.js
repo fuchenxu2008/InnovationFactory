@@ -98,6 +98,7 @@ class ProfilePage extends Component {
 
   render () {
     const { userInfo } = this.props.currentUser || {};
+    console.log('userInfo: ', userInfo ? 'true' : 'false');
 
     return (
       <View className='profilePage'>

@@ -1,4 +1,10 @@
-import { LOGIN_SUCCESS, SET_USER_INFO, LOGOUT, PERMIT_ADMIN_ACCESS } from '../constants/global'
+import {
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
+  SET_USER_INFO,
+  LOGOUT,
+  PERMIT_ADMIN_ACCESS,
+} from '../constants/global'
 
 const INITIAL_STATE = {
   currentUser: null,
@@ -11,27 +17,23 @@ export default function event(state = INITIAL_STATE, action) {
       return {
         ...state,
         currentUser: {
-            ...state.currentUser,
-            _id: action.payload._id,
-            token: action.payload.token,
+          ...state.currentUser,
+          _id: action.payload._id,
+          token: action.payload.token,
         },
       }
+    case LOGIN_FAILURE:
+      return INITIAL_STATE;
     case SET_USER_INFO:
-      return {
-          ...state,
-          currentUser: {
-              ...state.currentUser,
-              userInfo: action.payload,
-          }
-      }
-    case LOGOUT:
       return {
         ...state,
         currentUser: {
           ...state.currentUser,
-          userInfo: null,
+          userInfo: action.payload,
         }
       }
+    case LOGOUT:
+      return INITIAL_STATE;
     case PERMIT_ADMIN_ACCESS:
       return {
         ...state,

@@ -45,16 +45,23 @@ export const setUserInfo = (userInfo) => (dispatch, getState) => {
         payload: userInfo,
       })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      dispatch({
+        type: LOGIN_FAILURE,
+        payload: err
+      })
+      dispatch(login());
+    })
 };
 
 export const logout = () => ({
   type: LOGOUT,
 });
 
-export const authenticateAdmin = () => (dispatch, getState) => {
+export const authenticateAdmin = () => (dispatch, getState) => new Promise((resolve, reject) => {
   const { token } = getState().global.currentUser || {};
   if (!token) return console.log('Requires user login token');
+  console.log(token);
   return api.authenticateAdmin(token)
     .then(({ data }) => {
       console.log(data);
@@ -63,12 +70,16 @@ export const authenticateAdmin = () => (dispatch, getState) => {
           type: PERMIT_ADMIN_ACCESS,
           payload: data.adminAccessBefore,
         })
+        resolve();
       } else {
         throw new Error('Something went wrong...');
       }
     })
-    .catch(err => console.log(err))
-}
+    .catch(err => {
+      console.log(err)
+      reject(err);
+    });
+});
 
 export const cleanCache = () => ({
   type: CLEAN_CACHE,
