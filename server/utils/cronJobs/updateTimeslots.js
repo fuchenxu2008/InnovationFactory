@@ -3,6 +3,7 @@ const path = require('path');
 const moment = require('moment-timezone');
 const schedule = require('node-schedule');
 const readJSON = require('../readJSON');
+const generateConfig = require('../generateConfig');
 
 const updateTimeslots = async () => {
   const thisMonday = moment().weekday(0).startOf('day');
@@ -35,7 +36,18 @@ const recurUpdateTimeslots = async () => {
   schedule.scheduleJob('0 0 0 * * *', updateTimeslots);
 };
 
+const timeslotsManager = async () => {
+  // Manage the initial start time of updating
+  readJSON('config/timeslots.json')
+    .then(() => recurUpdateTimeslots())
+    .catch(async (err) => {
+      console.log('Error while running timeslotsManager', err);
+      await generateConfig('timeslots');
+      recurUpdateTimeslots();
+    });
+};
+
 module.exports = {
   updateTimeslots,
-  recurUpdateTimeslots,
+  timeslotsManager,
 };

@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { APPID, APPSECRET } = require('../../config');
 const readJSON = require('../../utils/readJSON');
+const generateConfig = require('../generateConfig');
 
 const getAccessToken = () => new Promise(async (resolve, reject) => {
   try {
@@ -44,8 +45,9 @@ const accessTokenManager = async () => {
         : validBefore;
       return schedule.scheduleJob(startTime, recurUpdateToken);
     })
-    .catch((err) => {
+    .catch(async (err) => {
       console.log('Error while running accessTokenManager', err);
+      await generateConfig('accessToken');
       recurUpdateToken();
     });
 };
