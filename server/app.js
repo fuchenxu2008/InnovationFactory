@@ -45,8 +45,5 @@ server.listen(port, () => {
 });
 
 const { recurUpdateTimeslots } = require('./utils/cronJobs/updateTimeslots');
-// const { generateTimeSlots } = require('./utils/printerDetect');
 
 recurUpdateTimeslots();
-
-// console.log('generateTimeSlots(): ', generateTimeSlots().then(res => console.log(res)));
