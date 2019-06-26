@@ -2,22 +2,22 @@ import Taro from '@tarojs/taro';
 
 export const request = ({ url, method, token, data }) => {
   return new Promise((resolve, reject) => {
-     const options = {
-       url,
-       method,
-     };
-     if (data) options.data = data;
-     if (token) options.header = {
-       'Authorization': `Bearer ${token}`
-     }
-     return Taro.request({
-       ...options,
-       success: (res) => {
-         if (res.statusCode !== 200) return reject(res.data);
-         resolve(res);
-       },
-       fail: (err) => reject(err),
-     });
+    const options = {
+      url,
+      method,
+    };
+    if (data) options.data = data;
+    if (token) options.header = {
+      'Authorization': `Bearer ${token}`
+    }
+    return Taro.request({
+      ...options,
+      success: (res) => {
+        if (res.statusCode !== 200) return reject(res.data);
+        resolve(res);
+      },
+      fail: (err) => reject(err),
+    });
   });
 }
 

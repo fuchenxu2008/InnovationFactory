@@ -27,6 +27,7 @@ class App extends Component {
       'pages/BrowsePrinterPage/index',
       'pages/SignUpPage/index',
       'pages/ProfilePage/index',
+      'pages/SupportPage/index',
       'pages/MyOrderPage/index',
       'pages/OrderDetailPage/index',
       'pages/WebViewPage/index',
@@ -37,56 +38,59 @@ class App extends Component {
       'pages/ManagePrinterPage/index',
       'pages/CreateUpdateActivityPage/index',
       'pages/CreateUpdateCategoryPage/index',
-      'pages/ManageOrderPage/index',
+      'pages/ManageOrderPage/index'
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black',
+      navigationBarTextStyle: 'black'
       // navigationStyle: "custom"
     },
     tabBar: {
-      list: [{
-          pagePath: "pages/index/index",
-          iconPath: "assets/icons/home.png",
-          selectedIconPath: "assets/icons/home_selected.png"
+      list: [
+        {
+          pagePath: 'pages/index/index',
+          iconPath: 'assets/icons/home.png',
+          selectedIconPath: 'assets/icons/home_selected.png'
         },
         {
-          "pagePath": "pages/ProfilePage/index",
-          iconPath: "assets/icons/user.png",
-          selectedIconPath: "assets/icons/user_selected.png"
-        },
+          pagePath: 'pages/ProfilePage/index',
+          iconPath: 'assets/icons/user.png',
+          selectedIconPath: 'assets/icons/user_selected.png'
+        }
       ],
-      borderStyle: 'white',
+      borderStyle: 'white'
     }
-  }
+  };
 
-  componentDidMount () {
+  componentDidMount() {
     const { currentUser } = store.getState().global || {};
-    if (!currentUser) // New user
-      store.dispatch(login())
-    else { // existing user
-      Taro.checkSession()
-        .catch(() => store.dispatch(login()))
-      Taro.getSetting()
-        .then(({ authSetting }) => {
-          if (authSetting['scope.userInfo']) {
-            Taro.getUserInfo()
-              .then(res => {
-                if (JSON.stringify(res.userInfo) !== JSON.stringify(currentUser.userInfo))
-                  store.dispatch(setUserInfo(res.userInfo));
-              })
-          }
-        })
+    if (!currentUser)
+      // New user
+      store.dispatch(login());
+    else {
+      // existing user
+      Taro.checkSession().catch(() => store.dispatch(login()));
+      Taro.getSetting().then(({ authSetting }) => {
+        if (authSetting['scope.userInfo']) {
+          Taro.getUserInfo().then(res => {
+            if (
+              JSON.stringify(res.userInfo) !==
+              JSON.stringify(currentUser.userInfo)
+            )
+              store.dispatch(setUserInfo(res.userInfo));
+          });
+        }
+      });
     }
 
     // Manage update
     const updateManager = Taro.getUpdateManager();
-    updateManager.onCheckForUpdate((res) => {
+    updateManager.onCheckForUpdate(res => {
       // 请求完新版本信息的回调
       console.log(res.hasUpdate);
-    })
+    });
     updateManager.onUpdateReady(() => {
       Taro.showModal({
         title: '更新提示',
@@ -94,18 +98,18 @@ class App extends Component {
         success(res) {
           if (res.confirm) {
             // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
-            updateManager.applyUpdate()
+            updateManager.applyUpdate();
           }
         }
-      })
-    })
+      });
+    });
     updateManager.onUpdateFailed(() => {
       // 新版本下载失败
       Taro.showToast({
         title: 'Update failed...',
-        icon: 'none',
-      })
-    })
+        icon: 'none'
+      });
+    });
   }
 
   // componentDidShow () {}
@@ -115,12 +119,12 @@ class App extends Component {
 
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数
-  render () {
+  render() {
     return (
       <Provider store={store}>
         <Index />
       </Provider>
-    )
+    );
   }
 }
 
