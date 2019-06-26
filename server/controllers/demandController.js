@@ -17,6 +17,17 @@ exports.getDemands = async (req, res) => {
   }
 };
 
+exports.getDemand = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const demand = await Demand.findById(id).populate('user', 'userInfo _id');
+    res.json({ demand });
+  } catch (error) {
+    console.log('error: ', error);
+    res.status(400).json({ message: error.message });
+  }
+};
+
 exports.createDemand = async (req, res) => {
   try {
     const {

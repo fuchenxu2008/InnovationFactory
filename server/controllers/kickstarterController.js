@@ -16,6 +16,17 @@ exports.getKickstarters = async (req, res) => {
   }
 };
 
+exports.getKickstarter = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const kickstarter = await Kickstarter.findById(id).populate('user', 'userInfo _id');
+    res.json({ kickstarter });
+  } catch (error) {
+    console.log('error: ', error);
+    res.status(400).json({ message: error.message });
+  }
+};
+
 exports.createKickstarter = async (req, res) => {
   try {
     const {
