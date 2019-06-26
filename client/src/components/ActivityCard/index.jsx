@@ -11,7 +11,7 @@ class ActivityCard extends Component {
     return (
       <View
         className='activitycard animated fadeInDown'
-        onClick={this.props.onClick.bind(this, _id)}
+        onClick={() => this.props.onClick(_id)}
       >
         {
           albumPicPath &&
@@ -27,7 +27,7 @@ class ActivityCard extends Component {
           <View className='activitycard-time'>{startTime}</View>
         </View>
         <View className='activitycard-btn-group'>
-        
+
         </View>
       </View>
     )

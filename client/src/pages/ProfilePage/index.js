@@ -157,7 +157,7 @@ class ProfilePage extends Component {
               <View className='user-data-section'>
                 <View
                   className='user-data-entry'
-                  onClick={this._goOrderPage.bind(this, 'event')}
+                  onClick={() => this._goOrderPage('event')}
                 >
                   <View className='iconfont icon-balloon entry-icon'>
                     {' '}
@@ -167,7 +167,7 @@ class ProfilePage extends Component {
                 </View>
                 <View
                   className='user-data-entry'
-                  onClick={this._goOrderPage.bind(this, 'workshop')}
+                  onClick={() => this._goOrderPage('workshop')}
                 >
                   <View className='iconfont icon-platform entry-icon'>
                     {' '}
@@ -177,7 +177,7 @@ class ProfilePage extends Component {
                 </View>
                 <View
                   className='user-data-entry'
-                  onClick={this._goOrderPage.bind(this, 'printer')}
+                  onClick={() => this._goOrderPage('printer')}
                 >
                   <View className='iconfont icon-yiqiguanlidanweishu entry-icon'>
                     {' '}
@@ -188,14 +188,14 @@ class ProfilePage extends Component {
               </View>
             )}
             <View className='user-data-section'>
-              <View className='user-data-entry' onClick={this._goSupportPage.bind(this, 'support')}>
+              <View className='user-data-entry' onClick={() => this._goSupportPage('support')}>
                 <View className='iconfont icon-support entry-icon'>
                   {' '}
                   帮助与支持
                 </View>
                 <View className='at-icon at-icon-chevron-right' />
               </View>
-              <View className='user-data-entry' onClick={this._goSupportPage.bind(this, 'about')}>
+              <View className='user-data-entry' onClick={() => this._goSupportPage('about')}>
                 <View className='iconfont icon-about entry-icon'>
                   {' '}
                   关于我们

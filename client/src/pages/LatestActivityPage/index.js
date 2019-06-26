@@ -123,7 +123,7 @@ class LatestActivityPage extends Component {
                   <View key={activity._id} className='latestActivityPage-activitylistitem'>
                     <ActivityCard
                       activity={activity}
-                      onClick={this._handleClickActivity.bind(this, activity._id)}
+                      onClick={() => this._handleClickActivity(activity._id)}
                     />
                   </View>
                 ))

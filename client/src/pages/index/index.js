@@ -31,19 +31,21 @@ class Index extends Component {
   render () {
     return (
       <View className='index'>
-        <SearchBar fixed onClick={this._handleEnterSearchPage} />
-        <View className='entrycards-section'>          
+        {
+          <SearchBar fixed onClick={this._handleEnterSearchPage} />
+        }
+        <View className='entrycards-section'>
           <EntryCard
             img={require('../../assets/images/latestEvent.png')}
             titleZH='最新活动'
             titleEN='The latest events'
-            onClick={this._handleEnterActivityPage.bind(this, 'event')}
+            onClick={() => this._handleEnterActivityPage('event')}
           />
           <EntryCard
             img={require('../../assets/images/workshopBooking.png')}
             titleZH='课程报名'
             titleEN='Apply for workshops'
-            onClick={this._handleEnterActivityPage.bind(this, 'workshop')}
+            onClick={() => this._handleEnterActivityPage('workshop')}
           />
           <EntryCard
             img={require('../../assets/images/printerReservation.png')}

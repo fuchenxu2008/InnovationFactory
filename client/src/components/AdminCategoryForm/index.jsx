@@ -82,7 +82,7 @@ class AdminCategoryForm extends Component {
   render() {
     const { name, desc, albumPicPath } = this.state;
     const { category, onDeleteCategory } = this.props;
-    
+
     return (
       <AtForm onSubmit={this._handleFormSubmit}>
         {/** Cover image upload */}
@@ -111,7 +111,7 @@ class AdminCategoryForm extends Component {
               name='description'
               placeholder='Enter a description'
               onChange={this._handleTextareaChange.bind(this, 'desc')}
-              onBlur={this._handleTextareaChange.bind(this, 'desc')}              
+              onBlur={this._handleTextareaChange.bind(this, 'desc')}
               value={desc}
               maxLength={1000}
             />

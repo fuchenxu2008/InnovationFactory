@@ -45,7 +45,9 @@ class SearchPage extends Component {
 
     return (
       <View className='searchPage'>
-        <SearchBar fixed onConfirm={this._handleSearchDatabase} />
+        {
+          <SearchBar fixed onConfirm={this._handleSearchDatabase} onClick={() => {}} />
+        }
         <View className='background' />
         {
           isFetching &&
@@ -61,7 +63,7 @@ class SearchPage extends Component {
                     <View className='searchresult-item' key={activity._id}>
                       <ActivityCard
                         activity={activity}
-                        onClick={this._handleClickActivity.bind(this, activity._id, 'event')}
+                        onClick={() => this._handleClickActivity(activity._id, 'event')}
                       />
                     </View>
                   ))
@@ -77,7 +79,7 @@ class SearchPage extends Component {
                     <View className='searchresult-item' key={activity._id}>
                       <ActivityCard
                         activity={activity}
-                        onClick={this._handleClickActivity.bind(this, activity._id, 'workshop')}
+                        onClick={() => this._handleClickActivity(activity._id, 'workshop')}
                       />
                     </View>
                   ))

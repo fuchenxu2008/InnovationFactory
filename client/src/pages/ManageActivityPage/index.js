@@ -170,7 +170,7 @@ class ManageActivityPage extends Component {
                 <View className='admin-activity-card'>
                   <ActivityCard
                     activity={activity}
-                    onClick={this._handleClickActivity.bind(this, activity._id)}
+                    onClick={() => this._handleClickActivity(activity._id)}
                   />
                 </View>
                 {
@@ -178,11 +178,11 @@ class ManageActivityPage extends Component {
                   <View className='admin-btn-group'>
                     <View
                       className='at-icon at-icon-edit edit-icon'
-                      onClick={this._editActivity.bind(this, activity._id)}
+                      onClick={() => this._editActivity(activity._id)}
                     />
                     <View
                       className='at-icon at-icon-trash delete-icon'
-                      onClick={this._deleteActivity.bind(this, activity._id)}
+                      onClick={() => this._deleteActivity(activity._id)}
                     />
                   </View>
                 }

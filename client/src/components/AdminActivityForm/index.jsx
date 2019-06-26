@@ -185,7 +185,7 @@ class AdminActivityForm extends Component {
   _handleTextareaChange = (field, e) => this.setState({ [field]: e.target.value })
   _handleTimePickerChange = (field, e) => this.setState({ [field]: e.detail.value })
   _handleCategoryChange = (e) => this.setState({ category: this.props.availableCategories[e.detail.value] })
-  
+
   _handleAddTicket = () => this.setState((prevState) => ({
     tickets: prevState.tickets.concat({
       ticketType: '',
@@ -324,7 +324,7 @@ class AdminActivityForm extends Component {
               maxLength={1000}
             />
           </View>
-          <View className='form-body-section-heading'>Detailed Information</View> 
+          <View className='form-body-section-heading'>Detailed Information</View>
           <View className='form-body-section'>
             {/** Activity start & end time */}
             <View className='picker-section'>
@@ -394,7 +394,7 @@ class AdminActivityForm extends Component {
               value={linkToArticle}
             />
           </View>
-          <View className='form-body-section-heading'>User Actions</View> 
+          <View className='form-body-section-heading'>User Actions</View>
           <View className='form-body-section'>
             {/** Accept Signup switch */}
             <View className='switch-section'>
@@ -415,7 +415,7 @@ class AdminActivityForm extends Component {
               <View className='ticket-items'>
                 {
                   tickets.map((ticket, i) => (
-                    <View key={i} className='ticket-item'>
+                    <View key={`ticket-${i}`} className='ticket-item'>
                       <AtInput
                         type='text'
                         placeholder='Type'
@@ -451,7 +451,7 @@ class AdminActivityForm extends Component {
               </View>
               {
                 formFields.map((formField, i) => (
-                  <View key={i} className='formfield-item'>
+                  <View key={`form-${i}`} className='formfield-item'>
                     <View className='formfield-item-input'>
                       <AtInput
                         type='text'

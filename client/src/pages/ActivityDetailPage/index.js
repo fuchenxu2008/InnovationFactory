@@ -121,7 +121,7 @@ class ActivityDetailPage extends Component {
             <View className='activityDetailPage-detailcard-btnGroup'>
               {
                 linkToArticle &&
-                <View className='at-icon at-icon-link' onClick={this._handleEnterWeb.bind(this, linkToArticle)} />
+                <View className='at-icon at-icon-link' onClick={() => this._handleEnterWeb(linkToArticle)} />
               }
               {
                 acceptSignup && !(dayjs().isAfter(dayjs(signupTo)) || dayjs().isAfter(dayjs(startTime))) &&

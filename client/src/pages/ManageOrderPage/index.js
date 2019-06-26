@@ -97,7 +97,7 @@ class ManageOrderPage extends Component {
           current={orderTypes.indexOf(orderType)}
           className='segmented-control'
         />
-        <Picker mode='selector' range={filterTextArr} onChange={this._handleFilterChange.bind(this, filterArr)}>
+        <Picker mode='selector' range={filterTextArr} onChange={(e) => this._handleFilterChange(filterArr, e)}>
           <View className='picker-section'>
             <View className='picker-title'>Filter</View>
             <View className='picker'>
