@@ -1,10 +1,26 @@
 import { request } from '../utils/request';
 import { ROOT_URL } from '../config';
 
-export const getAllApprovedKickstarters = () => {
+export const getKickstarters = () => {
   return request({
     url: `${ROOT_URL}/api/kickstarter`,
     method: 'GET'
+  });
+};
+
+export const getKickstarter = id => {
+  return request({
+    url: `${ROOT_URL}/api/kickstarter/${id}`,
+    method: 'GET'
+  });
+};
+
+export const createKickstarter = (kickstarter, token) => {
+  return request({
+    url: `${ROOT_URL}/api/kickstarter`,
+    method: 'POST',
+    data: kickstarter,
+    token
   });
 };
 

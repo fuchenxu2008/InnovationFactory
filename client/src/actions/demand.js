@@ -5,6 +5,9 @@ import {
   GET_DEMAND_REQUEST,
   GET_DEMAND_SUCCESS,
   GET_DEMAND_FAILURE,
+  CREATE_DEMAND_REQUEST,
+  CREATE_DEMAND_SUCCESS,
+  CREATE_DEMAND_FAILURE,
   UPDATE_DEMAND_REQUEST,
   UPDATE_DEMAND_SUCCESS,
   UPDATE_DEMAND_FAILURE,
@@ -68,6 +71,35 @@ export const getDemand = (demandId) => (dispatch) => {
       .catch(err => {
         dispatch({
           type: GET_DEMAND_FAILURE,
+          payload: err,
+        })
+        reject(err);
+      })
+  });
+}
+
+export const createDemand = (demand) => (dispatch, getState) => {
+  return new Promise((resolve, reject) => {
+    const { token } = getState().global.currentUser || {};
+    if (!token) return console.log('Requires user login token');
+    dispatch({
+      type: CREATE_DEMAND_REQUEST
+    });
+    return api.createDemand(demand, token)
+      .then(({ data }) => {
+        if (data.demand) {
+          dispatch({
+            type: CREATE_DEMAND_SUCCESS,
+            payload: data.demand,
+          });
+          resolve(data.demand);
+        } else {
+          throw new Error('Something went wrong...');
+        }
+      })
+      .catch(err => {
+        dispatch({
+          type: CREATE_DEMAND_FAILURE,
           payload: err,
         })
         reject(err);

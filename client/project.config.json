@@ -4,7 +4,7 @@
   "description": "Online reservation WeChat App for XJTLU International Innovation Harbour.",
   "appid": "wxdb862090658cbe67",
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": false,
     "postcss": false,
     "minified": false

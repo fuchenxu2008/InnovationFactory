@@ -5,6 +5,9 @@ import {
   GET_KICKSTARTER_REQUEST,
   GET_KICKSTARTER_SUCCESS,
   GET_KICKSTARTER_FAILURE,
+  CREATE_KICKSTARTER_REQUEST,
+  CREATE_KICKSTARTER_SUCCESS,
+  CREATE_KICKSTARTER_FAILURE,
   UPDATE_KICKSTARTER_REQUEST,
   UPDATE_KICKSTARTER_SUCCESS,
   UPDATE_KICKSTARTER_FAILURE,
@@ -72,6 +75,36 @@ export const getKickstarter = kickstarterId => dispatch => {
       .catch(err => {
         dispatch({
           type: GET_KICKSTARTER_FAILURE,
+          payload: err
+        });
+        reject(err);
+      });
+  });
+};
+
+export const createKickstarter = kickstarter => (dispatch, getState) => {
+  return new Promise((resolve, reject) => {
+    const { token } = getState().global.currentUser || {};
+    if (!token) return console.log('Requires user login token');
+    dispatch({
+      type: CREATE_KICKSTARTER_REQUEST
+    });
+    return api
+      .createKickstarter(kickstarter, token)
+      .then(({ data }) => {
+        if (data.kickstarter) {
+          dispatch({
+            type: CREATE_KICKSTARTER_SUCCESS,
+            payload: data.kickstarter
+          });
+          resolve(data.kickstarter);
+        } else {
+          throw new Error('Something went wrong...');
+        }
+      })
+      .catch(err => {
+        dispatch({
+          type: CREATE_KICKSTARTER_FAILURE,
           payload: err
         });
         reject(err);

@@ -1,0 +1,45 @@
+$picker-font-size: 32px;
+
+.album-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(199, 199, 199);
+}
+
+.albumPic {
+  flex: 1;
+}
+
+.albumPicBtn {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.404);
+  color: white;
+  border-radius: 40px;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+}
+
+.form-body {
+  padding: 3% 4% 10% 4%;
+}
+
+.form-body-section {
+  margin-bottom: 7%;
+  padding: 0 3%;
+}
+
+.form-body-section-heading {
+  // font-size: 1.2rem;
+  font-weight: bold;
+  font-family: 'DIN';
+  border-left: 7px solid skyblue;
+  padding-left: 20px;
+  margin: 2% 0;
+}
+
+.input-title {
+  padding: 24px 0;
+  font-size: $picker-font-size;
+}

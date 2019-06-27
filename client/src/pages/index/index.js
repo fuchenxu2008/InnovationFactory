@@ -28,6 +28,18 @@ class Index extends Component {
     })
   }
 
+  _handleEnterDemandPage = () => {
+    Taro.navigateTo({
+      url: '/pages/DemandPage/index'
+    })
+  }
+
+  _handleEnterKickstarterPage = () => {
+    Taro.navigateTo({
+      url: '/pages/KickstarterPage/index'
+    })
+  }
+
   render () {
     return (
       <View className='index'>
@@ -52,6 +64,18 @@ class Index extends Component {
             titleZH='仪器预约'
             titleEN='Printer reservation'
             onClick={this._handleEnterPrinterPage}
+          />
+          <EntryCard
+            img={require('../../assets/images/printerReservation.png')}
+            titleZH='需求市场'
+            titleEN='Demand Market'
+            onClick={this._handleEnterDemandPage}
+          />
+          <EntryCard
+            img={require('../../assets/images/printerReservation.png')}
+            titleZH='一起众筹'
+            titleEN='Kickstarter Nest'
+            onClick={this._handleEnterKickstarterPage}
           />
         </View>
       </View>

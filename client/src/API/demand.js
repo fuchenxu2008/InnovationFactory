@@ -1,10 +1,26 @@
 import { request } from '../utils/request';
 import { ROOT_URL } from '../config';
 
-export const getAllApprovedDemands = () => {
+export const getDemands = () => {
   return request({
     url: `${ROOT_URL}/api/demand`,
     method: 'GET',
+  })
+}
+
+export const getDemand = (id) => {
+  return request({
+    url: `${ROOT_URL}/api/demand/${id}`,
+    method: 'GET',
+  })
+}
+
+export const createDemand = (demand, token) => {
+  return request({
+    url: `${ROOT_URL}/api/demand`,
+    method: 'POST',
+    data: demand,
+    token
   })
 }
 
