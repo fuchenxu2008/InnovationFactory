@@ -1,20 +1,23 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Swiper, SwiperItem, Image } from '@tarojs/components';
-// import { AtButton } from 'taro-ui';
+import { View, Swiper, SwiperItem, Image, Text } from '@tarojs/components';
+import { AtFab } from 'taro-ui';
 import { connect } from '@tarojs/redux';
 import createLoadingSelector from '../../selectors/loadingSelector';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import { getKickstarter } from '../../actions/kickstarter';
+import { getKickstarter, deleteKickstarter } from '../../actions/kickstarter';
 import { ROOT_URL } from '../../config';
+import event from '../../utils/event';
 
 import './index.scss';
 
 @connect(
-  ({ loading }) => ({
+  ({ loading, global }) => ({
+    currentUser: global.currentUser,
     isFetching: createLoadingSelector(['GET_KICKSTARTER'])(loading)
   }),
   dispatch => ({
-    getKickstarter: id => dispatch(getKickstarter(id))
+    getKickstarter: id => dispatch(getKickstarter(id)),
+    deleteKickstarter: id => dispatch(deleteKickstarter(id))
   })
 )
 class KickstarterDetailPage extends Component {
@@ -42,27 +45,46 @@ class KickstarterDetailPage extends Component {
     });
   }
 
+  _onDelete = () => {
+    const { id } = this.$router.params;
+    this.props.deleteKickstarter(id).then(() => {
+      event.emit('onUpdate');
+      Taro.navigateBack();
+    });
+  };
+
   render() {
+    const { currentUser = {} } = this.props;
     const { kickstarter } = this.state;
     if (!kickstarter) return null;
 
-    const { title, description, created_at, contact, imgUrls = [] } = kickstarter;
+    const {
+      user = {},
+      title,
+      description,
+      created_at,
+      contact,
+      imgUrls = []
+    } = kickstarter;
     return (
       <View className='kickstarterDetailPage'>
         {this.props.isFetching && <LoadingIndicator />}
         <View className='kickstarterDetail'>
-          <Swiper className='detail-swiper' indicatorDots autoplay>
-            {imgUrls.map((imgUrl, idx) => (
-              <SwiperItem key={imgUrl}>
-                <Image
-                  className='kickstarter-img'
-                  src={`${ROOT_URL}${imgUrl}`}
-                  mode='aspectFill'
-                  onClick={() => this._zoomIn(idx)}
-                />
-              </SwiperItem>
-            ))}
-          </Swiper>
+          {
+            imgUrls.length &&
+            <Swiper className='detail-swiper' indicatorDots autoplay>
+              {imgUrls.map((imgUrl, idx) => (
+                <SwiperItem key={imgUrl}>
+                  <Image
+                    className='kickstarter-img'
+                    src={`${ROOT_URL}${imgUrl}`}
+                    mode='aspectFill'
+                    onClick={() => this._zoomIn(idx)}
+                  />
+                </SwiperItem>
+              ))}
+            </Swiper>
+          }
           <View className='kickstarterDetail-section'>
             <View className='section-heading'>Title</View>
             <View className='section-content'>{title}</View>
@@ -77,6 +99,13 @@ class KickstarterDetailPage extends Component {
             <View className='section-content'>{created_at}</View>
           </View>
         </View>
+        {currentUser._id === user._id && (
+          <View className='delete-btn'>
+            <AtFab onClick={this._onDelete}>
+              <Text className='at-fab__icon at-icon at-icon-trash' />
+            </AtFab>
+          </View>
+        )}
       </View>
     );
   }

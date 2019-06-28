@@ -6,10 +6,13 @@ import createLoadingSelector from '../../selectors/loadingSelector';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { getDemands } from '../../actions/demand'
 import { ROOT_URL } from '../../config'
+import checkLogin from '../../utils/checkLogin';
+import event from '../../utils/event';
 
 import './index.scss'
 
-@connect(({ loading }) => ({
+@connect(({ loading, global }) => ({
+  currentUser: global.currentUser,
   isFetching: createLoadingSelector(['GET_DEMANDS'])(loading),
 }), (dispatch) => ({
   getDemands: () => dispatch(getDemands()),
@@ -24,11 +27,17 @@ class DemandPage extends Component {
   }
 
   componentDidMount() {
+    this._getAllDemands();
+    event.on('onUpdate', this, this._getAllDemands);
+  }
+
+  _getAllDemands = () => {
     this.props.getDemands()
       .then((demands) => this.setState({ demands }))
   }
 
   _addNewDemand = () => {
+    if (!checkLogin(this.props.currentUser)) return;
     Taro.navigateTo({
       url: '/pages/CreateUpdateProjectSupportPage/index?type=demand'
     })

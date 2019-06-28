@@ -6,10 +6,12 @@ import createLoadingSelector from '../../selectors/loadingSelector';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { getKickstarters } from '../../actions/kickstarter';
 import { ROOT_URL } from '../../config'
+import checkLogin from '../../utils/checkLogin';
 
 import './index.scss'
 
-@connect(({ loading }) => ({
+@connect(({ loading, global }) => ({
+  currentUser: global.currentUser,
   isFetching: createLoadingSelector(['GET_KICKSTARTERS'])(loading),
 }), (dispatch) => ({
   getKickstarters: () => dispatch(getKickstarters()),
@@ -29,6 +31,7 @@ class KickstarterPage extends Component {
   }
 
   _addNewKickstarter = () => {
+    if (!checkLogin(this.props.currentUser)) return;
     Taro.navigateTo({
       url: '/pages/CreateUpdateProjectSupportPage/index?type=kickstarter'
     })

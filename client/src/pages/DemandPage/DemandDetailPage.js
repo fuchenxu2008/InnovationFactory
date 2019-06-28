@@ -1,20 +1,23 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Swiper, SwiperItem, Image } from '@tarojs/components';
-// import { AtButton } from 'taro-ui';
+import { View, Swiper, SwiperItem, Image, Text } from '@tarojs/components';
+import { AtFab } from 'taro-ui';
 import { connect } from '@tarojs/redux';
 import createLoadingSelector from '../../selectors/loadingSelector';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import { getDemand } from '../../actions/demand';
+import { getDemand, deleteDemand } from '../../actions/demand';
 import { ROOT_URL } from '../../config';
+import event from '../../utils/event';
 
 import './index.scss';
 
 @connect(
-  ({ loading }) => ({
+  ({ loading, global }) => ({
+    currentUser: global.currentUser,
     isFetching: createLoadingSelector(['GET_DEMAND'])(loading)
   }),
   dispatch => ({
-    getDemand: id => dispatch(getDemand(id))
+    getDemand: id => dispatch(getDemand(id)),
+    deleteDemand: id => dispatch(deleteDemand(id))
   })
 )
 class DemandDetailPage extends Component {
@@ -40,27 +43,39 @@ class DemandDetailPage extends Component {
     });
   }
 
+  _onDelete = () => {
+    const { id } = this.$router.params;
+    this.props.deleteDemand(id).then(() => {
+      event.emit('onUpdate');
+      Taro.navigateBack();
+    });
+  }
+
   render() {
+    const { currentUser = {} } = this.props;
     const { demand } = this.state;
     if (!demand) return null;
 
-    const { title, description, created_at, contact, imgUrls = [] } = demand;
+    const { user = {}, title, description, created_at, contact, imgUrls = [] } = demand;
     return (
       <View className='demandDetailPage'>
         {this.props.isFetching && <LoadingIndicator />}
         <View className='demandDetail'>
-          <Swiper className='detail-swiper' indicatorDots autoplay>
-            {imgUrls.map((imgUrl, idx) => (
-              <SwiperItem key={imgUrl}>
-                <Image
-                  className='demand-img'
-                  src={`${ROOT_URL}${imgUrl}`}
-                  mode='aspectFill'
-                  onClick={() => this._zoomIn(idx)}
-                />
-              </SwiperItem>
-            ))}
-          </Swiper>
+          {
+            imgUrls.length &&
+            <Swiper className='detail-swiper' indicatorDots autoplay>
+              {imgUrls.map((imgUrl, idx) => (
+                <SwiperItem key={imgUrl}>
+                  <Image
+                    className='demand-img'
+                    src={`${ROOT_URL}${imgUrl}`}
+                    mode='aspectFill'
+                    onClick={() => this._zoomIn(idx)}
+                  />
+                </SwiperItem>
+              ))}
+            </Swiper>
+          }
           <View className='demandDetail-section'>
             <View className='section-heading'>Title</View>
             <View className='section-content'>{title}</View>
@@ -75,6 +90,14 @@ class DemandDetailPage extends Component {
             <View className='section-content'>{created_at}</View>
           </View>
         </View>
+        {
+          currentUser._id === user._id &&
+          <View className='delete-btn'>
+            <AtFab onClick={this._onDelete}>
+              <Text className='at-fab__icon at-icon at-icon-trash'></Text>
+            </AtFab>
+          </View>
+        }
       </View>
     );
   }

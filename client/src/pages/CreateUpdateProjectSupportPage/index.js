@@ -12,6 +12,7 @@ import {
 import ProjectForm from '../../components/ProjectForm';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import createLoadingSelector from '../../selectors/loadingSelector';
+import event from '../../utils/event';
 
 import './index.scss';
 
@@ -63,6 +64,7 @@ class CreateUpdateProjectSupportPage extends Component {
         ? await this.props.updateKickstarter(id, entity)
         : await this.props.createKickstarter(entity);
     }
+    event.emit('onUpdate')
     Taro.navigateBack();
   }
 
