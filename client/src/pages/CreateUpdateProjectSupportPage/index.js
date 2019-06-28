@@ -92,7 +92,7 @@ class CreateUpdateProjectSupportPage extends Component {
         <AtMessage />
         <ProjectForm
           type={type}
-          project={id ? currentEntity : null}
+          // project={id ? currentEntity : null}
           onSubmitProject={this._handleReceiveProject}
           onDeleteProject={this._handleDeleteProject}
         />

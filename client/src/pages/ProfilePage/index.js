@@ -50,6 +50,12 @@ class ProfilePage extends Component {
     });
   };
 
+  _goProjectPage = type => {
+    Taro.navigateTo({
+      url: `/pages/MyProjectPage/index?type=${type}`
+    });
+  }
+
   _handleLogout = () => {
     this.props.logout();
     Taro.showToast({
@@ -182,6 +188,26 @@ class ProfilePage extends Component {
                   <View className='iconfont icon-yiqiguanlidanweishu entry-icon'>
                     {' '}
                     我的仪器
+                  </View>
+                  <View className='at-icon at-icon-chevron-right' />
+                </View>
+                <View
+                  className='user-data-entry'
+                  onClick={() => this._goProjectPage('demand')}
+                >
+                  <View className='iconfont icon-yiqiguanlidanweishu entry-icon'>
+                    {' '}
+                    我的需求
+                  </View>
+                  <View className='at-icon at-icon-chevron-right' />
+                </View>
+                <View
+                  className='user-data-entry'
+                  onClick={() => this._goProjectPage('kickstarter')}
+                >
+                  <View className='iconfont icon-yiqiguanlidanweishu entry-icon'>
+                    {' '}
+                    我的众筹
                   </View>
                   <View className='at-icon at-icon-chevron-right' />
                 </View>

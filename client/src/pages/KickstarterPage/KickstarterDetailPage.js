@@ -4,7 +4,7 @@ import { AtFab } from 'taro-ui';
 import { connect } from '@tarojs/redux';
 import createLoadingSelector from '../../selectors/loadingSelector';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import { getKickstarter, deleteKickstarter } from '../../actions/kickstarter';
+import { getKickstarter, deleteKickstarter, completeKickstarter } from '../../actions/kickstarter';
 import { ROOT_URL } from '../../config';
 import event from '../../utils/event';
 
@@ -17,7 +17,8 @@ import './index.scss';
   }),
   dispatch => ({
     getKickstarter: id => dispatch(getKickstarter(id)),
-    deleteKickstarter: id => dispatch(deleteKickstarter(id))
+    deleteKickstarter: id => dispatch(deleteKickstarter(id)),
+    completeKickstarter: id => dispatch(completeKickstarter(id))
   })
 )
 class KickstarterDetailPage extends Component {
@@ -53,6 +54,14 @@ class KickstarterDetailPage extends Component {
     });
   };
 
+  _onComplete = () => {
+    const { id } = this.$router.params;
+    this.props.completeKickstarter(id).then(() => {
+      event.emit('onUpdate');
+      Taro.navigateBack();
+    });
+  };
+
   render() {
     const { currentUser = {} } = this.props;
     const { kickstarter } = this.state;
@@ -70,8 +79,7 @@ class KickstarterDetailPage extends Component {
       <View className='kickstarterDetailPage'>
         {this.props.isFetching && <LoadingIndicator />}
         <View className='kickstarterDetail'>
-          {
-            imgUrls.length &&
+          {imgUrls.length && (
             <Swiper className='detail-swiper' indicatorDots autoplay>
               {imgUrls.map((imgUrl, idx) => (
                 <SwiperItem key={imgUrl}>
@@ -84,7 +92,7 @@ class KickstarterDetailPage extends Component {
                 </SwiperItem>
               ))}
             </Swiper>
-          }
+          )}
           <View className='kickstarterDetail-section'>
             <View className='section-heading'>Title</View>
             <View className='section-content'>{title}</View>
@@ -99,11 +107,18 @@ class KickstarterDetailPage extends Component {
             <View className='section-content'>{created_at}</View>
           </View>
         </View>
-        {currentUser._id === user._id && (
-          <View className='delete-btn'>
-            <AtFab onClick={this._onDelete}>
-              <Text className='at-fab__icon at-icon at-icon-trash' />
-            </AtFab>
+        {currentUser && currentUser._id === user._id && (
+          <View>
+            <View className='delete-btn'>
+              <AtFab onClick={this._onDelete}>
+                <Text className='at-fab__icon at-icon at-icon-trash' />
+              </AtFab>
+            </View>
+            <View className='complete-btn'>
+              <AtFab onClick={this._onComplete}>
+                <Text className='at-fab__icon at-icon at-icon-check' />
+              </AtFab>
+            </View>
           </View>
         )}
       </View>

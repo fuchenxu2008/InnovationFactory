@@ -85,6 +85,13 @@
 .delete-btn {
   position: fixed;
   bottom: 30px;
-  left: 50%;
+  left: 30%;
   transform: translateX(-50%);
+}
+
+.complete-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30%;
+  transform: translateX(50%);
 }

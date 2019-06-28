@@ -2,6 +2,9 @@ import {
   GET_KICKSTARTERS_REQUEST,
   GET_KICKSTARTERS_SUCCESS,
   GET_KICKSTARTERS_FAILURE,
+  GET_MY_KICKSTARTERS_REQUEST,
+  GET_MY_KICKSTARTERS_SUCCESS,
+  GET_MY_KICKSTARTERS_FAILURE,
   GET_KICKSTARTER_REQUEST,
   GET_KICKSTARTER_SUCCESS,
   GET_KICKSTARTER_FAILURE,
@@ -46,6 +49,37 @@ export const getKickstarters = () => dispatch => {
       .catch(err => {
         dispatch({
           type: GET_KICKSTARTERS_FAILURE,
+          payload: err
+        });
+        reject(err);
+      });
+  });
+};
+
+export const getMyKickstarters = () => (dispatch, getState) => {
+  return new Promise((resolve, reject) => {
+    const { token } = getState().global.currentUser || {};
+    if (!token) return console.log('Requires user login token');
+    dispatch({
+      type: GET_MY_KICKSTARTERS_REQUEST
+    });
+    return api
+      .getMyKickstarters(token)
+      .then(({ data }) => {
+        console.log(data);
+        if (data.kickstarters) {
+          dispatch({
+            type: GET_MY_KICKSTARTERS_SUCCESS,
+            payload: data.kickstarters
+          });
+          resolve(data.kickstarters);
+        } else {
+          throw new Error('Something went wrong...');
+        }
+      })
+      .catch(err => {
+        dispatch({
+          type: GET_MY_KICKSTARTERS_FAILURE,
           payload: err
         });
         reject(err);
@@ -112,7 +146,7 @@ export const createKickstarter = kickstarter => (dispatch, getState) => {
   });
 };
 
-export const updateKickstarter = (id, update) => (dispatch, getState) => {
+export const completeKickstarter = (id) => (dispatch, getState) => {
   return new Promise((resolve, reject) => {
     const { token } = getState().global.currentUser || {};
     if (!token) return console.log('Requires user login token');
@@ -120,7 +154,7 @@ export const updateKickstarter = (id, update) => (dispatch, getState) => {
       type: UPDATE_KICKSTARTER_REQUEST
     });
     return api
-      .updateKickstarter(id, update, token)
+      .completeKickstarter(id, token)
       .then(({ data }) => {
         if (data) {
           dispatch({

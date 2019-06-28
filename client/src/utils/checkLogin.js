@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro';
 
-export default function checkLogin(currentUser = {}) {
-  if (!currentUser.userInfo) {
+export default function checkLogin(currentUser) {
+  if (!(currentUser || {}).userInfo) {
     Taro.switchTab({
       url: '/pages/ProfilePage/index',
     }).then(() => {

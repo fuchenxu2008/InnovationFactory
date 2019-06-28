@@ -46,6 +46,7 @@ class KickstarterPage extends Component {
   render () {
     return (
       <View className='kickstarterPage'>
+        <View className='background-grey' />
         {this.props.isFetching && <LoadingIndicator />}
         <View className='kickstarterPage-title'>Kickstarter Nest</View>
         {this.state.kickstarters.map(kickstarter => (

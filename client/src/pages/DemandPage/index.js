@@ -52,6 +52,7 @@ class DemandPage extends Component {
   render () {
     return (
       <View className='demandPage'>
+        <View className='background-grey' />
         {this.props.isFetching && <LoadingIndicator />}
         <View className='demandPage-title'>Demand Market</View>
         {this.state.demands.map(demand => (

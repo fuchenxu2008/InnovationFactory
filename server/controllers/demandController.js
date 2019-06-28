@@ -3,11 +3,27 @@ const Demand = require('../models/Demand');
 exports.getDemands = async (req, res) => {
   try {
     const { count = 15, startId } = req.query;
-    const searchTerm = {};
+    const searchTerm = { claimed: false };
     // if (!(req.user && req.user.role === 'admin')) searchTerm.approved = true;
     if (startId) searchTerm._id = { $lt: startId };
     const demands = await Demand
       .find(searchTerm)
+      .limit(count * 1)
+      .sort({ created_at: -1 });
+    res.json({ demands });
+  } catch (error) {
+    console.log('error: ', error);
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.getMyDemands = async (req, res) => {
+  try {
+    const { count = 15, startId } = req.query;
+    if (!req.user) throw new Error('not authed');
+    const searchTerm = { user: req.user._id };
+    if (startId) searchTerm._id = { $lt: startId };
+    const demands = await Demand.find(searchTerm)
       .limit(count * 1)
       .sort({ created_at: -1 });
     res.json({ demands });
@@ -52,6 +68,17 @@ exports.updateDemand = async (req, res) => {
     const { id } = req.params;
     if (!Object.keys(req.body).length) throw new Error('Missing update payload.');
     const updatedDemand = await Demand.findByIdAndUpdate(id, req.body, { new: true });
+    res.json({ demand: updatedDemand });
+  } catch (error) {
+    console.log('error: ', error);
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.completeDemand = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedDemand = await Demand.findByIdAndUpdate(id, { claimed: true }, { new: true });
     res.json({ demand: updatedDemand });
   } catch (error) {
     console.log('error: ', error);

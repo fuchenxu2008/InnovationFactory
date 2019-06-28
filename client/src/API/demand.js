@@ -8,6 +8,14 @@ export const getDemands = () => {
   })
 }
 
+export const getMyDemands = (token) => {
+  return request({
+    url: `${ROOT_URL}/api/demand/my`,
+    method: 'GET',
+    token
+  })
+}
+
 export const getDemand = (id) => {
   return request({
     url: `${ROOT_URL}/api/demand/${id}`,
@@ -38,6 +46,14 @@ export const updateDemand = (demandId, data, token) => {
     url: `${ROOT_URL}/api/demand/${demandId}`,
     method: 'PUT',
     data,
+    token,
+  })
+}
+
+export const completeDemand = (demandId, token) => {
+  return request({
+    url: `${ROOT_URL}/api/demand/complete/${demandId}`,
+    method: 'PUT',
     token,
   })
 }

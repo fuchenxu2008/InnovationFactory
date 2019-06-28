@@ -3,8 +3,24 @@ const Kickstarter = require('../models/Kickstarter');
 exports.getKickstarters = async (req, res) => {
   try {
     const { count = 15, startId } = req.query;
-    const searchTerm = {};
+    const searchTerm = { achieved: false };
     // if (!(req.user && req.user.role === 'admin')) searchTerm.approved = true;
+    if (startId) searchTerm._id = { $lt: startId };
+    const kickstarters = await Kickstarter.find(searchTerm)
+      .limit(count * 1)
+      .sort({ created_at: -1 });
+    res.json({ kickstarters });
+  } catch (error) {
+    console.log('error: ', error);
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.getMyKickstarters = async (req, res) => {
+  try {
+    const { count = 15, startId } = req.query;
+    if (!(req.user)) throw new Error('not authed');
+    const searchTerm = { user: req.user._id };
     if (startId) searchTerm._id = { $lt: startId };
     const kickstarters = await Kickstarter.find(searchTerm)
       .limit(count * 1)
@@ -52,6 +68,17 @@ exports.updateKickstarter = async (req, res) => {
     const { id } = req.params;
     if (!Object.keys(req.body).length) throw new Error('Missing update payload.');
     const updatedKickstarter = await Kickstarter.findByIdAndUpdate(id, req.body, { new: true });
+    res.json({ kickstarter: updatedKickstarter });
+  } catch (error) {
+    console.log('error: ', error);
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.completeKickstarter = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedKickstarter = await Kickstarter.findByIdAndUpdate(id, { achieved: true }, { new: true });
     res.json({ kickstarter: updatedKickstarter });
   } catch (error) {
     console.log('error: ', error);

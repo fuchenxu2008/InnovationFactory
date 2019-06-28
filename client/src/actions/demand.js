@@ -2,6 +2,9 @@ import {
   GET_DEMANDS_REQUEST,
   GET_DEMANDS_SUCCESS,
   GET_DEMANDS_FAILURE,
+  GET_MY_DEMANDS_FAILURE,
+  GET_MY_DEMANDS_REQUEST,
+  GET_MY_DEMANDS_SUCCESS,
   GET_DEMAND_REQUEST,
   GET_DEMAND_SUCCESS,
   GET_DEMAND_FAILURE,
@@ -44,6 +47,35 @@ export const getDemands = () => (dispatch) => {
       .catch(err => {
         dispatch({
           type: GET_DEMANDS_FAILURE,
+          payload: err,
+        })
+        reject(err);
+      })
+  });
+}
+
+export const getMyDemands = () => (dispatch, getState) => {
+  return new Promise((resolve, reject) => {
+    const { token } = getState().global.currentUser || {};
+    if (!token) return console.log('Requires user login token');
+    dispatch({
+      type: GET_MY_DEMANDS_REQUEST
+    });
+    return api.getMyDemands(token)
+      .then(({ data }) => {
+        if (data.demands) {
+          dispatch({
+            type: GET_MY_DEMANDS_SUCCESS,
+            payload: data.demands,
+          });
+          resolve(data.demands);
+        } else {
+          throw new Error('Something went wrong...');
+        }
+      })
+      .catch(err => {
+        dispatch({
+          type: GET_MY_DEMANDS_FAILURE,
           payload: err,
         })
         reject(err);
@@ -107,14 +139,14 @@ export const createDemand = (demand) => (dispatch, getState) => {
   });
 }
 
-export const updateDemand = (id, update) => (dispatch, getState) => {
+export const completeDemand = (id) => (dispatch, getState) => {
   return new Promise((resolve, reject) => {
     const { token } = getState().global.currentUser || {};
     if (!token) return console.log('Requires user login token');
     dispatch({
       type: UPDATE_DEMAND_REQUEST
     });
-    return api.updateDemand(id, update, token)
+    return api.completeDemand(id, token)
       .then(({ data }) => {
         if (data) {
           dispatch({

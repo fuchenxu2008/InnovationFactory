@@ -8,6 +8,14 @@ export const getKickstarters = () => {
   });
 };
 
+export const getMyKickstarters = token => {
+  return request({
+    url: `${ROOT_URL}/api/kickstarter/my`,
+    method: 'GET',
+    token
+  });
+};
+
 export const getKickstarter = id => {
   return request({
     url: `${ROOT_URL}/api/kickstarter/${id}`,
@@ -38,6 +46,14 @@ export const updateKickstarter = (kickstarterId, data, token) => {
     url: `${ROOT_URL}/api/kickstarter/${kickstarterId}`,
     method: 'PUT',
     data,
+    token
+  });
+};
+
+export const completeKickstarter = (kickstarterId, token) => {
+  return request({
+    url: `${ROOT_URL}/api/kickstarter/complete/${kickstarterId}`,
+    method: 'PUT',
     token
   });
 };

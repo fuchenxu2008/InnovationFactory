@@ -4,7 +4,7 @@ import { AtFab } from 'taro-ui';
 import { connect } from '@tarojs/redux';
 import createLoadingSelector from '../../selectors/loadingSelector';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import { getDemand, deleteDemand } from '../../actions/demand';
+import { getDemand, deleteDemand, completeDemand } from '../../actions/demand';
 import { ROOT_URL } from '../../config';
 import event from '../../utils/event';
 
@@ -17,7 +17,8 @@ import './index.scss';
   }),
   dispatch => ({
     getDemand: id => dispatch(getDemand(id)),
-    deleteDemand: id => dispatch(deleteDemand(id))
+    deleteDemand: id => dispatch(deleteDemand(id)),
+    completeDemand: id => dispatch(completeDemand(id))
   })
 )
 class DemandDetailPage extends Component {
@@ -46,6 +47,14 @@ class DemandDetailPage extends Component {
   _onDelete = () => {
     const { id } = this.$router.params;
     this.props.deleteDemand(id).then(() => {
+      event.emit('onUpdate');
+      Taro.navigateBack();
+    });
+  }
+
+  _onComplete = () => {
+    const { id } = this.$router.params;
+    this.props.completeDemand(id).then(() => {
       event.emit('onUpdate');
       Taro.navigateBack();
     });
@@ -91,11 +100,18 @@ class DemandDetailPage extends Component {
           </View>
         </View>
         {
-          currentUser._id === user._id &&
-          <View className='delete-btn'>
-            <AtFab onClick={this._onDelete}>
-              <Text className='at-fab__icon at-icon at-icon-trash'></Text>
+          currentUser && currentUser._id === user._id &&
+          <View>
+            <View className='delete-btn'>
+              <AtFab onClick={this._onDelete}>
+                <Text className='at-fab__icon at-icon at-icon-trash'></Text>
+              </AtFab>
+            </View>
+            <View className='complete-btn'>
+            <AtFab onClick={this._onComplete}>
+              <Text className='at-fab__icon at-icon at-icon-check' />
             </AtFab>
+          </View>
           </View>
         }
       </View>

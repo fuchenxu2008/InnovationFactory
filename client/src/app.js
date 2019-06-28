@@ -27,6 +27,7 @@ class App extends Component {
       'pages/DemandPage/DemandDetailPage',
       'pages/KickstarterPage/KickstarterDetailPage',
       'pages/CreateUpdateProjectSupportPage/index',
+      'pages/MyProjectPage/index',
       'pages/LatestActivityPage/index',
       'pages/ActivityDetailPage/index',
       'pages/BrowsePrinterPage/index',
