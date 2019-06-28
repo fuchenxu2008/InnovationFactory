@@ -22,8 +22,10 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
-      'pages/DemandPage/index',
       'pages/KickstarterPage/index',
+      'pages/DemandPage/index',
+      'pages/DemandPage/DemandDetailPage',
+      'pages/KickstarterPage/KickstarterDetailPage',
       'pages/CreateUpdateProjectSupportPage/index',
       'pages/LatestActivityPage/index',
       'pages/ActivityDetailPage/index',

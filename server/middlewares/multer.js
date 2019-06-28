@@ -41,14 +41,18 @@ const categoryStorage = multer.diskStorage({
   },
 });
 
-const eventUpload = multer({ storage: eventStorage });
-const workshopUpload = multer({ storage: workshopStorage });
-const printerUpload = multer({ storage: printerStorage });
-const categoryUpload = multer({ storage: categoryStorage });
+const userImgStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'storage/userImg/');
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `userImg_${Date.now()}${ext}`);
+  },
+});
 
-module.exports = {
-  eventUpload,
-  workshopUpload,
-  printerUpload,
-  categoryUpload,
-};
+exports.eventUpload = multer({ storage: eventStorage });
+exports.workshopUpload = multer({ storage: workshopStorage });
+exports.printerUpload = multer({ storage: printerStorage });
+exports.categoryUpload = multer({ storage: categoryStorage });
+exports.userImgUpload = multer({ storage: userImgStorage });

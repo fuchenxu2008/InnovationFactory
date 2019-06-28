@@ -4,7 +4,7 @@ exports.getDemands = async (req, res) => {
   try {
     const { count = 15, startId } = req.query;
     const searchTerm = {};
-    if (!(req.user && req.user.role === 'admin')) searchTerm.approved = true;
+    // if (!(req.user && req.user.role === 'admin')) searchTerm.approved = true;
     if (startId) searchTerm._id = { $lt: startId };
     const demands = await Demand
       .find(searchTerm)

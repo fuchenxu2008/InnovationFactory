@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 
-const getImage = (req, res) => {
+exports.getImage = (req, res) => {
   const { img } = req.params;
   const dir = img.split('_')[0];
   const filePath = path.join(global.__root, `storage/${dir}/${img}`);
@@ -11,6 +11,11 @@ const getImage = (req, res) => {
   });
 };
 
-module.exports = {
-  getImage,
+exports.postImage = (req, res) => {
+  try {
+    const { filename } = req.file;
+    res.send(`/api/image/${filename}`);
+  } catch (error) {
+    res.status(404).json({ message: 'Error while uploading', error });
+  }
 };

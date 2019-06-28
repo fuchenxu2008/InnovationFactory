@@ -14,7 +14,7 @@ const KickstarterSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  imgUrl: [String],
+  imgUrls: [String],
   contact: {
     email: {
       type: String,

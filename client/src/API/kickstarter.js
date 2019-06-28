@@ -1,4 +1,4 @@
-import { request } from '../utils/request';
+import { request, multipartRequest } from '../utils/request';
 import { ROOT_URL } from '../config';
 
 export const getKickstarters = () => {
@@ -15,7 +15,16 @@ export const getKickstarter = id => {
   });
 };
 
-export const createKickstarter = (kickstarter, token) => {
+export const createKickstarter = async (kickstarter, token) => {
+  if (kickstarter.imgUrls && kickstarter.imgUrls.length) {
+    const imgRes = await Promise.all(kickstarter.imgUrls.map(imgUrl => multipartRequest({
+      url: `${ROOT_URL}/api/image`,
+      filePath: imgUrl,
+      name: 'userImg',
+      token: token
+    })));
+    kickstarter.imgUrls = imgRes.map(res => res.data);
+  }
   return request({
     url: `${ROOT_URL}/api/kickstarter`,
     method: 'POST',

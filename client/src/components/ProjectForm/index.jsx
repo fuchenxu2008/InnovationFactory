@@ -10,10 +10,10 @@ class ProjectForm extends Component {
   state = {
     title: '',
     description: '',
-    albumPicPath: '', // Banner image path
+    imgUrls: [], // Banner image path
     email: '',
     phone: '',
-    targetAmount: 0,
+    targetAmount: '',
   };
 
   componentDidMount() {
@@ -30,7 +30,7 @@ class ProjectForm extends Component {
       ...prevState,
       ...project,
       // To loadable image
-      albumPicPath: `${ROOT_URL}${project.albumPicPath}`
+      imgUrls: `${ROOT_URL}${project.imgUrls}`
     }));
   };
 
@@ -65,8 +65,8 @@ class ProjectForm extends Component {
   };
 
   _handleFormSubmit = () => {
-    const { title, description, albumPicPath, email, phone, targetAmount } = this.state;
-    const project = { title, description, albumPicPath, contact: { email, phone }, targetAmount };
+    const { title, description, imgUrls, email, phone, targetAmount } = this.state;
+    const project = { title, description, imgUrls, contact: { email, phone }, targetAmount };
     if (!this.WxValidate.checkForm(this.state)) {
       const error = this.WxValidate.errorList[0];
       return Taro.atMessage({
@@ -78,8 +78,13 @@ class ProjectForm extends Component {
   };
 
   _handleUploadImage = () => {
-    Taro.chooseImage()
-      .then(res => this.setState({ albumPicPath: res.tempFilePaths[0] }))
+    Taro.chooseImage({
+      count: 3
+    })
+      .then(res => {
+        console.log('res: ', res);
+        this.setState({ imgUrls: res.tempFilePaths })
+      })
       .catch(err => console.log(err));
   };
 
@@ -88,14 +93,14 @@ class ProjectForm extends Component {
     this.setState({ [field]: e.target.value });
 
   render() {
-    const { title, description, albumPicPath, targetAmount, email, phone } = this.state;
+    const { title, description, imgUrls, targetAmount, email, phone } = this.state;
     const { type, project, onDeleteProject } = this.props;
 
     return (
       <AtForm onSubmit={this._handleFormSubmit}>
         {/** Cover image upload */}
         <View className='album-section'>
-          <Image src={albumPicPath} className='albumPic' mode='aspectFill' />
+          <Image src={imgUrls[0]} className='albumPic' mode='aspectFill' />
           <View onClick={this._handleUploadImage} className='albumPicBtn'>
             <AtIcon
               value='upload'

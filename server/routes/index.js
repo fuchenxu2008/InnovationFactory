@@ -8,7 +8,7 @@ const kickstarterRouter = require('./kickstarterRoutes');
 const printerRouter = require('./printerRoutes');
 const orderRouter = require('./orderRoutes');
 const searchRouter = require('./searchRoutes');
-const { getImage } = require('../controllers/assetController');
+const assetRouter = require('./assetRoutes');
 const { authenticateAdmin, authenticateUser } = require('../middlewares/authentication');
 
 const router = express.Router();
@@ -24,6 +24,6 @@ router.use('/demand', demandRouter);
 router.use('/kickstarter', kickstarterRouter);
 router.use('/myorder', authenticateUser, orderRouter);
 router.use('/search', searchRouter);
-router.get('/image/:img', getImage);
+router.use('/image', assetRouter);
 
 module.exports = router;

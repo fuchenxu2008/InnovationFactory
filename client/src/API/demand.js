@@ -1,4 +1,4 @@
-import { request } from '../utils/request';
+import { request, multipartRequest } from '../utils/request';
 import { ROOT_URL } from '../config';
 
 export const getDemands = () => {
@@ -15,7 +15,16 @@ export const getDemand = (id) => {
   })
 }
 
-export const createDemand = (demand, token) => {
+export const createDemand = async (demand, token) => {
+  if (demand.imgUrls && demand.imgUrls.length) {
+    const imgRes = await Promise.all(demand.imgUrls.map(imgUrl => multipartRequest({
+      url: `${ROOT_URL}/api/image`,
+      filePath: imgUrl,
+      name: 'userImg',
+      token: token
+    })));
+    demand.imgUrls = imgRes.map(res => res.data);
+  }
   return request({
     url: `${ROOT_URL}/api/demand`,
     method: 'POST',

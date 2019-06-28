@@ -35,7 +35,12 @@ export const multipartRequest = ({ url, filePath, name, formData, token, }) => {
     return Taro.uploadFile({
       ...options,
       success: (res) => {
-        const data = JSON.parse(res.data);
+        let data;
+        try {
+          data = JSON.parse(res.data);
+        } catch (err) {
+          data = res.data;
+        }
         if (res.statusCode !== 200) return reject(data);
         resolve({ data });
       },
