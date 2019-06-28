@@ -20,6 +20,7 @@ import './index.scss'
 class DemandPage extends Component {
   config = {
     navigationBarTitleText: 'Demand',
+    enablePullDownRefresh: true,
   }
 
   state = {
@@ -31,8 +32,12 @@ class DemandPage extends Component {
     event.on('onUpdate', this, this._getAllDemands);
   }
 
+  onPullDownRefresh() {
+    this._getAllDemands().then(() => Taro.stopPullDownRefresh());
+  }
+
   _getAllDemands = () => {
-    this.props.getDemands()
+    return this.props.getDemands()
       .then((demands) => this.setState({ demands }))
   }
 

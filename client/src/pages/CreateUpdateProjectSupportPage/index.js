@@ -2,7 +2,12 @@ import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { AtMessage } from 'taro-ui';
 import { connect } from '@tarojs/redux';
-import { getDemand, createDemand, updateDemand, deleteDemand } from '../../actions/demand';
+import {
+  getDemand,
+  createDemand,
+  updateDemand,
+  deleteDemand
+} from '../../actions/demand';
 import {
   getKickstarter,
   createKickstarter,
@@ -18,7 +23,16 @@ import './index.scss';
 
 @connect(
   ({ loading }) => ({
-    isFetching: createLoadingSelector(['GET_DEMAND', 'GET_KICKSTARTER'])(loading)
+    isFetching: createLoadingSelector([
+      'GET_DEMAND',
+      'GET_KICKSTARTER',
+      'CREATE_DEMAND',
+      'CREATE_KICKSTARTER',
+      'UPDATE_DEMAND',
+      'UPDATE_KICKSTARTER',
+      'DELETE_DEMAND',
+      'DELETE_KICKSTARTER'
+    ])(loading)
   }),
   dispatch => ({
     getDemand: id => dispatch(getDemand(id)),
@@ -52,7 +66,7 @@ class CreateUpdateProjectSupportPage extends Component {
         .then(kickstarter => this.setState({ currentEntity: kickstarter }));
   }
 
-  _handleReceiveProject = async(entity) => {
+  _handleReceiveProject = async entity => {
     const { id, type } = this.$router.params;
     if (this.props.isFetching) return;
     if (type === 'demand') {
@@ -64,19 +78,19 @@ class CreateUpdateProjectSupportPage extends Component {
         ? await this.props.updateKickstarter(id, entity)
         : await this.props.createKickstarter(entity);
     }
-    event.emit('onUpdate')
+    event.emit('onUpdate');
     Taro.navigateBack();
-  }
+  };
 
   _handleDeleteCategory = async () => {
     const { id, type } = this.$router.params;
     if (type === 'demand') {
-      await this.props.deleteDemand(id)
+      await this.props.deleteDemand(id);
     } else if (type === 'kickstarter') {
-      await this.props.deleteKickstarter(id)
+      await this.props.deleteKickstarter(id);
     }
     Taro.navigateBack();
-  }
+  };
 
   render() {
     // If id exist, then it's editing; else would be creating new

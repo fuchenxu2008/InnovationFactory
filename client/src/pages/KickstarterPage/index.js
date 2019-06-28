@@ -7,6 +7,7 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import { getKickstarters } from '../../actions/kickstarter';
 import { ROOT_URL } from '../../config'
 import checkLogin from '../../utils/checkLogin';
+import event from '../../utils/event';
 
 import './index.scss'
 
@@ -19,6 +20,7 @@ import './index.scss'
 class KickstarterPage extends Component {
   config = {
     navigationBarTitleText: 'Kickstarter',
+    enablePullDownRefresh: true,
   }
 
   state = {
@@ -26,7 +28,16 @@ class KickstarterPage extends Component {
   }
 
   componentDidMount() {
-    this.props.getKickstarters()
+    event.on('onUpdate', this, this._getAllKickstarters);
+    this._getAllKickstarters();
+  }
+
+  onPullDownRefresh() {
+    this._getAllKickstarters().then(() => Taro.stopPullDownRefresh())
+  }
+
+  _getAllKickstarters = () => {
+    return this.props.getKickstarters()
       .then((kickstarters) => this.setState({ kickstarters }))
   }
 

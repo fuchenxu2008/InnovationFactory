@@ -13,7 +13,7 @@ import './index.scss';
 @connect(
   ({ loading, global }) => ({
     currentUser: global.currentUser,
-    isFetching: createLoadingSelector(['GET_KICKSTARTER'])(loading)
+    isFetching: createLoadingSelector(['GET_KICKSTARTER', 'DELETE_KICKSTARTER', 'UPDATE_KICKSTARTER'])(loading)
   }),
   dispatch => ({
     getKickstarter: id => dispatch(getKickstarter(id)),

@@ -13,7 +13,7 @@ import './index.scss';
 @connect(
   ({ loading, global }) => ({
     currentUser: global.currentUser,
-    isFetching: createLoadingSelector(['GET_DEMAND'])(loading)
+    isFetching: createLoadingSelector(['GET_DEMAND', 'UPDATE_DEMAND', 'DELETE_DEMAND'])(loading)
   }),
   dispatch => ({
     getDemand: id => dispatch(getDemand(id)),

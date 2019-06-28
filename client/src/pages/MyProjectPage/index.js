@@ -12,7 +12,7 @@ import './index.scss'
 
 @connect(({ loading, global }) => ({
   currentUser: global.currentUser,
-  isFetching: createLoadingSelector(['GET_KICKSTARTERS', 'GET_DEMANDS'])(loading),
+  isFetching: createLoadingSelector(['GET_MY_KICKSTARTERS', 'GET_MY_DEMANDS'])(loading),
 }), (dispatch) => ({
   getMyKickstarters: () => dispatch(getMyKickstarters()),
   getMyDemands: () => dispatch(getMyDemands()),
