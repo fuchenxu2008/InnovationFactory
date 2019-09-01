@@ -1,7 +1,7 @@
 {
-    "username": "innoFact",
-    "password": "xjtluiih",
-    "host": "kyrie.top",
-    "port": "27017",
+    "username": "admin",
+    "password": "puchi2019",
+    "host": "api.xjtluwall.com",
+    "port": "27003",
     "database": "InnovationFactory"
 }

@@ -3,8 +3,9 @@ const Activity = require('./models/Activity');
 const Category = require('./models/Category');
 const Printer = require('./models/Printer');
 const { event, workshop, printer } = require('./db.json');
+const { username, password, host, port, database } = require('./config/db.json');
 
-const mongoUrl = 'mongodb://kyrie.top/InnovationFactory';
+const mongoUrl = `mongodb://${username}:${password}@${host}:${port}/${database}?authSource=admin`;
 
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
